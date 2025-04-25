@@ -134,9 +134,11 @@
   </div>
 
   <!-- Panel lateral con información del dispositivo -->
-  <div class="hidden md:block ml-8 w-72 bg-white shadow-lg rounded-lg p-6 sticky top-6">
+  <div class="hidden md:block ml-8 w-72 bg-white shadow-lg rounded-lg p-6 sticky top-6 max-h-[500px] overflow-y-auto">
     <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01" /></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01" />
+      </svg>
       Información del Dispositivo
     </h2>
     {#if isPaired && deviceInfo}
