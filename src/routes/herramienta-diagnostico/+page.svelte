@@ -3,6 +3,8 @@
     pairDevice,
     unpairDevice,
     fetchDeviceInfo,
+    enterRecoveryMode,
+    exitRecoveryMode,
     getLatestFirmware
   } from '$lib/apiLocal';
   import Message from '$lib/components/Message.svelte';
@@ -117,6 +119,28 @@
         </button>
       </div>
     </section>
+
+    <!-- Modo Recovery y Gestión de Respaldo -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Modo Recovery -->
+        <section class="bg-white shadow-lg rounded-lg p-6">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+            Modo Recovery
+          </h2>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <!-- Botones "Entrar Recovery" y "Salir Recovery" con ancho reducido -->
+            <button on:click={() => call(enterRecoveryMode)} class="bg-indigo-600 text-white py-3 px-2 sm:px-4 rounded-lg hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+              Entrar Recovery
+            </button>
+            <button on:click={() => call(exitRecoveryMode)} class="bg-teal-600 text-white py-3 px-2 sm:px-4 rounded-lg hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
+              Salir Recovery
+            </button>
+          </div>
+        </section>
+    </div>
 
     <!-- Firmware -->
     <section class="bg-white shadow-lg rounded-lg p-6">

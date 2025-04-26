@@ -3,7 +3,6 @@ const BASE_URL = '/device-api';
 async function apiFetch(endpoint, options = {}) {
     try {
         const response = await fetch(`${BASE_URL}${endpoint}`, options);
-        console.log(`Fetching ${BASE_URL}${endpoint} with options:`, options);
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({})); // Maneja errores de JSON vacío
