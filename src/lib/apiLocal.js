@@ -13,6 +13,15 @@ export async function fetchDeviceInfo() {
     return apiFetch('/device/info');
 }
 
+// RestoreController endpoints
+export async function enterRecoveryMode() {
+    return apiFetch('/restore/enter-recovery', { method: 'POST' });
+}
+
+export async function exitRecoveryMode() {
+    return apiFetch('/restore/exit-recovery', { method: 'POST' });
+}
+
 export async function getLatestFirmware() {
     return apiFetch('/restore/get-latest-firmware');
 }
