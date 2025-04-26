@@ -11,7 +11,7 @@ Este proyecto utiliza las siguientes tecnologías:
 
 Antes de comenzar, asegúrate de tener instalado lo siguiente:
 
-- **[Node.js](https://nodejs.org/):** Versión 16 o superior.
+- **[Node.js](https://nodejs.org/):** Versión 22 o superior.
 - **[npm](https://www.npmjs.com/):** Administrador de paquetes incluido con Node.js.
 
 ## Instalación
