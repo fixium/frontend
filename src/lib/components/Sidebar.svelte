@@ -2,7 +2,8 @@
     import { onMount } from 'svelte';
     import { afterNavigate } from '$app/navigation';
 
-    import Icon from '$lib/Icon.svelte';
+    // cambio a lob/components
+    import Icon from '$lib/components/Icon.svelte';
 
     let isOpen = true;
     let currentPath = '/';
@@ -10,6 +11,7 @@
     function toggleSidebar() {
         isOpen = !isOpen;
     }
+    let color= 'bg-gray-900 text-white';
 
     onMount(() => {
         currentPath = window.location.pathname; // Inicializa con la ruta actual
@@ -33,9 +35,9 @@
                     icon: 'device-phone-mobile',
                     href: '/herramienta-diagnostico'
                 },
-                // { name: 'Recepción', icon: 'inbox', href: '/reparaciones/recepcion' },
-                // { name: 'Lista de dispositivos', icon: 'list-bullet', href: '/reparaciones/lista' },
-                // { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
+                { name: 'Recepción', icon: 'inbox', href: '/reparaciones/recepcion' },
+                { name: 'Lista de dispositivos', icon: 'list-bullet', href: '/reparaciones/lista' },
+                { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
             ]
         },
         // {
@@ -116,11 +118,12 @@
     <!-- Sidebar -->
     <aside
         class="bg-gray-900 text-white transition-all duration-300 ease-in-out group-hover:w-64 w-18 fixed md:relative h-full z-50 flex flex-col overflow-hidden"
+        
     >
         <!-- Header de la sidebar -->
         <div class="flex items-center justify-start h-16 px-4 border-b border-gray-800">
-            <a href="/" class="flex items-center gap-2">
-                <img src="/Fix.png" alt="Logo" class="h-8 w-auto" />
+            <a href="/home" class="flex items-center gap-2">
+                <img src="/Fix.png" alt="Logo" class="h-12 w-auto" />
                 <span class="hidden group-hover:block text-xl font-semibold">Fixium</span>
             </a>
         </div>

@@ -5,7 +5,7 @@
     fetchDeviceInfo,
     getLatestFirmware
   } from '$lib/apiLocal';
-  import Message from '$lib/Message.svelte';
+  import Message from '$lib/components/Message.svelte';
   import { onMount } from 'svelte';
 
   let loading = false;
