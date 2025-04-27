@@ -13,6 +13,14 @@ export async function fetchDeviceInfo() {
     return apiFetch('/device/info');
 }
 
+export async function restartDevice() {
+    return apiFetch('/device/restart', { method: 'POST' });
+}
+
+export async function shutdownDevice() {
+    return apiFetch('/device/shutdown', { method: 'POST' });
+}
+
 // RestoreController endpoints
 export async function enterRecoveryMode() {
     return apiFetch('/restore/enter-recovery', { method: 'POST' });
