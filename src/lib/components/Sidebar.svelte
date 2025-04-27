@@ -31,13 +31,13 @@
             section: 'Reparaciones',
             items: [
                 {
-                    name: 'Herramientas de diagnóstico',
+                    name: 'Herramientas locales',
                     icon: 'device-phone-mobile',
-                    href: '/herramienta-diagnostico'
+                    href: '/herramientas-locales'
                 },
-                { name: 'Recepción', icon: 'inbox', href: '/reparaciones/recepcion' },
-                { name: 'Lista de dispositivos', icon: 'list-bullet', href: '/reparaciones/lista' },
-                { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
+                // { name: 'Recepción', icon: 'inbox', href: '/reparaciones/recepcion' },
+                // { name: 'Lista de dispositivos', icon: 'list-bullet', href: '/reparaciones/lista' },
+                // { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
             ]
         },
         // {
