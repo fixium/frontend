@@ -3,6 +3,8 @@
     pairDevice,
     unpairDevice,
     fetchDeviceInfo,
+    restartDevice,
+    shutdownDevice,
     enterRecoveryMode,
     exitRecoveryMode,
     getLatestFirmware
@@ -129,6 +131,14 @@
           </svg>
           Desemparejar
         </button>
+        <button on:click={() => call(restartDevice)} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+          Reiniciar
+        </button>
+        <button on:click={() => call(shutdownDevice)} class="bg-yellow-600 text-white py-3 px-4 rounded-lg hover:bg-yellow-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
+          Apagar
+        </button>
       </div>
     </section>
 
@@ -196,7 +206,9 @@
         <div><strong>Firmware:</strong> {deviceInfo.FirmwareVersion}</div>
       </div>
     {:else}
-      <p class="text-sm text-gray-700">No hay información disponible, verifica el emparejamiento y conexion del dispositivo al PC.</p>
+      <p class="text-sm text-gray-700">No hay información disponible.</p>
+      <br>
+      <p class="text-sm text-red-600">{error}</p>
     {/if}
   </div>
 
