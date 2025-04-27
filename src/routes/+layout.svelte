@@ -30,7 +30,7 @@
     }
 
     .content {
-        padding-left: 4rem; /* Espacio inicial para el contenido */
+        padding-left: 6rem;
     }
 </style>
 

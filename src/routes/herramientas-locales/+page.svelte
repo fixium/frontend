@@ -152,7 +152,6 @@
 <div class="flex min-h-screen bg-gray-50 p-6">
   <!-- Contenido principal -->
   <div class="w-full space-y-8">
-    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Herramientas de Diagnóstico</h1>
 
     <!-- Acciones Básicas -->
     <section class="bg-white shadow-lg rounded-lg p-6">
@@ -229,32 +228,32 @@
     </section>
   </div>
 
-  <!-- Panel lateral -->
-  <div class="hidden md:block ml-8 w-72 bg-white shadow-lg rounded-lg p-6 sticky top-6 max-h-[500px] overflow-y-auto">
-    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01" />
-      </svg>
-      Información del Dispositivo
-    </h2>
-    {#if isPaired && deviceInfo}
-      <div class="grid grid-cols-1 gap-2 text-sm text-gray-700">
-        <div><strong>Nombre:</strong> {deviceInfo.DeviceName}</div>
-        <div><strong>Modelo:</strong> {deviceInfo.ProductType}</div>
-        <div><strong>IMEI:</strong> {deviceInfo.InternationalMobileEquipmentIdentity}</div>
-        <div><strong>Versión:</strong> {deviceInfo.ProductVersion}</div>
-        <div><strong>Build:</strong> {deviceInfo.BuildVersion}</div>
-        <div><strong>Baseband:</strong> {deviceInfo.BasebandVersion}</div>
-        <div><strong>Serial:</strong> {deviceInfo.SerialNumber}</div>
-        <div><strong>Modelo HW:</strong> {deviceInfo.HardwareModel}</div>
-        <div><strong>Firmware:</strong> {deviceInfo.FirmwareVersion}</div>
-      </div>
-    {:else}
-      <p class="text-sm text-gray-700">No hay información disponible.</p>
-      <br>
-      <p class="text-sm text-red-600">{error}</p>
-    {/if}
-  </div>
+    <!-- Panel lateral -->
+    <div class="hidden md:block ml-8 w-72 bg-white shadow-lg rounded-lg p-6 sticky top-6 max-h-[500px] overflow-y-auto">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01" />
+        </svg>
+        Información del Dispositivo
+      </h2>
+      {#if isPaired && deviceInfo}
+        <div class="grid grid-cols-1 gap-2 text-sm text-gray-700">
+          <div><strong>Nombre:</strong> {deviceInfo.DeviceName}</div>
+          <div><strong>Modelo:</strong> {deviceInfo.ProductType}</div>
+          <div><strong>IMEI:</strong> {deviceInfo.InternationalMobileEquipmentIdentity}</div>
+          <div><strong>Versión:</strong> {deviceInfo.ProductVersion}</div>
+          <div><strong>Build:</strong> {deviceInfo.BuildVersion}</div>
+          <div><strong>Baseband:</strong> {deviceInfo.BasebandVersion}</div>
+          <div><strong>Serial:</strong> {deviceInfo.SerialNumber}</div>
+          <div><strong>Modelo HW:</strong> {deviceInfo.HardwareModel}</div>
+          <div><strong>Firmware:</strong> {deviceInfo.FirmwareVersion}</div>
+        </div>
+      {:else}
+        <p class="text-sm text-gray-700">No hay información disponible.</p>
+        <br>
+        <p class="text-sm text-red-600">{error}</p>
+      {/if}
+    </div>
 
   <!-- Carga -->
   {#if loading}
