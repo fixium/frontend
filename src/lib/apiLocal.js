@@ -21,6 +21,25 @@ export async function shutdownDevice() {
     return apiFetch('/device/shutdown', { method: 'POST' });
 }
 
+export async function fetchDeviceLogs() {
+    const response = await fetch('/device-api/device/extract-logs');
+    if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Error al obtener los logs del dispositivo');
+    }
+
+    // Crear un blob desde la respuesta y descargar el archivo
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'crash_logs.zip';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.URL.revokeObjectURL(url);
+}
+
 // RestoreController endpoints
 export async function enterRecoveryMode() {
     return apiFetch('/restore/enter-recovery', { method: 'POST' });

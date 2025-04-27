@@ -5,6 +5,7 @@
     fetchDeviceInfo,
     restartDevice,
     shutdownDevice,
+    fetchDeviceLogs,
     enterRecoveryMode,
     exitRecoveryMode,
     getLatestFirmware
@@ -22,6 +23,8 @@
   let error: string = '';
   let isPaired = false;
   let showFirmwareModal = false;
+  let logsExtracted = false; // Estado para indicar si los logs se extrajeron correctamente
+  let showLogsModal = false; // Estado para controlar el modal de logs
 
   // Timeouts para mensajes
   let successTimeout: number | null = null;
@@ -99,6 +102,47 @@
     }
   }
 
+  // Función para abrir el modal de logs y verificar si se pudieron extraer
+  async function openLogsModal() {
+    showLogsModal = true;
+    loading = true;
+    loadingMessage = 'Verificando disponibilidad de logs...';
+    try {
+      const response = await fetch('http://127.0.0.1:8081/device-api/device/extract-logs', { method: 'HEAD' });
+      if (response.ok) {
+        logsExtracted = true;
+        showSuccessMessage('Los logs están disponibles para descargar.');
+      } else if (response.status === 404) {
+        logsExtracted = false;
+        showErrorMessage('No se encontraron logs disponibles en el dispositivo.');
+      } else {
+        logsExtracted = false;
+        showErrorMessage('Error al verificar los logs. Intente nuevamente.');
+      }
+    } catch (err) {
+      logsExtracted = false;
+      showErrorMessage(err.message || 'Error al verificar los logs.');
+    } finally {
+      loading = false;
+      loadingMessage = '';
+    }
+  }
+
+  // Función para descargar los logs
+  async function downloadLogs() {
+    loading = true;
+    loadingMessage = 'Descargando logs...';
+    try {
+      await fetchDeviceLogs(); // Llama al método actualizado en apiLocal.js
+      showSuccessMessage('Logs descargados correctamente.');
+    } catch (err) {
+      showErrorMessage(err.message || 'Error al descargar los logs.');
+    } finally {
+      loading = false;
+      loadingMessage = '';
+    }
+  }
+
   // Montaje inicial
   onMount(async () => {
     await fetchDeviceInformation();
@@ -166,19 +210,19 @@
       </div>
     </section>
 
-    <!-- Firmware -->
+    <!-- Logs y Firmware -->
     <section class="bg-white shadow-lg rounded-lg p-6">
       <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
-        </svg>
-        Firmware
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" /></svg>
+        Logs y Firmware
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <button on:click={openLogsModal} class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" /></svg>
+          Extraer logs
+        </button>
         <button on:click={openFirmwareModal} class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
-          </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" /></svg>
           Consultar Último Firmware
         </button>
       </div>
@@ -262,6 +306,44 @@
         </button>
       </div>
     </div>
+  {/if}
+
+  <!-- Modal de Logs -->
+  {#if showLogsModal}
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
+        </svg>
+        Logs del Dispositivo
+      </h2>
+      {#if loading}
+        <div class="flex flex-col items-center">
+          <svg class="animate-spin h-8 w-8 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v4m0 8v4m4-4h4m-8 0H4m16-4a8 8 0 11-16 0 8 8 0 0116 0z" />
+          </svg>
+          <p class="text-gray-800 font-semibold">{loadingMessage}</p>
+        </div>
+      {:else if logsExtracted}
+        <p class="text-gray-700 mb-4">Los logs están listos para descargar. ¿Desea descargarlos?</p>
+        <button on:click={downloadLogs} class="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          Descargar Logs
+        </button>
+      {:else}
+        <p class="text-red-700 mb-4">No se pudieron extraer los logs. <br><br>{errorMessage}</p>
+      {/if}
+      <button on:click={() => showLogsModal = false} class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        Cerrar
+      </button>
+    </div>
+  </div>
   {/if}
 
   <!-- Mensajes -->
