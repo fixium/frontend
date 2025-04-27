@@ -63,11 +63,11 @@
 
   // Funciones específicas
   async function pairAndFetchInfo() {
-    await call(pairDevice);
+    await call(pairDevice, 'Emparejando dispositivo...');
     if (!error) {
       isPaired = true;
-      await fetchDeviceInformation();
     }
+    fetchDeviceInformation();
   }
 
   async function fetchDeviceInformation() {
@@ -169,17 +169,17 @@
           </svg>
           Emparejar
         </button>
-        <button on:click={() => call(unpairDevice)} class="bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(unpairDevice, "Desemparejando dispositivo...")} class="bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
           Desemparejar
         </button>
-        <button on:click={() => call(restartDevice)} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(restartDevice, "Reiniciando dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
           Reiniciar
         </button>
-        <button on:click={() => call(shutdownDevice)} class="bg-yellow-600 text-white py-3 px-4 rounded-lg hover:bg-yellow-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(shutdownDevice, "Apagando dispositivo...")} class="bg-yellow-600 text-white py-3 px-4 rounded-lg hover:bg-yellow-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
           Apagar
         </button>
@@ -195,13 +195,13 @@
         Modo Recovery
       </h2>
       <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-        <button on:click={() => call(enterRecoveryMode)} class="bg-indigo-600 text-white py-3 px-2 sm:px-4 rounded-lg hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(enterRecoveryMode, "Entrando a modo recovery...")} class="bg-indigo-600 text-white py-3 px-2 sm:px-4 rounded-lg hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
           Entrar Recovery
         </button>
-        <button on:click={() => call(exitRecoveryMode)} class="bg-teal-600 text-white py-3 px-2 sm:px-4 rounded-lg hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(exitRecoveryMode, "Saliendo de modo recovery...")} class="bg-teal-600 text-white py-3 px-2 sm:px-4 rounded-lg hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
