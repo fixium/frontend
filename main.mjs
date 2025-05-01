@@ -116,6 +116,14 @@ ipcMain.handle('dialog:openFile', async () => {
     return result.filePaths;
 });
 
+// Manejar el evento para abrir el diálogo de selección de carpetas
+ipcMain.handle('dialog:openFolder', async () => {
+    const result = await dialog.showOpenDialog(mainWindow, {
+        properties: ['openDirectory']
+    });
+    return result.filePaths;
+});
+
 let abortController = null; // Declarar abortController en un ámbito global
 
 ipcMain.handle('start-download', async (event, url) => {
