@@ -1,3 +1,7 @@
+<script>
+	import { goto } from '$app/navigation';
+</script>
+
 <div>
 	<h1>Dashboard Fixium</h1>
 </div>

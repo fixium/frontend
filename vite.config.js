@@ -3,7 +3,8 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
-	server: {
+    server: {
+        port: 5173,
         proxy: {
             '/api': { // main backend in cloud
                 target: 'http://localhost:8080',
@@ -15,7 +16,6 @@ export default defineConfig({
             }
         }
     },
-    port : 5173,
 
     preview: {
         port : 5174,

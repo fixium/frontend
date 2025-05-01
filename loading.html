@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cargando - Fixium</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0078d7, #00c6ff);
+      background-size: 400% 400%;
+      animation: gradientFlow 15s ease infinite;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .logo {
+      font-size: 2.8rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin-bottom: 25px;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      animation: fadeInUp 1.5s ease forwards;
+    }
+
+    .spinner-container {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      margin-bottom: 25px;
+    }
+
+    .spinner {
+      width: 80px;
+      height: 80px;
+      border: 6px solid rgba(255, 255, 255, 0.3);
+      border-top: 6px solid #ffffff;
+      border-radius: 50%;
+      animation: spin 1.2s linear infinite;
+    }
+
+    .progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 50%;
+      border: 4px solid transparent;
+      border-left-color: #fff;
+      animation: progressSpin 2.5s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes progressSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 1.3rem;
+      opacity: 0.9;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite ease-in-out;
+      text-align: center;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    .loading-subtext {
+      font-size: 0.95rem;
+      opacity: 0.6;
+      animation: fadeIn 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0.4; }
+      to { opacity: 0.8; }
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 2rem;
+      }
+
+      .spinner-container {
+        width: 60px;
+        height: 60px;
+      }
+
+      .spinner,
+      .progress-bar {
+        width: 60px;
+        height: 60px;
+        border-width: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="logo">Fixium</div>
+
+  <div class="spinner-container">
+    <div class="spinner"></div>
+    <div class="progress-bar"></div>
+  </div>
+
+  <div class="loading-text">Cargando recursos...</div>
+  <div class="loading-subtext">Por favor espere...</div>
+</body>
+</html>
