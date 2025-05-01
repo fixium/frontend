@@ -5,6 +5,7 @@
     fetchDeviceInfo,
     restartDevice,
     shutdownDevice,
+    activateDevice,
     fetchDeviceLogs,
     enterRecoveryMode,
     exitRecoveryMode,
@@ -227,6 +228,12 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
           Apagar
         </button>
+        <button on:click={() => call(activateDevice, "Intentando activar dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Activar dispositivo
+        </button>
       </div>
     </section>
 
@@ -274,7 +281,7 @@
   </div>
 
     <!-- Panel lateral -->
-  <div class="hidden md:block ml-7 w-72 bg-white shadow-lg rounded-lg p-6 sticky top-6 max-h-[650px] overflow-y-auto overflow-x-hidden">
+  <div class="hidden md:block ml-7 w-72 bg-white shadow-lg rounded-lg p-6 sticky top-6 max-h-[670px] overflow-y-auto overflow-x-hidden">
     <h2 class="text-l font-bold text-gray-800 mb-4 flex items-center gap-2">
       <!-- Ícono móvil -->
       <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

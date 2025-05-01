@@ -21,6 +21,10 @@ export async function shutdownDevice() {
     return apiFetch('/device/shutdown', { method: 'POST' });
 }
 
+export async function activateDevice() {
+    return apiFetch('/device/activate', { method: 'POST' });
+}
+
 export async function fetchDeviceLogs() {
     const response = await fetch('/device-api/device/extract-logs');
     if (!response.ok) {
