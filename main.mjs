@@ -1,6 +1,7 @@
 import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import path from 'path';
-import { spawn, exec } from 'child_process';
+import { exec } from 'child_process';
+import spawn from 'cross-spawn';
 import kill from 'tree-kill';
 import waitOn from 'wait-on';
 import { fileURLToPath } from 'url';
@@ -15,13 +16,27 @@ let viteProcess;
 app.disableHardwareAcceleration();
 
 function startVite() {
-    viteProcess = spawn('npm', ['run', 'dev'], {
-        cwd: __dirname,
-        stdio: 'inherit'
-    });
+    console.log('Iniciando Vite...');
+    
+    if (process.platform === 'win32') {
+        viteProcess = spawn('npm', ['run', 'dev'], {
+            cwd: __dirname,
+            stdio: 'inherit',
+            shell: true
+        });
+    } else {
+        viteProcess = spawn('npm', ['run', 'dev'], {
+            cwd: __dirname,
+            stdio: 'inherit',
+        });
+    }
 
     viteProcess.on('close', (code) => {
         console.log(`Vite process exited with code ${code}`);
+    });
+
+    viteProcess.on('error', (err) => {
+        console.error('Error al iniciar Vite:', err.message);
     });
 }
 

@@ -33,7 +33,6 @@
 
   let progress = 0; // Estado para el progreso de la descarga
   let showProgressBar = false; // Controla si se muestra la barra de progreso
-  let downloadController: AbortController | null = null; // Controlador para cancelar la descarga
 
   // Función para iniciar la descarga
   async function startDownload(url: string) {
@@ -141,12 +140,6 @@
     }
   }
 
-  // function downloadFirmware() {
-  //   if (firmwareInfo?.url) {
-  //     window.location.href = firmwareInfo.url;
-  //   }
-  // }
-
    // Función para abrir el modal de logs y verificar si se pudieron extraer
    async function openLogsModal() {
     showLogsModal = true;
@@ -161,8 +154,9 @@
         logsExtracted = false;
         showErrorMessage('No se encontraron logs disponibles en el dispositivo.');
       } else {
+        response.statusText
         logsExtracted = false;
-        showErrorMessage('Error al verificar los logs. Intente nuevamente.');
+        showErrorMessage('No se encontraron logs disponibles en el dispositivo.');
       }
     } catch (err) {
       logsExtracted = false;
@@ -185,6 +179,7 @@
     } finally {
       loading = false;
       loadingMessage = '';
+      // logsExtracted = false; // Reiniciar el estado de logs extraídos
     }
   }
 
