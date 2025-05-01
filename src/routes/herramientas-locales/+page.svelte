@@ -274,9 +274,8 @@
   </div>
 
     <!-- Panel lateral -->
-    <!-- Panel lateral -->
-  <div class="hidden md:block ml-7 w-73 bg-white shadow-lg rounded-lg p-6 sticky top-6 max-h-[600px] overflow-y-auto overflow-x-hidden">
-    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+  <div class="hidden md:block ml-7 w-72 bg-white shadow-lg rounded-lg p-6 sticky top-6 max-h-[650px] overflow-y-auto overflow-x-hidden">
+    <h2 class="text-l font-bold text-gray-800 mb-4 flex items-center gap-2">
       <!-- Ícono móvil -->
       <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 2H8a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2zM12 18h.01" />
@@ -288,7 +287,7 @@
       <div class="grid grid-cols-1 gap-4 text-sm text-gray-700">
         
         <!-- Información principal -->
-        <div>
+        <div class="space-y-1">
           <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1">Datos principales</h3>
           {#if deviceInfo.DeviceName}<div class="break-words"><strong>Nombre:</strong> {deviceInfo.DeviceName}</div>{/if}
           {#if deviceInfo.DeviceClass}<div class="break-words"><strong>Clase:</strong> {deviceInfo.DeviceClass}</div>{/if}
@@ -298,12 +297,13 @@
           {#if deviceInfo.SerialNumber}<div class="break-words"><strong>Serial:</strong> {deviceInfo.SerialNumber}</div>{/if}
           {#if deviceInfo.UniqueDeviceID}<div class="break-words"><strong>UDID:</strong> {deviceInfo.UniqueDeviceID}</div>{/if}
           {#if deviceInfo.ProductVersion}<div class="break-words"><strong>iOS:</strong> {deviceInfo.ProductVersion}</div>{/if}
+          {#if deviceInfo.ActivationState}<div class="break-words"><strong>Estado activación:</strong> {deviceInfo.ActivationState}</div>{/if}
         </div>
 
         <!-- Información avanzada colapsable -->
         <details>
           <summary class="cursor-pointer text-xs font-semibold text-gray-500 uppercase mb-1">Detalles avanzados</summary>
-          <div class="mt-2 space-y-2">
+          <div class="mt-2 space-y-1">
 
             {#if deviceInfo.BuildVersion}<div class="break-words"><strong>Build:</strong> {deviceInfo.BuildVersion}</div>{/if}
             {#if deviceInfo.FirmwareVersion}<div class="break-words"><strong>Firmware:</strong> {deviceInfo.FirmwareVersion}</div>{/if}
