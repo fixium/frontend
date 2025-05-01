@@ -147,8 +147,8 @@
   //   }
   // }
 
-  // Función para abrir el modal de logs y verificar si se pudieron extraer
-  async function openLogsModal() {
+   // Función para abrir el modal de logs y verificar si se pudieron extraer
+   async function openLogsModal() {
     showLogsModal = true;
     loading = true;
     loadingMessage = 'Verificando disponibilidad de logs...';
@@ -178,7 +178,7 @@
     loading = true;
     loadingMessage = 'Descargando logs...';
     try {
-      await fetchDeviceLogs(); // Llama al método actualizado en apiLocal.js
+      await fetchDeviceLogs();
       showSuccessMessage('Logs descargados correctamente.');
     } catch (err) {
       showErrorMessage(err.message || 'Error al descargar los logs.');
