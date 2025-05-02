@@ -63,6 +63,16 @@ export async function createDeviceBackup(backupPath) {
     });
 }
 
+export async function restoreDeviceBackup(backupPath) {
+    return apiFetch(`/restore/restore-backup`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ backup_path: backupPath })
+    });
+}
+
 export async function getLatestFirmware() {
     return apiFetch('/restore/get-latest-firmware');
 }
