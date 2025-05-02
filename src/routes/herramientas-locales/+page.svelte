@@ -9,6 +9,7 @@
     fetchDeviceLogs,
     enterRecoveryMode,
     exitRecoveryMode,
+    createDeviceBackup,
     getLatestFirmware
   } from '$lib/apiLocal';
   import Message from '$lib/components/Message.svelte';
@@ -34,6 +35,44 @@
 
   let progress = 0; // Estado para el progreso de la descarga
   let showProgressBar = false; // Controla si se muestra la barra de progreso
+
+  let selectedFolder: string | null = null; // Carpeta seleccionada para el respaldo
+  let backupPath = ''; // Ruta del respaldo
+
+  // Función para abrir el diálogo de selección de carpeta
+  async function selectFolder() {
+    try {
+      backupPath = await window.electron.openFolderDialog(); // Obtener la ruta de la carpeta seleccionada
+      console.log('Ruta de respaldo seleccionada:', backupPath);
+      console.log('Tipo de archivo:', typeof backupPath);
+      if (backupPath) {
+        selectedFolder = `Carpeta seleccionada: ${backupPath}`;
+      } else {
+        selectedFolder = `No se seleccionó ninguna carpeta.`;
+      }
+    } catch (err) {
+      console.error('Error al seleccionar carpeta:', err);
+      selectedFolder = `Error al seleccionar carpeta.`;
+    }
+  }
+
+  async function createBackup() {
+    if (!backupPath) {
+      showErrorMessage('Por favor, seleccione una carpeta para el respaldo.');
+      return;
+    }
+
+    try {
+      await createDeviceBackup(backupPath);
+      showSuccessMessage('Respaldo creado correctamente.');
+    } catch (err) {
+      console.error('Error al crear respaldo:', err);
+      showErrorMessage('Error al crear respaldo.');
+    } finally {
+      backupPath = null; // Reiniciar el estado de la ruta de respaldo
+      selectedFolder = null; // Reiniciar el estado de la carpeta seleccionada
+    }
+  }
 
   // Función para iniciar la descarga
   async function startDownload(url: string) {
@@ -265,26 +304,49 @@
       <!-- Gestión de Respaldo -->
       <section class="bg-white shadow-lg rounded-lg p-6">
         <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+          </svg>
           Gestión de Respaldo
         </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <!-- Boton para seleccionar folder del backup -->
-          <button on:click={() => call(() => window.electron.openFolderDialog(), "Seleccionando carpeta de backup...")} class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <!-- Botón para seleccionar carpeta -->
+          <button
+            class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+            on:click={() => selectFolder()}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6m-6 0H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4m-6 0v6" />
+            </svg>
             Seleccionar Carpeta
           </button>
-          
-          <!-- Botones con la misma altura -->
-          <button class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" /></svg>
+      
+          <!-- Botón para crear backup -->
+          <button
+            class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+            on:click={createBackup}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+            </svg>
             Crear Backup
           </button>
-          <button class="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" /></svg>
+      
+          <!-- Botón para restaurar backup -->
+          <button
+            class="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+            
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
+            </svg>
             Restaurar Backup
           </button>
         </div>
+        <!-- Mostrar la carpeta seleccionada -->
+        {#if selectedFolder}
+          <p class="mt-4 text-sm text-gray-700">{selectedFolder}</p>
+        {/if}
       </section>
     </div>
 

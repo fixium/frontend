@@ -113,7 +113,7 @@ ipcMain.handle('dialog:openFile', async () => {
     const result = await dialog.showOpenDialog(mainWindow, {
         properties: ['openFile']
     });
-    return result.filePaths;
+    return result.filePaths[0]; // Retorna solo el primer archivo seleccionado
 });
 
 // Manejar el evento para abrir el diálogo de selección de carpetas
@@ -121,7 +121,7 @@ ipcMain.handle('dialog:openFolder', async () => {
     const result = await dialog.showOpenDialog(mainWindow, {
         properties: ['openDirectory']
     });
-    return result.filePaths;
+    return result.filePaths[0]; // Retorna solo la primera carpeta seleccionada
 });
 
 let abortController = null; // Declarar abortController en un ámbito global
