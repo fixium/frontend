@@ -11,7 +11,7 @@
     exitRecoveryMode,
     createDeviceBackup,
     restoreDeviceBackup,
-    getLatestFirmware,
+    getSignedFirmwares,
   } from '$lib/apiLocal';
   import Message from '$lib/components/Message.svelte';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
@@ -24,6 +24,7 @@
   let errorMessage = '';
   let deviceInfo: any = null;
   let firmwareInfo: any = null;
+  let firmwareList: [] = null;
   let error: string = '';
   let isPaired = false;
   let showFirmwareModal = false;
@@ -38,14 +39,15 @@
   let showProgressBar = false; // Controla si se muestra la barra de progreso
 
   let selectedFolder: string | null = null; // Carpeta seleccionada para el respaldo
+  let selectedIpsw: string | null = null; 
   let backupPath = ''; // Ruta del respaldo
+  let ipswPath = ''; // Ruta del archivo ipsw
 
   // Función para abrir el diálogo de selección de carpeta
   async function selectFolder() {
     try {
       backupPath = await window.electron.openFolderDialog(); // Obtener la ruta de la carpeta seleccionada
-      console.log('Ruta de respaldo seleccionada:', backupPath);
-      console.log('Tipo de archivo:', typeof backupPath);
+
       if (backupPath) {
         selectedFolder = `Carpeta seleccionada: ${backupPath}`;
       } else {
@@ -54,6 +56,18 @@
     } catch (err) {
       console.error('Error al seleccionar carpeta:', err);
       selectedFolder = `Error al seleccionar carpeta.`;
+    }
+  }
+
+  async function selectFile() {
+    try {
+      ipswPath = await window.electron.openFileDialog();
+
+      if (ipswPath) {
+        selectedIpsw = `Archivo seleccionado: ${ipswPath.split('/').pop()}`;
+      }
+    } catch(err) {
+      selectedIpsw = `Error al seleccionar el archivo.`;
     }
   }
 
@@ -123,10 +137,8 @@
   }
 
   // Función para iniciar la descarga del firmware
-  function downloadFirmware() {
-    if (firmwareInfo?.url) {
-      startDownload(firmwareInfo.url);
-    }
+  function downloadFirmware(url: string) {
+    startDownload(url);
   }
 
   // Funciones para mostrar mensajes
@@ -194,7 +206,7 @@
     loading = true;
     loadingMessage = 'Consultando el último firmware...';
     try {
-      firmwareInfo = await getLatestFirmware();
+      firmwareList = await getSignedFirmwares();
     } catch (err) {
       showErrorMessage(err.message || 'Error al consultar el firmware');
     } finally {
@@ -281,14 +293,19 @@
           </svg>
           Modo Recovery
         </h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-          <button on:click={() => call(enterRecoveryMode, "Entrando a modo recovery...")} class="bg-indigo-600 text-white py-3 px-2 sm:px-4 rounded-lg hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+
+        <!-- Botones en fila que llenan el contenedor -->
+        <div class="flex gap-4">
+          <button on:click={() => call(enterRecoveryMode, "Entrando a modo recovery...")} 
+            class="bg-indigo-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             Entrar Recovery
           </button>
-          <button on:click={() => call(exitRecoveryMode, "Saliendo de modo recovery...")} class="bg-teal-600 text-white py-3 px-2 sm:px-4 rounded-lg hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+
+          <button on:click={() => call(exitRecoveryMode, "Saliendo de modo recovery...")} 
+            class="bg-teal-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
@@ -352,30 +369,40 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
         </svg>
-        Gestión de Firmware
+        Gestión de Firmwares
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <!-- Botón para seleccionar archivo -->
+        <button
+          class="bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-1 sm:w-auto"
+          on:click={() => selectFile()}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6m-6 0H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4m-6 0v6" />
+          </svg>
+          Seleccionar .ipsw
+        </button>
+
+        <!-- Botón "Restaurar con IPSW" -->
+        <button
+          class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          Restaurar con IPSW
+        </button>
+
         <!-- Botón para consultar firmware -->
-        <!-- <button
-          class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+        <button
           on:click={openFirmwareModal}
+          class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
           </svg>
-          Consultar Firmware
-        </button> -->
-
-        <!-- Botón para actualizar firmware -->
-        <!-- <button
-          class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
-          on:click={downloadFirmware}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
-          </svg>
-          Actualizar Firmware
-        </button> -->
+          Consultar Firmwares
+        </button>
       </div>
     </section>
 
@@ -383,16 +410,12 @@
     <section class="bg-white shadow-lg rounded-lg p-6">
       <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" /></svg>
-        Logs y Firmware
+        Logs
       </h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <button on:click={downloadLogs} class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" /></svg>
           Extraer logs
-        </button>
-        <button on:click={openFirmwareModal} class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" /></svg>
-          Consultar Último Firmware
         </button>
       </div>
     </section>
@@ -487,18 +510,20 @@
             </svg>
             <p class="text-gray-800 font-semibold">{loadingMessage}</p>
           </div>
-        {:else if firmwareInfo}
-          <div class="grid grid-cols-1 gap-2 text-sm text-gray-700">
-            <div><strong>Versión:</strong> {firmwareInfo.version}</div>
-            <div><strong>Build ID:</strong> {firmwareInfo.buildid}</div>
-            <div><strong>Fecha de lanzamiento:</strong> {new Date(firmwareInfo.releasedate).toLocaleString()}</div>
-          </div>
-          <button on:click={downloadFirmware} class="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
-            </svg>
-            Descargar Firmware
-          </button>
+        {:else if firmwareList}
+          {#each firmwareList as firmware}
+            <div class="grid grid-cols-1 gap-2 text-sm text-gray-700">
+              <div><strong>Versión:</strong> {firmware?.version}</div>
+              <div><strong>Build ID:</strong> {firmware?.buildid}</div>
+              <div><strong>Fecha de lanzamiento:</strong> {new Date(firmware.releasedate).toLocaleString()}</div>
+            </div>
+            <button on:click={() => downloadFirmware(firmware.url)} class="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
+              </svg>
+              Descargar Firmware
+            </button>
+          {/each}
         {/if}
         <button on:click={() => (showFirmwareModal = false)} class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

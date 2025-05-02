@@ -73,6 +73,6 @@ export async function restoreDeviceBackup(backupPath) {
     });
 }
 
-export async function getLatestFirmware() {
-    return apiFetch('/restore/get-latest-firmware');
+export async function getSignedFirmwares() {
+    return apiFetch('/restore/get-signed-firmwares');
 }
