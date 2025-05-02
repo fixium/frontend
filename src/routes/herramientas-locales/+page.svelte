@@ -346,6 +346,39 @@
       </section>
     </div>
 
+    <!-- Gestión de Firmware -->
+    <section class="bg-white shadow-lg rounded-lg p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
+        </svg>
+        Gestión de Firmware
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <!-- Botón para consultar firmware -->
+        <!-- <button
+          class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+          on:click={openFirmwareModal}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
+          </svg>
+          Consultar Firmware
+        </button> -->
+
+        <!-- Botón para actualizar firmware -->
+        <!-- <button
+          class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+          on:click={downloadFirmware}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
+          </svg>
+          Actualizar Firmware
+        </button> -->
+      </div>
+    </section>
+
     <!-- Logs y Firmware -->
     <section class="bg-white shadow-lg rounded-lg p-6">
       <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
