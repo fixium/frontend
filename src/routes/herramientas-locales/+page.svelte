@@ -63,10 +63,9 @@
     }
 
     try {
-      await createDeviceBackup(backupPath);
+      await call(() => createDeviceBackup(backupPath), 'Creando backup...');
       showSuccessMessage('Respaldo creado correctamente.');
     } catch (err) {
-      console.error('Error al crear respaldo:', err);
       showErrorMessage('Error al crear respaldo.');
     } finally {
       backupPath = null; // Reiniciar el estado de la ruta de respaldo
@@ -428,6 +427,15 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v4m0 8v4m4-4h4m-8 0H4m16-4a8 8 0 11-16 0 8 8 0 0116 0z" />
         </svg>
         <p class="text-gray-800 font-semibold">{loadingMessage}</p>
+        <button
+          on:click={() => (loading = false, loadingMessage = '')}
+          class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          Cerrar
+        </button>
       </div>
     </div>
   {/if}
