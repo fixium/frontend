@@ -15,7 +15,7 @@
     restoreDeviceWithIPSW
   } from '$lib/apiLocal';
   import Message from '$lib/components/Message.svelte';
-	import ProgressBar from '$lib/components/ProgressBar.svelte';
+  import ProgressBar from '$lib/components/ProgressBar.svelte';
   import { onMount } from 'svelte';
 
   // Estados generales
@@ -23,127 +23,34 @@
   let loadingMessage = '';
   let successMessage = '';
   let errorMessage = '';
-  let deviceInfo: any = null;
-  let firmwareInfo: any = null;
-  let firmwareList: [] = null;
   let error: string = '';
+
+  // Estados del dispositivo
+  let deviceInfo: any = null;
   let isPaired = false;
+
+  // Estados de backups
+  let selectedFolder: string | null = null;
+  let backupPath = '';
+
+  // Estados de firmware
+  let firmwareList: [] = null;
   let showFirmwareModal = false;
-  let logsExtracted = false; // Estado para indicar si los logs se extrajeron correctamente
-  let showLogsModal = false; // Estado para controlar el modal de logs
+  let selectedIpsw: string | null = null;
+  let ipswPath = '';
+
+  // Estados de logs
+  let logsExtracted = false;
+
+  // Estados de progreso
+  let progress = 0;
+  let showProgressBar = false;
 
   // Timeouts para mensajes
   let successTimeout: any | null = null;
   let errorTimeout: any | null = null;
 
-  let progress = 0; // Estado para el progreso de la descarga
-  let showProgressBar = false; // Controla si se muestra la barra de progreso
-
-  let selectedFolder: string | null = null; // Carpeta seleccionada para el respaldo
-  let selectedIpsw: string | null = null; 
-  let backupPath = ''; // Ruta del respaldo
-  let ipswPath = ''; // Ruta del archivo ipsw
-
-  // Función para abrir el diálogo de selección de carpeta
-  async function selectFolder() {
-    try {
-      backupPath = await window.electron.openFolderDialog(); // Obtener la ruta de la carpeta seleccionada
-
-      if (backupPath) {
-        selectedFolder = `Carpeta seleccionada: ${backupPath}`;
-      } else {
-        selectedFolder = `No se seleccionó ninguna carpeta.`;
-      }
-    } catch (err) {
-      selectedFolder = `Error al seleccionar carpeta.`;
-    }
-  }
-
-  async function selectFile() {
-    try {
-      ipswPath = await window.electron.openFileDialog();
-
-      if (ipswPath) {
-        selectedIpsw = `Archivo seleccionado: ${ipswPath.split('/').pop()}`;
-      } else {
-        selectedIpsw = `No se seleccionó ningún archivo.`;
-      }
-    } catch(err) {
-      selectedIpsw = `Error al seleccionar el archivo.`;
-    }
-  }
-
-  async function createBackup() {
-    if (!backupPath) {
-      showErrorMessage('Por favor, seleccione una carpeta para guardar el respaldo.');
-      return;
-    }
-
-    try {
-      await call(() => createDeviceBackup(backupPath), 'Creando backup...');
-    } catch (err) {
-      showErrorMessage('Error al crear respaldo.');
-    } finally {
-      backupPath = null; // Reiniciar el estado de la ruta de respaldo
-      selectedFolder = null; // Reiniciar el estado de la carpeta seleccionada
-    }
-  }
-
-  async function restoreBackup() {
-    if (!backupPath) {
-      showErrorMessage('Por favor, seleccione una carpeta para restaurar el respaldo.');
-      return;
-    }
-
-    try {
-      await call(() => restoreDeviceBackup(backupPath), 'Restaurando respaldo...');
-    } catch (err) {
-      showErrorMessage('Error al restaurar respaldo.');
-    } finally {
-      backupPath = null; // Reiniciar el estado de la ruta de respaldo
-      selectedFolder = null; // Reiniciar el estado de la carpeta seleccionada
-    }
-  }
-
-  // Función para iniciar la descarga
-  async function startDownload(url: string) {
-    showProgressBar = true;
-    progress = 0;
-
-    window.electron.onDownloadProgress((currentProgress: number) => {
-      progress = currentProgress;
-    });
-
-    try {
-      await window.electron.startDownload(url);
-      // Mostrar mensaje de éxito solo si no fue cancelada
-      if (progress === 1) {
-        showSuccessMessage('Descarga completada');
-      }
-    } catch (err) {
-      if (err.message === 'Descarga cancelada') {
-        showErrorMessage('Descarga cancelada por el usuario');
-      } else {
-        console.error('Error al descargar:', err);
-        showErrorMessage('Error al descargar el archivo');
-      }
-    } finally {
-      showProgressBar = false;
-    }
-  }
-
-  // Función para cancelar la descarga
-  function cancelDownload() {
-    window.electron.cancelDownload();
-    showProgressBar = false;
-  }
-
-  // Función para iniciar la descarga del firmware
-  function downloadFirmware(url: string) {
-    startDownload(url);
-  }
-
-  // Funciones para mostrar mensajes
+  // Funciones generales
   function showSuccessMessage(message: string) {
     successMessage = message;
     if (successTimeout) clearTimeout(successTimeout);
@@ -156,7 +63,6 @@
     errorTimeout = setTimeout(() => (errorMessage = ''), 5000);
   }
 
-  // Función genérica para llamadas asíncronas
   async function call(fn: () => Promise<any>, message: string = 'Procesando...') {
     errorMessage = '';
     successMessage = '';
@@ -164,17 +70,11 @@
     loadingMessage = message;
     try {
       const result = await fn();
-      console.log('Resultado:', result);
-      console.log(`Estado de la llamada: ${result?.status_code || result?.status}`);
-
-      if (result?.status_code == 200 || result?.status == 200) {
+      if (result?.status_code === 200 || result?.status === 200) {
         showSuccessMessage(result?.detail || result?.message || 'Operación exitosa');
-      } else if (result?.status_code === 400) {
-        error = result?.detail || 'Error inesperado';
-        showErrorMessage(error);
-      } else if (result?.status_code === 500) {
-        error = result?.detail || 'Error inesperado';
-        showErrorMessage(error);
+      } else {
+        const errorDetail = result?.detail || 'Error inesperado';
+        showErrorMessage(errorDetail);
       }
     } catch (err) {
       showErrorMessage(err.message || 'Ocurrió un error inesperado');
@@ -184,13 +84,13 @@
     }
   }
 
-  // Funciones específicas
+  // Gestión de dispositivo
   async function pairAndFetchInfo() {
     await call(pairDevice, 'Emparejando dispositivo...');
     if (!error) {
       isPaired = true;
+      fetchDeviceInformation();
     }
-    fetchDeviceInformation();
   }
 
   async function fetchDeviceInformation() {
@@ -203,6 +103,60 @@
       error = 'El dispositivo no está emparejado. Por favor, empareje el dispositivo.';
       deviceInfo = null;
     }
+  }
+
+  // Gestión de backups
+  async function selectFolder() {
+    try {
+      backupPath = await window.electron.openFolderDialog();
+      selectedFolder = backupPath
+        ? `Carpeta seleccionada: ${backupPath}`
+        : 'No se seleccionó ninguna carpeta.';
+    } catch {
+      selectedFolder = 'Error al seleccionar carpeta.';
+    }
+  }
+
+  async function createBackup() {
+    if (!backupPath) {
+      showErrorMessage('Por favor, seleccione una carpeta para guardar el respaldo.');
+      return;
+    }
+    await call(() => createDeviceBackup(backupPath), 'Creando backup...');
+    backupPath = null;
+    selectedFolder = null;
+  }
+
+  async function restoreBackup() {
+    if (!backupPath) {
+      showErrorMessage('Por favor, seleccione una carpeta para restaurar el respaldo.');
+      return;
+    }
+    await call(() => restoreDeviceBackup(backupPath), 'Restaurando respaldo...');
+    backupPath = null;
+    selectedFolder = null;
+  }
+
+  // Gestión de firmware
+  async function selectFile() {
+    try {
+      ipswPath = await window.electron.openFileDialog();
+      selectedIpsw = ipswPath
+        ? `Archivo seleccionado: ${ipswPath.split('/').pop()}`
+        : 'No se seleccionó ningún archivo.';
+    } catch {
+      selectedIpsw = 'Error al seleccionar el archivo.';
+    }
+  }
+
+  async function restoreWithIPSW(ipswPath: string) {
+    if (!ipswPath.trim()) {
+      showErrorMessage('Por favor, seleccione un archivo IPSW.');
+      return;
+    }
+    await call(() => restoreDeviceWithIPSW(ipswPath), 'Restaurando dispositivo...');
+    ipswPath = null;
+    selectedIpsw = null;
   }
 
   async function openFirmwareModal() {
@@ -219,23 +173,7 @@
     }
   }
 
-  async function restoreWithIPSW(ipswPath: string) {
-    if (!ipswPath.trim()) {
-      showErrorMessage('Por favor, seleccione un archivo IPSW.');
-      return;
-    }
-    
-    try {
-      await call(() => restoreDeviceWithIPSW(ipswPath), 'Restaurando dispositivo...');
-    } catch (err) {
-      showErrorMessage('Error al restaurar respaldo.');
-    } finally {
-      ipswPath = null; // Reiniciar el estado de la ruta de respaldo
-      selectedIpsw = null; // Reiniciar el estado de la carpeta seleccionada
-    }
-  }
-
-  // Función para descargar los logs
+  // Gestión de logs
   async function downloadLogs() {
     loading = true;
     loadingMessage = 'Verificando disponibilidad de logs...';
@@ -247,14 +185,40 @@
     } finally {
       loading = false;
       loadingMessage = '';
-      // logsExtracted = false; // Reiniciar el estado de logs extraídos
     }
   }
 
+  // Gestión de descargas
+  async function startDownload(url: string) {
+    showProgressBar = true;
+    progress = 0;
+
+    window.electron.onDownloadProgress((currentProgress: number) => {
+      progress = currentProgress;
+    });
+
+    try {
+      await window.electron.startDownload(url);
+      if (progress === 1) {
+        showSuccessMessage('Descarga completada');
+      }
+    } catch (err) {
+      const errorMsg = err.message === 'Descarga cancelada'
+        ? 'Descarga cancelada por el usuario'
+        : 'Error al descargar el archivo';
+      showErrorMessage(errorMsg);
+    } finally {
+      showProgressBar = false;
+    }
+  }
+
+  function cancelDownload() {
+    window.electron.cancelDownload();
+    showProgressBar = false;
+  }
+
   // Montaje inicial
-  onMount(async () => {
-    await fetchDeviceInformation();
-  });
+  onMount(fetchDeviceInformation);
 </script>
 
 <!-- Mostrar la barra de progreso si está activa -->

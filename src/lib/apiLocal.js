@@ -1,6 +1,9 @@
 import apiFetch from './apiFetch';
 
-// DeviceController endpoints
+// ========================
+// DeviceController Endpoints
+// ========================
+
 export async function pairDevice() {
     return apiFetch('/device/pair', { method: 'POST' });
 }
@@ -44,7 +47,10 @@ export async function fetchDeviceLogs() {
     window.URL.revokeObjectURL(url);
 }
 
-// RestoreController endpoints
+// ========================
+// RestoreController Endpoints
+// ========================
+
 export async function enterRecoveryMode() {
     return apiFetch('/restore/enter-recovery', { method: 'POST' });
 }
@@ -64,7 +70,7 @@ export async function createDeviceBackup(backupPath) {
 }
 
 export async function restoreDeviceBackup(backupPath) {
-    return apiFetch(`/restore/restore-backup`, {
+    return apiFetch('/restore/restore-backup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
