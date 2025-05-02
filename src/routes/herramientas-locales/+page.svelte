@@ -55,7 +55,6 @@
         selectedFolder = `No se seleccionó ninguna carpeta.`;
       }
     } catch (err) {
-      console.error('Error al seleccionar carpeta:', err);
       selectedFolder = `Error al seleccionar carpeta.`;
     }
   }
@@ -66,6 +65,8 @@
 
       if (ipswPath) {
         selectedIpsw = `Archivo seleccionado: ${ipswPath.split('/').pop()}`;
+      } else {
+        selectedIpsw = `No se seleccionó ningún archivo.`;
       }
     } catch(err) {
       selectedIpsw = `Error al seleccionar el archivo.`;
@@ -74,7 +75,7 @@
 
   async function createBackup() {
     if (!backupPath) {
-      showErrorMessage('Por favor, seleccione una carpeta para el respaldo.');
+      showErrorMessage('Por favor, seleccione una carpeta para guardar el respaldo.');
       return;
     }
 
@@ -163,8 +164,10 @@
     loadingMessage = message;
     try {
       const result = await fn();
+      console.log('Resultado:', result);
+      console.log(`Estado de la llamada: ${result?.status_code || result?.status}`);
 
-      if (result?.status_code === 200) {
+      if (result?.status_code == 200 || result?.status == 200) {
         showSuccessMessage(result?.detail || result?.message || 'Operación exitosa');
       } else if (result?.status_code === 400) {
         error = result?.detail || 'Error inesperado';
@@ -216,12 +219,20 @@
     }
   }
 
-  async function restoreWithIPSW() {
+  async function restoreWithIPSW(ipswPath: string) {
     if (!ipswPath.trim()) {
-      showErrorMessage('La ruta del archivo IPSW no puede estar vacía.');
+      showErrorMessage('Por favor, seleccione un archivo IPSW.');
       return;
     }
-    await call(() => restoreDeviceWithIPSW(ipswPath), 'Restaurando dispositivo...');
+    
+    try {
+      await call(() => restoreDeviceWithIPSW(ipswPath), 'Restaurando dispositivo...');
+    } catch (err) {
+      showErrorMessage('Error al restaurar respaldo.');
+    } finally {
+      ipswPath = null; // Reiniciar el estado de la ruta de respaldo
+      selectedIpsw = null; // Reiniciar el estado de la carpeta seleccionada
+    }
   }
 
   // Función para descargar los logs
@@ -394,6 +405,7 @@
 
         <!-- Botón "Restaurar con IPSW" -->
         <button
+          on:click={() => restoreWithIPSW(ipswPath)}
           class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -412,6 +424,10 @@
           </svg>
           Consultar Firmwares
         </button>
+        <!-- Mostrar la carpeta seleccionada -->
+        {#if selectedIpsw}
+          <p class="mt-4 text-sm text-gray-700">{selectedIpsw}</p>
+        {/if}
       </div>
     </section>
 
