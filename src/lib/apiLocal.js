@@ -76,3 +76,13 @@ export async function restoreDeviceBackup(backupPath) {
 export async function getSignedFirmwares() {
     return apiFetch('/restore/get-signed-firmwares');
 }
+
+export async function restoreDeviceWithIPSW(ipswFilePath) {
+    return apiFetch('/restore', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ipsw_file_path: ipswFilePath })
+    });
+}
