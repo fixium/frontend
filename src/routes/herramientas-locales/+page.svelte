@@ -10,7 +10,8 @@
     enterRecoveryMode,
     exitRecoveryMode,
     createDeviceBackup,
-    getLatestFirmware
+    restoreDeviceBackup,
+    getLatestFirmware,
   } from '$lib/apiLocal';
   import Message from '$lib/components/Message.svelte';
 	import ProgressBar from '$lib/components/ProgressBar.svelte';
@@ -64,9 +65,24 @@
 
     try {
       await call(() => createDeviceBackup(backupPath), 'Creando backup...');
-      showSuccessMessage('Respaldo creado correctamente.');
     } catch (err) {
       showErrorMessage('Error al crear respaldo.');
+    } finally {
+      backupPath = null; // Reiniciar el estado de la ruta de respaldo
+      selectedFolder = null; // Reiniciar el estado de la carpeta seleccionada
+    }
+  }
+
+  async function restoreBackup() {
+    if (!backupPath) {
+      showErrorMessage('Por favor, seleccione una carpeta para restaurar el respaldo.');
+      return;
+    }
+
+    try {
+      await call(() => restoreDeviceBackup(backupPath), 'Restaurando respaldo...');
+    } catch (err) {
+      showErrorMessage('Error al restaurar respaldo.');
     } finally {
       backupPath = null; // Reiniciar el estado de la ruta de respaldo
       selectedFolder = null; // Reiniciar el estado de la carpeta seleccionada
@@ -134,8 +150,16 @@
     loadingMessage = message;
     try {
       const result = await fn();
-      console.log(result);
-      if (result?.message) showSuccessMessage(result.message);
+
+      if (result?.status_code === 200) {
+        showSuccessMessage(result?.detail || result?.message || 'Operación exitosa');
+      } else if (result?.status_code === 400) {
+        error = result?.detail || 'Error inesperado';
+        showErrorMessage(error);
+      } else if (result?.status_code === 500) {
+        error = result?.detail || 'Error inesperado';
+        showErrorMessage(error);
+      }
     } catch (err) {
       showErrorMessage(err.message || 'Ocurrió un error inesperado');
     } finally {
@@ -173,33 +197,6 @@
       firmwareInfo = await getLatestFirmware();
     } catch (err) {
       showErrorMessage(err.message || 'Error al consultar el firmware');
-    } finally {
-      loading = false;
-      loadingMessage = '';
-    }
-  }
-
-   // Función para abrir el modal de logs y verificar si se pudieron extraer
-   async function openLogsModal() {
-    showLogsModal = true;
-    loading = true;
-    loadingMessage = 'Verificando disponibilidad de logs...';
-    try {
-      const response = await fetch('http://127.0.0.1:8081/device-api/device/extract-logs', { method: 'HEAD' });
-      if (response.ok) {
-        logsExtracted = true;
-        showSuccessMessage('Los logs están disponibles para descargar.');
-      } else if (response.status === 404) {
-        logsExtracted = false;
-        showErrorMessage('No se encontraron logs disponibles en el dispositivo.');
-      } else {
-        response.statusText
-        logsExtracted = false;
-        showErrorMessage('No se encontraron logs disponibles en el dispositivo.');
-      }
-    } catch (err) {
-      logsExtracted = false;
-      showErrorMessage(err.message || 'Error al verificar los logs.');
     } finally {
       loading = false;
       loadingMessage = '';
@@ -306,7 +303,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
           </svg>
-          Gestión de Respaldo
+            Gestión de Respaldo <span class="text-red-600 text-sm">(Compatible únicamente con iOS 13 o versiones anteriores)</span>
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <!-- Botón para seleccionar carpeta -->
@@ -334,7 +331,7 @@
           <!-- Botón para restaurar backup -->
           <button
             class="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
-            
+            on:click={restoreBackup}
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
