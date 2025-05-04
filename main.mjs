@@ -13,8 +13,6 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url)); // Define __dirn
 let mainWindow;
 let viteProcess;
 
-app.disableHardwareAcceleration();
-
 function startVite() {
     console.log('Iniciando Vite...');
     
@@ -78,6 +76,7 @@ app.on('ready', async () => {
             contextIsolation: true,
             nodeIntegration: false,
             disableHardwareAcceleration: true,
+            offscreen: false
         }
     });
 
@@ -95,6 +94,10 @@ app.on('ready', async () => {
         app.quit();
     }
 });
+
+
+// Deshabilita la aceleración de hardware para evitar problemas en algunos sistemas
+app.disableHardwareAcceleration();
 
 // Cierra completamente la aplicación al salir
 app.on('window-all-closed', () => {
