@@ -75,13 +75,13 @@
     try {
       const result = await fn();
       if (result?.status_code === 200 || result?.status === 200) {
-        // showSuccessMessage(result?.detail || result?.message || 'Operación exitosa');
+        showSuccessMessage(result?.detail || result?.message || 'Operación exitosa');
       } else {
         const errorDetail = result?.detail || 'Error inesperado';
-        // showErrorMessage(errorDetail);
+        showErrorMessage(errorDetail);
       }
     } catch (err) {
-      // showErrorMessage(err.message || 'Ocurrió un error inesperado');
+      showErrorMessage(err.message || 'Ocurrió un error inesperado');
     } finally {
       loading = false;
       loadingMessage = '';
@@ -123,7 +123,7 @@
 
   async function createBackup() {
     if (!backupPath) {
-      // showErrorMessage('Por favor, seleccione una carpeta para guardar el respaldo.');
+      showErrorMessage('Por favor, seleccione una carpeta para guardar el respaldo.');
       return;
     }
     await call(() => createDeviceBackup(backupPath), 'Creando backup...');
@@ -133,7 +133,7 @@
 
   async function restoreBackup() {
     if (!backupPath) {
-      // showErrorMessage('Por favor, seleccione una carpeta para restaurar el respaldo.');
+      showErrorMessage('Por favor, seleccione una carpeta para restaurar el respaldo.');
       return;
     }
     await call(() => restoreDeviceBackup(backupPath), 'Restaurando respaldo...');
@@ -155,7 +155,7 @@
 
   async function restoreWithIPSW(ipswPath: string) {
     if (!ipswPath.trim()) {
-      // showErrorMessage('Por favor, seleccione un archivo IPSW.');
+      showErrorMessage('Por favor, seleccione un archivo IPSW.');
       return;
     }
     await call(() => restoreDeviceWithIPSW(ipswPath), 'Restaurando dispositivo...');
@@ -170,7 +170,7 @@
     try {
       firmwareList = await getSignedFirmwares();
     } catch (err) {
-      // showErrorMessage(err.message || 'Error al consultar el firmware');
+      showErrorMessage(err.message || 'Error al consultar el firmware');
     } finally {
       loading = false;
       loadingMessage = '';
@@ -183,9 +183,9 @@
     loadingMessage = 'Verificando disponibilidad de logs...';
     try {
       await fetchDeviceLogs();
-      // showSuccessMessage('Logs descargados correctamente.');
+      showSuccessMessage('Logs descargados correctamente.');
     } catch (err) {
-      // showErrorMessage(err.message || 'Error al descargar los logs.');
+      showErrorMessage(err.message || 'Error al descargar los logs.');
     } finally {
       loading = false;
       loadingMessage = '';
@@ -204,13 +204,13 @@
     try {
       await window.electron.startDownload(url);
       if (progress === 1) {
-        // showSuccessMessage('Descarga completada');
+        showSuccessMessage('Descarga completada');
       }
     } catch (err) {
       const errorMsg = err.message === 'Descarga cancelada'
         ? 'Descarga cancelada por el usuario'
         : 'Error al descargar el archivo';
-      // showErrorMessage(errorMsg);
+      showErrorMessage(errorMsg);
     } finally {
       showProgressBar = false;
     }
@@ -474,7 +474,7 @@
   </div>
 
   <!-- Carga -->
-  <!-- {#if loading}
+  {#if loading}
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
         <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -492,7 +492,7 @@
         </button>
       </div>
     </div>
-  {/if} -->
+  {/if}
 
   <!-- Modal de Firmware -->
   {#if showFirmwareModal}
@@ -502,7 +502,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
           </svg>
-          Último Firmware
+          Firmwares disponibles
         </h2>
         {#if loading}
           <div class="flex flex-col items-center">
