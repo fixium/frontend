@@ -1,7 +1,10 @@
 <script>
     import { onMount } from 'svelte';
     import { afterNavigate } from '$app/navigation';
+    import { logout } from '$lib/api/apiAuth';
     import { goto } from '$app/navigation';
+
+    export let role; // recibe el rol como prop
 
     import Icon from '$lib/components/Icon.svelte';
 
@@ -13,6 +16,15 @@
     }
     
     let color= 'bg-gray-900 text-white';
+
+    async function handleLogout() {
+        const success = await logout();
+        if (success) {
+            goto('/auth/login'); // Redirige al login después de cerrar sesión
+        } else {
+            alert('Error al cerrar sesión. Inténtalo de nuevo.');
+        }
+    }
 
     onMount(() => {
         currentPath = window.location.pathname;
@@ -36,17 +48,17 @@
                 // { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
             // ]
         // },
-        // {
-        //     section: 'Administrar Taller',
-        //     items: [
-        //         {
-        //             name: 'Administrar Usuarios',
-        //             icon: 'users',
-        //             href: '/admin/usuarios',
-        //             roles: ['ROLE_ADMIN']
-        //         }
-        //     ]
-        // },
+        {
+            section: 'Administrar Taller',
+            items: [
+                {
+                    name: 'Administrar Usuarios',
+                    icon: 'users',
+                    href: '/admin/usuarios',
+                    roles: ['ROLE_ADMIN']
+                }
+            ]
+        },
         {
             section: 'Diagnóstico',
             items: [
@@ -102,15 +114,15 @@
     ];
     // Filtrar los enlaces según el rol
     // Filtrar los enlaces según el rol
-    // const filteredNavItems = navItems
-    //     .map(section => {
-    //         const filteredItems = section.items.filter(item => !item.roles || item.roles.includes(role));
-    //         return {
-    //             ...section,
-    //             items: filteredItems
-    //         };
-    //     })
-    //     .filter(section => section.items.length > 0); // Oculta secciones sin elementos visibles
+    const filteredNavItems = navItems
+        .map(section => {
+            const filteredItems = section.items.filter(item => !item.roles || item.roles.includes(role));
+            return {
+                ...section,
+                items: filteredItems
+            };
+        })
+        .filter(section => section.items.length > 0); // Oculta secciones sin elementos visibles
 </script>
 
 <style>
@@ -142,11 +154,11 @@
 
         <!-- Navegación -->
         <nav class="flex-1 overflow-y-auto py-4">
-        {#each navItems as navItem}
+        {#each filteredNavItems as section}
             <div class="mb-4">
-                <h3 class="hidden group-hover:block text-sm font-semibold text-gray-400 px-4 uppercase">{navItem.section}</h3>
+                <h3 class="hidden group-hover:block text-sm font-semibold text-gray-400 px-4 uppercase">{section.section}</h3>
                 <ul class="space-y-2 px-2">
-                    {#each navItem.items as item}
+                    {#each section.items as item}
                         <li>
                             <a
                                 href={item.href}
@@ -180,7 +192,7 @@
                 </div>
             </div>
             <button
-                
+                on:click={handleLogout}
                 class="mt-4 w-full flex items-center gap-2 bg-gray-800 text-gray-400 py-2 px-4 rounded-md hover:bg-red-600 hover:text-white transition text-sm font-semibold"
             >
                 <Icon name="logout" />
