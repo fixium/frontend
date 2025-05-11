@@ -5,9 +5,26 @@
 	let password = '';
 	let showPassword = false;
 
-	async function handleLogin() {}
+	async function handleLogin() {
+		const res = await fetch('http://localhost:8080/api/auth/signin', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ username, password }),
+			credentials: 'include'
+		});
 
-	function handleRegister() {}
+		if (res.ok) {
+			window.location.href = '/';
+		} else {
+			console.error('Login inválido', res);
+		}
+	}
+
+	function handleRegister() {
+		goto('/auth/register');
+	}
 </script>
 
 <div class="flex items-center justify-center min-h-screen bg-white">
