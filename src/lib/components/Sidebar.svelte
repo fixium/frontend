@@ -142,11 +142,11 @@
 
         <!-- Navegación -->
         <nav class="flex-1 overflow-y-auto py-4">
-        {#each filteredNavItems as section}
+        {#each navItems as navItem}
             <div class="mb-4">
-                <h3 class="hidden group-hover:block text-sm font-semibold text-gray-400 px-4 uppercase">{section.section}</h3>
+                <h3 class="hidden group-hover:block text-sm font-semibold text-gray-400 px-4 uppercase">{navItem.section}</h3>
                 <ul class="space-y-2 px-2">
-                    {#each section.items as item}
+                    {#each navItem.items as item}
                         <li>
                             <a
                                 href={item.href}
