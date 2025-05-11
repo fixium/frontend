@@ -1,10 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import { afterNavigate } from '$app/navigation';
-    import { logout } from '$lib/api/apiAuth';
     import { goto } from '$app/navigation';
-
-    export let role; // recibe el rol como prop
 
     import Icon from '$lib/components/Icon.svelte';
 
@@ -16,15 +13,6 @@
     }
     
     let color= 'bg-gray-900 text-white';
-
-    async function handleLogout() {
-        const success = await logout();
-        if (success) {
-            goto('/auth/login'); // Redirige al login después de cerrar sesión
-        } else {
-            alert('Error al cerrar sesión. Inténtalo de nuevo.');
-        }
-    }
 
     onMount(() => {
         currentPath = window.location.pathname;
@@ -48,17 +36,17 @@
                 // { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
             // ]
         // },
-        {
-            section: 'Administrar Taller',
-            items: [
-                {
-                    name: 'Administrar Usuarios',
-                    icon: 'users',
-                    href: '/admin/usuarios',
-                    roles: ['ROLE_ADMIN']
-                }
-            ]
-        },
+        // {
+        //     section: 'Administrar Taller',
+        //     items: [
+        //         {
+        //             name: 'Administrar Usuarios',
+        //             icon: 'users',
+        //             href: '/admin/usuarios',
+        //             roles: ['ROLE_ADMIN']
+        //         }
+        //     ]
+        // },
         {
             section: 'Diagnóstico',
             items: [
@@ -68,12 +56,12 @@
                     href: '/technician/herramientas',
                     roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
                 },
-                {
-                    name: 'Asistente inteligente',
-                    icon: 'chat-bubble-bottom-center-text',
-                    href: '/technician/asistente',
-                    roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
-                },
+                // {
+                //     name: 'Asistente inteligente',
+                //     icon: 'chat-bubble-bottom-center-text',
+                //     href: '/technician/asistente',
+                //     roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+                // },
                 // { name: 'Historial de diagnósticos', icon: 'clock', href: '/diagnostico/historial' },
                 // { name: 'Analizar Logs Panic', icon: 'bug-ant', href: '/diagnostico/panic' },
             ]
@@ -192,7 +180,7 @@
                 </div>
             </div>
             <button
-                on:click={handleLogout}
+                
                 class="mt-4 w-full flex items-center gap-2 bg-gray-800 text-gray-400 py-2 px-4 rounded-md hover:bg-red-600 hover:text-white transition text-sm font-semibold"
             >
                 <Icon name="logout" />
