@@ -58,7 +58,7 @@
                 //     roles: ['ROLE_ADMIN']
                 // }
                 {
-                    
+                    roles: ['ROLE_ADMIN'],
                 }
             ]
         },
@@ -115,7 +115,7 @@
         //     ]
         // }
     ];
-    // Filtrar los enlaces según el rol
+
     // Filtrar los enlaces según el rol
     const filteredNavItems = navItems
         .map(section => {
