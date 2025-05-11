@@ -102,15 +102,15 @@
     ];
     // Filtrar los enlaces según el rol
     // Filtrar los enlaces según el rol
-    const filteredNavItems = navItems
-        .map(section => {
-            const filteredItems = section.items.filter(item => !item.roles || item.roles.includes(role));
-            return {
-                ...section,
-                items: filteredItems
-            };
-        })
-        .filter(section => section.items.length > 0); // Oculta secciones sin elementos visibles
+    // const filteredNavItems = navItems
+    //     .map(section => {
+    //         const filteredItems = section.items.filter(item => !item.roles || item.roles.includes(role));
+    //         return {
+    //             ...section,
+    //             items: filteredItems
+    //         };
+    //     })
+    //     .filter(section => section.items.length > 0); // Oculta secciones sin elementos visibles
 </script>
 
 <style>
