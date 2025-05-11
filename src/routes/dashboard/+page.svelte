@@ -1,15 +1,9 @@
 <script>
 	import { goto } from '$app/navigation';
-	import { onMount } from 'svelte';
-
-	onMount(() => {
-		goto('/dashboard');
-	});
-
 </script>
 
 <div>
-	<h1>hola</h1>
+	<h1>Dashboard Fixium</h1>
 </div>
 
 <style>

@@ -1,8 +1,11 @@
 <script>
     import { onMount } from 'svelte';
     import { afterNavigate } from '$app/navigation';
+    import { logout } from '$lib/api/apiAuth';
+    import { goto } from '$app/navigation';
 
-    // cambio a lob/components
+    export let role; // recibe el rol como prop
+
     import Icon from '$lib/components/Icon.svelte';
 
     let isOpen = true;
@@ -11,10 +14,20 @@
     function toggleSidebar() {
         isOpen = !isOpen;
     }
+    
     let color= 'bg-gray-900 text-white';
 
+    async function handleLogout() {
+        const success = await logout();
+        if (success) {
+            goto('/auth/login'); // Redirige al login después de cerrar sesión
+        } else {
+            alert('Error al cerrar sesión. Inténtalo de nuevo.');
+        }
+    }
+
     onMount(() => {
-        currentPath = window.location.pathname; // Inicializa con la ruta actual
+        currentPath = window.location.pathname;
     });
 
     // Actualiza currentPath después de cada navegación
@@ -23,40 +36,48 @@
     });
 
     const navItems = [
-        // {
-        //     section: 'Inicio',
-        //     items: [{ name: 'Dashboard', icon: 'chart-bar', href: '/' }]
-        // },
         {
-            section: 'Reparaciones',
-            items: [
-                {
-                    name: 'Herramientas locales',
-                    icon: 'device-phone-mobile',
-                    href: '/herramientas-locales'
-                },
+            section: 'Inicio',
+            items: [{ name: 'Dashboard', icon: 'chart-bar', href: '/dashboard', roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN', 'ROLE_RECEPTIONIST'] }]
+        },
+        // {
+        //     section: 'Reparaciones',
+        //     items: [
                 // { name: 'Recepción', icon: 'inbox', href: '/reparaciones/recepcion' },
                 // { name: 'Lista de dispositivos', icon: 'list-bullet', href: '/reparaciones/lista' },
                 // { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
+            // ]
+        // },
+        {
+            section: 'Administrar Taller',
+            items: [
+                {
+                    name: 'Administrar Usuarios',
+                    icon: 'users',
+                    href: '/admin/usuarios',
+                    roles: ['ROLE_ADMIN']
+                }
             ]
         },
-        // {
-        //     section: 'Diagnóstico',
-        //     items: [
-        //         { name: 'Historial de diagnósticos', icon: 'clock', href: '/diagnostico/historial' },
-        //         { name: 'Logs Panic', icon: 'bug-ant', href: '/diagnostico/panic' },
-        //         {
-        //             name: 'Asistente técnico',
-        //             icon: 'chat-bubble-bottom-center-text',
-        //             href: '/diagnostico/asistente'
-        //         },
-        //         {
-        //             name: 'Análisis de componentes',
-        //             icon: 'wrench-screwdriver',
-        //             href: '/diagnostico/componentes'
-        //         }
-        //     ]
-        // },
+        {
+            section: 'Diagnóstico',
+            items: [
+                {
+                    name: 'Herramientas',
+                    icon: 'device-phone-mobile',
+                    href: '/technician/herramientas',
+                    roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+                },
+                {
+                    name: 'Asistente inteligente',
+                    icon: 'chat-bubble-bottom-center-text',
+                    href: '/technician/asistente',
+                    roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+                },
+                // { name: 'Historial de diagnósticos', icon: 'clock', href: '/diagnostico/historial' },
+                // { name: 'Analizar Logs Panic', icon: 'bug-ant', href: '/diagnostico/panic' },
+            ]
+        },
         // {
         //     section: 'Colaboración',
         //     items: [
@@ -84,14 +105,6 @@
         //     ]
         // },
         // {
-        //     section: 'Herramientas Dev',
-        //     items: [
-        //         { name: 'Explorador de archivos', icon: 'folder-open', href: '/dev/explorador' },
-        //         { name: 'Simulación GPS', icon: 'map-pin', href: '/dev/gps' },
-        //         { name: 'Opciones avanzadas', icon: 'beaker', href: '/dev/avanzado' }
-        //     ]
-        // },
-        // {
         //     section: 'Configuración',
         //     items: [
         //         { name: 'Preferencias', icon: 'cog-6-tooth', href: '/configuracion' }, // Ícono ya definido
@@ -99,6 +112,17 @@
         //     ]
         // }
     ];
+    // Filtrar los enlaces según el rol
+    // Filtrar los enlaces según el rol
+    const filteredNavItems = navItems
+        .map(section => {
+            const filteredItems = section.items.filter(item => !item.roles || item.roles.includes(role));
+            return {
+                ...section,
+                items: filteredItems
+            };
+        })
+        .filter(section => section.items.length > 0); // Oculta secciones sin elementos visibles
 </script>
 
 <style>
@@ -122,7 +146,7 @@
     >
         <!-- Header de la sidebar -->
         <div class="flex items-center justify-start h-16 px-4 border-b border-gray-800">
-            <a href="/home" class="flex items-center gap-2">
+            <a href="/" class="flex items-center gap-2">
                 <img src="/Fix.png" alt="Logo" class="h-12 w-auto" />
                 <span class="hidden group-hover:block text-xl font-semibold">Fixium</span>
             </a>
@@ -130,31 +154,31 @@
 
         <!-- Navegación -->
         <nav class="flex-1 overflow-y-auto py-4">
-            {#each navItems as section}
-                <div class="mb-4">
-                    <h3 class="hidden group-hover:block text-sm font-semibold text-gray-400 px-4 uppercase">{section.section}</h3>
-                    <ul class="space-y-2 px-2">
-                        {#each section.items as item}
-                            <li>
-                                <a
-                                    href={item.href}
-                                    data-sveltekit-navigate
-                                    class="flex items-center p-2 rounded-md hover:bg-gray-800 transition-colors
-                                    {currentPath === item.href
-                                        ? 'bg-gray-800 text-white'
-                                        : 'text-gray-400'}"
-                                >
-                                    <span class="inline-flex">
-                                        <Icon name={item.icon} />
-                                    </span>
-                                    <span class="hidden group-hover:block ml-3">{item.name}</span>
-                                </a>
-                            </li>
-                        {/each}
-                    </ul>
-                </div>
-            {/each}
-        </nav>
+        {#each filteredNavItems as section}
+            <div class="mb-4">
+                <h3 class="hidden group-hover:block text-sm font-semibold text-gray-400 px-4 uppercase">{section.section}</h3>
+                <ul class="space-y-2 px-2">
+                    {#each section.items as item}
+                        <li>
+                            <a
+                                href={item.href}
+                                data-sveltekit-navigate
+                                class="flex items-center p-2 rounded-md hover:bg-gray-800 transition-colors
+                                {currentPath === item.href
+                                    ? 'bg-gray-800 text-white'
+                                    : 'text-gray-400'}"
+                            >
+                                <span class="inline-flex">
+                                    <Icon name={item.icon} />
+                                </span>
+                                <span class="hidden group-hover:block ml-3">{item.name}</span>
+                            </a>
+                        </li>
+                    {/each}
+                </ul>
+            </div>
+        {/each}
+    </nav>
 
         <!-- Footer de la sidebar -->
         <div class="p-4 border-t border-gray-800">
@@ -167,6 +191,13 @@
                     <p class="text-xs text-gray-400">User@fixium.com</p>
                 </div>
             </div>
+            <button
+                on:click={handleLogout}
+                class="mt-4 w-full flex items-center gap-2 bg-gray-800 text-gray-400 py-2 px-4 rounded-md hover:bg-red-600 hover:text-white transition text-sm font-semibold"
+            >
+                <Icon name="logout" />
+                <span class="hidden group-hover:block">Cerrar sesión</span>
+            </button>
         </div>
     </aside>
 </div>
