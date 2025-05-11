@@ -1,24 +1,18 @@
 <script>
 	import { goto } from "$app/navigation";
+	import { login } from "$lib/api/apiAuth";
 
 	let username = '';
 	let password = '';
 	let showPassword = false;
 
 	async function handleLogin() {
-		const res = await fetch('http://localhost:8080/api/auth/signin', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ username, password }),
-			credentials: 'include'
-		});
+		const data = await login(username, password);
 
-		if (res.ok) {
+		if (data) {
 			window.location.href = '/';
 		} else {
-			console.error('Login inválido', res);
+			console.error('Login inválido');
 		}
 	}
 
@@ -27,7 +21,7 @@
 	}
 </script>
 
-<div class="flex items-center justify-center min-h-screen bg-white">
+<div class="flex items-center justify-center min-h-screen">
 	<div class="w-full max-w-sm flex flex-col items-center">
 		<img src="/Fix.png" alt="Logo" class="h-28 mb-10 drop-shadow-xl" />
 

@@ -1,17 +1,10 @@
 <script>
     import '../app.css';
     import Sidebar from '$lib/components/Sidebar.svelte';
-
-    let isDarkMode = false;
-    function toggleDarkMode() {
-		isDarkMode = !isDarkMode;
-		const html = document.documentElement;
-		if (isDarkMode) {
-			html.classList.add('dark');
-		} else {
-			html.classList.remove('dark');
-		}
-	}
+    
+    export let data;
+    
+    let role = data.role;
 </script>
 
 <style>
@@ -29,33 +22,28 @@
         width: 13rem; /* Ancho expandido al pasar el mouse */
     }
 
+    .content.with-sidebar {
+        padding-left: 6rem; /* Ajusta el contenido cuando la sidebar está visible */
+    }
+
+    .content.full-width {
+        padding-left: 0; /* Elimina el espacio cuando la sidebar no está visible */
+    }
+
     .content {
-        padding-left: 6rem;
+        transition: padding-left 0.3s ease-in-out; /* Transición suave */
     }
 </style>
 
 <div class="flex">
-    <!-- Sidebar -->
-    <div class="sidebar bg-gray-900 text-white">
-        <Sidebar />
-    </div>
+    {#if data.isAuthenticated}
+        <div class="sidebar bg-gray-900 text-white">
+            <Sidebar {role}/>
+        </div>
+    {/if}
 
     <!-- Contenido principal -->
-    <div class="content flex-1 h-screen bg-gray-50 p-6 overflow-auto">
+    <div class="content {data.isAuthenticated ? 'with-sidebar' : 'full-width'} flex-1 h-screen bg-gray-50 p-6 overflow-auto">
         <slot />
-    </div>
-    <!-- Botón para alternar modo oscuro -->
-    <div class="fixed bottom-4 right-4 z-50">
-        <button
-            on:click={toggleDarkMode}
-            class="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-300 transition"
-            aria-label="Alternar modo oscuro"
-        >
-            {#if isDarkMode}
-                🌙
-            {:else}
-                ☀️
-            {/if}
-        </button>
     </div>
 </div>

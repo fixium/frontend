@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 
 	onMount(() => {
-		goto('/auth/login');
+		goto('/dashboard');
 	});
 
 </script>
