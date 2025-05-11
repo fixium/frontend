@@ -51,11 +51,14 @@
         {
             section: 'Administrar Taller',
             items: [
+                // {
+                //     name: 'Administrar Usuarios',
+                //     icon: 'users',
+                //     href: '/admin/usuarios',
+                //     roles: ['ROLE_ADMIN']
+                // }
                 {
-                    name: 'Administrar Usuarios',
-                    icon: 'users',
-                    href: '/admin/usuarios',
-                    roles: ['ROLE_ADMIN']
+                    
                 }
             ]
         },
