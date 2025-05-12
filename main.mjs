@@ -75,7 +75,7 @@ app.on('ready', async () => {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false,
-            disableHardwareAcceleration: true,
+            // disableHardwareAcceleration: true,
             offscreen: false
         }
     });
@@ -86,7 +86,7 @@ app.on('ready', async () => {
     startVite();
 
     try {
-        await waitOn({ resources: ['http://localhost:5173'], timeout: 60000 });
+        await waitOn({ resources: ['http://localhost:5173'], timeout: 100000 });
         console.log('Vite está listo.');
         mainWindow.loadURL('http://localhost:5173');
     } catch (err) {
@@ -97,7 +97,7 @@ app.on('ready', async () => {
 
 
 // Deshabilita la aceleración de hardware para evitar problemas en algunos sistemas
-app.disableHardwareAcceleration();
+// app.disableHardwareAcceleration();
 
 // Cierra completamente la aplicación al salir
 app.on('window-all-closed', () => {

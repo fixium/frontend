@@ -122,7 +122,7 @@
     >
         <!-- Header de la sidebar -->
         <div class="flex items-center justify-start h-16 px-4 border-b border-gray-800">
-            <a href="/home" class="flex items-center gap-2">
+            <a href="/" class="flex items-center gap-2">
                 <img src="/Fix.png" alt="Logo" class="h-12 w-auto" />
                 <span class="hidden group-hover:block text-xl font-semibold">Fixium</span>
             </a>
