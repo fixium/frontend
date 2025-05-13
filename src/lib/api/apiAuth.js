@@ -51,16 +51,24 @@ export async function register(userRegistrationData) {
             body: JSON.stringify({ workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password }),
         });
 
-        const data = await response.json();
+        let data;
+        const contentType = response.headers.get('Content-Type');
+
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json(); // Analizar como JSON si el contenido es JSON
+        } else {
+            data = await response.text(); // Leer como texto si no es JSON
+        }
 
         if (!response.ok) {
-            // Devolver los errores del backend
-            return { success: false, errors: data };
+            // Devolver el mensaje de error del backend
+            return { success: false, errors: typeof data === 'string' ? { general: data } : data };
         }
 
         return { success: true, data };
     } catch (error) {
         console.error(error);
-        return { success: false, errors: { general: 'Error inesperado del lado del cliente.' } };
+        // Devolver la excepción capturada
+        return { success: false, errors: { general: error.message } };
     }
 }

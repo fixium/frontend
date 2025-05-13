@@ -37,91 +37,81 @@
                 window.location.href = '/auth/login';
             }, 2000);
         } else {
-            // Combinar errores en un solo string
             const errores = Object.values(response.errors).join(' ');
             errorMessage = errores || 'Error al registrar el taller. Por favor, intenta de nuevo.';
         }
     }
-
 
     function cancelar() {
         window.history.back();
     }
 </script>
 
-<div class="min-h-screen flex items-center justify-center">
-    <div class="w-full max-w-xl p-4">
-        <h1 class="text-2xl font-bold text-center mb-6">Registro de taller</h1>
+<div class="h-screen flex items-center justify-center p-4 overflow-auto">
+    <div class="w-full max-w-md flex flex-col items-center">
+        <h1 class="text-3xl font-bold mb-4 text-center">Registro de taller</h1>
 
-        <!-- Mensajes de éxito y error -->
         {#if successMessage}
-            <div class="bg-green-100 text-green-800 p-3 rounded mb-4">
+            <div class="bg-green-100 text-green-800 p-3 rounded mb-4 w-full text-center">
                 {successMessage}
             </div>
         {/if}
 
         {#if errorMessage}
-            <div class="bg-red-100 text-red-800 p-3 rounded mb-4">
+            <div class="bg-red-100 text-red-800 p-3 rounded mb-4 w-full text-center">
                 {errorMessage}
             </div>
         {/if}
 
-        <div class="flex flex-col gap-3 text-sm">
-            <!-- Nombre del taller -->
-            <label class="bg-gray-400 rounded-full px-4 py-2 flex flex-col sm:flex-row sm:items-center">
-                <span class="text-black sm:w-1/2">Nombre del taller:</span>
-                <input type="text" bind:value={workshopName} class="flex-1 bg-transparent outline-none border-b border-gray-600" />
-            </label>
+        <div class="flex flex-col gap-3 w-full">
+            <!-- Todos tus campos con floating label -->
+            <div class="relative mb-3">
+                <input id="workshopName" type="text" bind:value={workshopName} placeholder="" class="input-style peer" />
+                <label for="workshopName" class="floating-label">Nombre del taller</label>
+            </div>
 
-            <!-- Teléfono del taller -->
-            <label class="bg-gray-400 rounded-full px-4 py-2 flex flex-col sm:flex-row sm:items-center">
-                <span class="text-black sm:w-1/2">Número de teléfono del taller:</span>
-                <input type="tel" bind:value={workshopPhoneNumber} class="flex-1 bg-transparent outline-none border-b border-gray-600" />
-            </label>
+            <div class="relative mb-3">
+                <input id="workshopPhoneNumber" type="tel" bind:value={workshopPhoneNumber} placeholder="" class="input-style peer" />
+                <label for="workshopPhoneNumber" class="floating-label">Número de teléfono del taller</label>
+            </div>
 
-            <!-- Correo del taller -->
-            <label class="bg-gray-400 rounded-full px-4 py-2 flex flex-col sm:flex-row sm:items-center">
-                <span class="text-black sm:w-1/2">Correo de contacto del taller:</span>
-                <input type="email" bind:value={workshopContactEmail} class="flex-1 bg-transparent outline-none border-b border-gray-600" />
-            </label>
+            <div class="relative mb-3">
+                <input id="workshopContactEmail" type="email" bind:value={workshopContactEmail} placeholder="" class="input-style peer" />
+                <label for="workshopContactEmail" class="floating-label">Correo de contacto del taller</label>
+            </div>
 
-            <!-- Nombre del administrador -->
-            <label class="bg-gray-400 rounded-full px-4 py-2 flex flex-col sm:flex-row sm:items-center">
-                <span class="text-black sm:w-1/2">Nombre del administrador:</span>
-                <input type="text" bind:value={name} class="flex-1 bg-transparent outline-none border-b border-gray-600" />
-            </label>
+            <div class="relative mb-3">
+                <input id="name" type="text" bind:value={name} placeholder="" class="input-style peer" />
+                <label for="name" class="floating-label">Nombre del administrador</label>
+            </div>
 
-            <!-- Teléfono del administrador -->
-            <label class="bg-gray-400 rounded-full px-4 py-2 flex flex-col sm:flex-row sm:items-center">
-                <span class="text-black sm:w-1/2">Teléfono del administrador:</span>
-                <input type="tel" bind:value={phoneNumber} class="flex-1 bg-transparent outline-none border-b border-gray-600" />
-            </label>
+            <div class="relative mb-3">
+                <input id="phoneNumber" type="tel" bind:value={phoneNumber} placeholder="" class="input-style peer" />
+                <label for="phoneNumber" class="floating-label">Teléfono del administrador</label>
+            </div>
 
-            <!-- Correo del administrador -->
-            <label class="bg-gray-400 rounded-full px-4 py-2 flex flex-col sm:flex-row sm:items-center">
-                <span class="text-black sm:w-1/2">Correo del administrador:</span>
-                <input type="email" bind:value={username} class="flex-1 bg-transparent outline-none border-b border-gray-600" />
-            </label>
+            <div class="relative mb-3">
+                <input id="username" type="email" bind:value={username} placeholder="" class="input-style peer" />
+                <label for="username" class="floating-label">Correo del administrador</label>
+            </div>
 
-            <!-- Contraseña del administrador -->
-            <label class="bg-gray-400 rounded-full px-4 py-2 flex flex-col sm:flex-row sm:items-center">
-                <span class="text-black sm:w-1/2">Contraseña del administrador:</span>
-                <input type="password" bind:value={password} class="flex-1 bg-transparent outline-none border-b border-gray-600" />
-            </label>
+            <div class="relative mb-3">
+                <input id="password" type="password" bind:value={password} placeholder="" class="input-style peer" />
+                <label for="password" class="floating-label">Contraseña del administrador</label>
+            </div>
         </div>
 
-        <!-- Botones -->
-        <div class="flex flex-col items-center gap-3 mt-6">
+        <div class="flex flex-col items-center gap-3 mt-4 w-full">
             <button
                 on:click={confirmarRegistro}
-                class="bg-green-600 hover:bg-green-700 text-white font-medium text-sm py-2 px-6 rounded-full w-52 transition"
+                class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-full w-full max-w-xs"
             >
                 Confirmar registro
             </button>
 
             <button
                 on:click={cancelar}
-                class="bg-red-500 hover:bg-red-600 text-white font-medium text-sm py-2 px-6 rounded-full w-52 transition"
+                class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-full w-full max-w-xs"
             >
                 Cancelar
             </button>
@@ -130,15 +120,55 @@
 </div>
 
 <style>
+    .relative {
+        position: relative;
+    }
+
+    .input-style {
+        border: 2px solid black;
+        border-radius: 2rem;
+        padding: 0.75rem 1rem;
+        outline: none;
+        background-color: white;
+        width: 100%;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .floating-label {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #666;
+        font-size: 1rem;
+        pointer-events: none;
+        transition: 0.2s ease all;
+        background: white;
+        padding: 0 0.25rem;
+    }
+
+    /* Cuando el input está enfocado o tiene valor */
+    .input-style:focus + .floating-label,
+    .input-style:not(:placeholder-shown) + .floating-label {
+        top: -0.75rem;
+        left: 0.75rem;
+        font-size: 0.75rem;
+        color: #000;
+    }
+
     .bg-green-100 {
         background-color: #d4edda;
     }
+
     .text-green-800 {
         color: #155724;
     }
+
     .bg-red-100 {
         background-color: #f8d7da;
     }
+
     .text-red-800 {
         color: #721c24;
     }
