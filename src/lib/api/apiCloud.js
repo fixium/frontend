@@ -1,5 +1,4 @@
 export async function addUser({ name, phoneNumber, username, password, role }) {
-
     const response = await fetch('http://localhost:8080/api/users', {
         method: 'POST',
         headers: {
@@ -15,10 +14,9 @@ export async function addUser({ name, phoneNumber, username, password, role }) {
         credentials: 'include'
     });
 
-    console.log('Response:', response);
-
     if (!response.ok) {
-        throw new Error('Error adding user');
+        const errorText = await response.text(); // Extraer el mensaje de error del backend
+        throw new Error(errorText || 'Error adding user');
     }
 
     return await response.text();
