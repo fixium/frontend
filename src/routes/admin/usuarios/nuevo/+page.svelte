@@ -32,6 +32,16 @@
     function handleCancel() {
         goto('/admin/usuarios');
     }
+
+    function validateName(event) {
+        event.target.value = event.target.value.replace(/[0-9]/g, '');
+        name = event.target.value;
+    }
+
+    function validatePhoneNumber(event) {
+        event.target.value = event.target.value.replace(/[^0-9]/g, '');
+        phoneNumber = event.target.value;
+    }
 </script>
 
 <div class="h-screen flex items-center justify-center bg-white p-4 overflow-auto">
@@ -60,6 +70,7 @@
                     bind:value={name}
                     placeholder=""
                     class="input-style peer"
+                    on:input={validateName}
                 />
                 <label for="name" class="floating-label">Nombre completo</label>
             </div>
@@ -70,6 +81,7 @@
                     id="phoneNumber"
                     type="text"
                     bind:value={phoneNumber}
+                    on:input={validatePhoneNumber}
                     placeholder=""
                     class="input-style peer"
                 />
