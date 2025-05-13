@@ -36,7 +36,7 @@
 </div>
 
 <div class="overflow-x-auto">
-    <table class="table-auto w-full border-collapse border border-gray-300">
+    <table class="table-auto w-full border-collapse border border-gray-500">
         <thead>
             <tr class="bg-blue-400">
                 <th class="border border-gray-300 px-4 py-2">ID</th>
