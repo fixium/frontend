@@ -6,17 +6,28 @@
     let phoneNumber = '';
     let username = '';
     let password = '';
+    let confirmPassword = '';
     let role = '';
 
     let successMessage = '';
     let errorMessage = '';
 
+    let isLoading = false;
+
     async function handleRegister() {
         successMessage = '';
         errorMessage = '';
+        isLoading = true;
 
-        if (!name || !phoneNumber || !username || !password || !role) {
+        if (!name || !phoneNumber || !username || !password || !confirmPassword || !role) {
             errorMessage = 'Por favor, completa todos los campos.';
+            isLoading = false;
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            errorMessage = 'Las contraseñas no coinciden.';
+            isLoading = false;
             return;
         }
 
@@ -26,6 +37,8 @@
             setTimeout(() => goto('/admin/usuarios'), 500);
         } catch (error) {
             errorMessage = error.message || 'Error al registrar el usuario.';
+        } finally {
+            isLoading = false;
         }
     }
 
@@ -112,6 +125,18 @@
                 <label for="password" class="floating-label">Contraseña</label>
             </div>
 
+            <!-- Confirmar contraseña -->
+            <div class="relative mb-3">
+                <input
+                    id="confirmPassword"
+                    type="password"
+                    bind:value={confirmPassword}
+                    placeholder=""
+                    class="input-style peer"
+                />
+                <label for="confirmPassword" class="floating-label">Confirmar contraseña</label>
+            </div>
+
             <!-- Rol de usuario -->
             <div class="relative mb-3">
                 <select
@@ -133,7 +158,11 @@
                 on:click={handleRegister}
                 class="w-[48%] bg-green-600 text-white font-semibold py-2 rounded-full hover:bg-green-700"
             >
-                Confirmar
+                {#if isLoading}
+                    Cargando...
+                {:else}
+                    Confirmar
+                {/if}
             </button>
             <button
                 on:click={handleCancel}

@@ -47,7 +47,7 @@
                     placeholder=""
                     class="input-style peer"
                 />
-                <label for="password" class="floating-label">Password</label>
+                <label for="password" class="floating-label">Contraseña</label>
             </div>
 
             <p class="text-sm text-gray-500 mt-1">Forgot Password?</p>
