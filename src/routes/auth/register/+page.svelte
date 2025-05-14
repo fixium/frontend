@@ -1,5 +1,6 @@
 <script>
     import { register } from "$lib/api/apiAuth";
+    import { validateName, validatePhoneNumber } from "$lib/utils/validation";
 
     let workshopName = '';
     let workshopPhoneNumber = '';
@@ -64,14 +65,29 @@
         {/if}
 
         <div class="flex flex-col gap-3 w-full">
-            <!-- Todos tus campos con floating label -->
+            <!-- Validación en tiempo real para el nombre del taller -->
             <div class="relative mb-3">
-                <input id="workshopName" type="text" bind:value={workshopName} placeholder="" class="input-style peer" />
+                <input
+                    id="workshopName"
+                    type="text"
+                    bind:value={workshopName}
+                    on:input={() => workshopName = validateName(workshopName)}
+                    placeholder=""
+                    class="input-style peer"
+                />
                 <label for="workshopName" class="floating-label">Nombre del taller</label>
             </div>
 
+            <!-- Validación en tiempo real para el número de teléfono del taller -->
             <div class="relative mb-3">
-                <input id="workshopPhoneNumber" type="tel" bind:value={workshopPhoneNumber} placeholder="" class="input-style peer" />
+                <input
+                    id="workshopPhoneNumber"
+                    type="tel"
+                    bind:value={workshopPhoneNumber}
+                    on:input={() => workshopPhoneNumber = validatePhoneNumber(workshopPhoneNumber)}
+                    placeholder=""
+                    class="input-style peer"
+                />
                 <label for="workshopPhoneNumber" class="floating-label">Número de teléfono del taller</label>
             </div>
 
@@ -80,13 +96,29 @@
                 <label for="workshopContactEmail" class="floating-label">Correo de contacto del taller</label>
             </div>
 
+            <!-- Validación en tiempo real para el nombre del administrador -->
             <div class="relative mb-3">
-                <input id="name" type="text" bind:value={name} placeholder="" class="input-style peer" />
+                <input
+                    id="name"
+                    type="text"
+                    bind:value={name}
+                    on:input={() => name = validateName(name)}
+                    placeholder=""
+                    class="input-style peer"
+                />
                 <label for="name" class="floating-label">Nombre del administrador</label>
             </div>
 
+            <!-- Validación en tiempo real para el teléfono del administrador -->
             <div class="relative mb-3">
-                <input id="phoneNumber" type="tel" bind:value={phoneNumber} placeholder="" class="input-style peer" />
+                <input
+                    id="phoneNumber"
+                    type="tel"
+                    bind:value={phoneNumber}
+                    on:input={() => phoneNumber = validatePhoneNumber(phoneNumber)}
+                    placeholder=""
+                    class="input-style peer"
+                />
                 <label for="phoneNumber" class="floating-label">Teléfono del administrador</label>
             </div>
 

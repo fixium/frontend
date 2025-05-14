@@ -50,7 +50,7 @@
     }
 </script>
 
-<div class="h-screen flex items-center justify-center bg-white p-4 overflow-auto">
+<div class="h-screen flex items-center justify-center p-4 overflow-auto">
     <div class="w-full max-w-md flex flex-col items-center">
         <h1 class="text-3xl font-bold mb-4 text-center">Editar usuario</h1>
 
