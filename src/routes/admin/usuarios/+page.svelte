@@ -77,39 +77,41 @@
 
 {#if showModal}
 <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full">
-        <h2 class="text-xl font-bold mb-4">Confirmar eliminación</h2>
-        <p>¿Estás seguro de que deseas eliminar al usuario <strong>{userToDelete.name}</strong>?</p>
-        
-        <div class="mt-4">
-            <label for="emailConfirmation" class="block text-sm font-medium text-gray-700 mb-2">
-                Escribe el correo del usuario para confirmar:
-            </label>
+    <div class="bg-white rounded-3xl shadow-lg p-8 w-[400px]">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold text-center w-full">Eliminación de usuario</h2>
+            <button on:click={() => (showModal = false)} class="text-2xl font-bold text-black absolute top-4 right-6">✕</button>
+        </div>
+
+        <div class="mt-6">
+            <p class="text-center text-gray-800 mb-4">
+                ¿Estás seguro de que deseas eliminar al usuario <strong>{userToDelete.name}</strong>?
+            </p>
             <input 
                 id="emailConfirmation" 
                 type="text" 
                 bind:value={emailConfirmation} 
-                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Correo del usuario"
+                class="w-full border-4 border-black text-center text-lg rounded-full px-4 py-3 focus:outline-none"
+                placeholder="Correo electrónico:"
             />
         </div>
 
-        <div class="mt-4 flex justify-end space-x-2">
-            <button 
-                on:click={() => (showModal = false)} 
-                class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400 transition"
-            >
-                Cancelar
-            </button>
+        <div class="mt-6 flex flex-col space-y-4">
             <button 
                 on:click={deleteUser} 
-                class="px-4 py-2 rounded transition 
+                class="w-full rounded-full py-3 text-white text-lg font-semibold transition
                     {emailConfirmation !== userToDelete.username 
-                        ? 'bg-gray-400 text-gray-700 cursor-not-allowed' 
-                        : 'bg-red-500 text-white hover:bg-red-600'}"
+                        ? 'bg-gray-400 cursor-not-allowed' 
+                        : 'bg-green-500 hover:bg-green-600'}"
                 disabled={emailConfirmation !== userToDelete.username}
             >
-                Eliminar
+                Confirmar
+            </button>
+            <button 
+                on:click={() => (showModal = false)} 
+                class="w-full bg-red-500 hover:bg-red-600 text-white text-lg font-semibold py-3 rounded-full transition"
+            >
+                Cancelar
             </button>
         </div>
     </div>
