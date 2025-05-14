@@ -48,6 +48,23 @@
                     class="input-style peer"
                 />
                 <label for="password" class="floating-label">Contraseña</label>
+                <!-- Botón para mostrar/ocultar contraseña -->
+                <button
+                    type="button"
+                    on:click={() => (showPassword = !showPassword)}
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+                    aria-label="Mostrar u ocultar contraseña"
+                >
+                    {#if showPassword}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10S6.477 0 12 0c1.03 0 2.02.15 2.96.425M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    {:else}
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.98 8.223A10.05 10.05 0 0112 5c5.523 0 10 4.477 10 10a10.05 10.05 0 01-1.98 5.777M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    {/if}
+                </button>
             </div>
 
             <p class="text-sm text-gray-500 mt-1">Forgot Password?</p>

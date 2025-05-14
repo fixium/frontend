@@ -41,9 +41,9 @@
             <tr class="bg-blue-400">
                 <th class="border border-gray-300 px-4 py-2">ID</th>
                 <th class="border border-gray-300 px-4 py-2">Nombre</th>
+                <th class="border border-gray-300 px-4 py-2">Correo</th>
                 <th class="border border-gray-300 px-4 py-2">Teléfono</th>
                 <th class="border border-gray-300 px-4 py-2">Rol</th>
-                <th class="border border-gray-300 px-4 py-2">Correo</th>
                 <th class="border border-gray-300 px-4 py-2">Fecha de Creación</th>
                 <th class="border border-gray-300 px-4 py-2">Acciones</th>
             </tr>

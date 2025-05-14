@@ -9,6 +9,7 @@
     let phoneNumber = '';
     let username = '';
     let password = '';
+    let showPassword = false;
 
     let successMessage = '';
     let errorMessage = '';
