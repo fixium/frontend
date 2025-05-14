@@ -53,9 +53,9 @@
                 <tr class="hover:bg-gray-50">
                     <td class="border border-gray-300 px-4 py-2">{user.id}</td>
                     <td class="border border-gray-300 px-4 py-2">{user.name}</td>
+                    <td class="border border-gray-300 px-4 py-2">{user.username}</td>
                     <td class="border border-gray-300 px-4 py-2">{user.phoneNumber}</td>
                     <td class="border border-gray-300 px-4 py-2">{user.role}</td>
-                    <td class="border border-gray-300 px-4 py-2">{user.username}</td>
                     <td class="border border-gray-300 px-4 py-2">{new Date(user.createdAt).toLocaleDateString()}</td>
                     <td class="border border-gray-300 px-2 py-2 flex justify-center space-x-2">
                         <a 
