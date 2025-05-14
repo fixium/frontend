@@ -44,6 +44,7 @@
                 <th class="border border-gray-300 px-4 py-2">Teléfono</th>
                 <th class="border border-gray-300 px-4 py-2">Rol</th>
                 <th class="border border-gray-300 px-4 py-2">Correo</th>
+                <th class="border border-gray-300 px-4 py-2">Fecha de Creación</th>
                 <th class="border border-gray-300 px-4 py-2">Acciones</th>
             </tr>
         </thead>
@@ -55,6 +56,7 @@
                     <td class="border border-gray-300 px-4 py-2">{user.phoneNumber}</td>
                     <td class="border border-gray-300 px-4 py-2">{user.role}</td>
                     <td class="border border-gray-300 px-4 py-2">{user.username}</td>
+                    <td class="border border-gray-300 px-4 py-2">{new Date(user.createdAt).toLocaleDateString()}</td>
                     <td class="border border-gray-300 px-2 py-2 flex justify-center space-x-2">
                         <a 
                             href={`usuarios/editar/${user.id}`} 
