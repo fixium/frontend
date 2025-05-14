@@ -1,7 +1,7 @@
 <script>
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
-    import { updateUser } from "$lib/api/apiCloud";
+    import { updateUser } from "$lib/api/apiUsers.js";
     import { validateName, validatePhoneNumber } from "$lib/utils/validation";
 
     export let data;

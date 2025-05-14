@@ -68,12 +68,12 @@
                     href: '/technician/herramientas',
                     roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
                 },
-                // {
-                //     name: 'Asistente inteligente',
-                //     icon: 'chat-bubble-bottom-center-text',
-                //     href: '/technician/asistente',
-                //     roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
-                // },
+                {
+                    name: 'Asistente inteligente',
+                    icon: 'chat-bubble-bottom-center-text',
+                    href: '/technician/asistente',
+                    roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+                },
                 // { name: 'Historial de diagnósticos', icon: 'clock', href: '/diagnostico/historial' },
                 // { name: 'Analizar Logs Panic', icon: 'bug-ant', href: '/diagnostico/panic' },
             ]

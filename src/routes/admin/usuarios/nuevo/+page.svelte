@@ -1,5 +1,5 @@
 <script>
-    import { addUser } from "$lib/api/apiCloud";
+    import { addUser } from "$lib/api/apiUsers";
     import { goto } from "$app/navigation";
 
     let name = '';
@@ -148,11 +148,11 @@
                 <input
                     id="password"
                     type={showPassword ? 'text' : 'password'}
-                    bind:value={password}
+                    bind:value={confirmPassword}
                     placeholder=""
                     class="input-style peer"
                 />
-                <label for="password" class="floating-label">Contraseña del administrador</label>
+                <label for="password" class="floating-label">Confirmar contraseña</label>
                 <!-- Botón para mostrar/ocultar contraseña -->
                 <button
                     type="button"
@@ -194,7 +194,10 @@
                 class="w-[48%] bg-green-600 text-white font-semibold py-2 rounded-full hover:bg-green-700"
             >
                 {#if isLoading}
-                    Cargando...
+                    <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg>
                 {:else}
                     Confirmar
                 {/if}

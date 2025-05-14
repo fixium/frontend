@@ -1,10 +1,11 @@
 <script>
-    import { deleteUser as apiDeleteUser } from '$lib/api/apiCloud';
+    import { deleteUser as apiDeleteUser } from '$lib/api/apiUsers.js';
 
     export let data;
     let users = data.users;
     
     let showModal = false;
+    let isDeleting = false;
     let userToDelete = null;
     let emailConfirmation = '';
 
@@ -15,6 +16,7 @@
     }
 
     async function deleteUser() {
+        isDeleting = true;
         try {
             await apiDeleteUser(userToDelete.id);
             users = users.filter(user => user.id !== userToDelete.id);
@@ -23,6 +25,8 @@
         } catch (error) {
             console.error('Error al eliminar el usuario:', error);
             alert('Error al eliminar el usuario.');
+        } finally {
+            isDeleting = false;
         }
     }
 </script>
@@ -102,12 +106,19 @@
             <button 
                 on:click={deleteUser} 
                 class="w-full rounded-full py-3 text-white text-lg font-semibold transition
-                    {emailConfirmation !== userToDelete.username 
+                    {emailConfirmation !== userToDelete.username || isDeleting
                         ? 'bg-gray-400 cursor-not-allowed' 
                         : 'bg-green-500 hover:bg-green-600'}"
-                disabled={emailConfirmation !== userToDelete.username}
+                disabled={emailConfirmation !== userToDelete.username || isDeleting}
             >
-                Confirmar
+                {#if isDeleting}
+                    <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg>
+                {:else}
+                    Confirmar
+                {/if}
             </button>
             <button 
                 on:click={() => (showModal = false)} 
