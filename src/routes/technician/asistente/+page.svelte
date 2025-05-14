@@ -81,7 +81,7 @@
             <p class="font-semibold">{msg.content}</p>
           {/if}
         </div>
-        <button
+        <!-- <button
             class="mt-2 text-blue-500 hover:underline self-end flex items-center gap-1 p-2"
             on:click={() => copyToClipboard(msg.content, index)}
             >
@@ -94,7 +94,7 @@
                 <path d="M19 21H9c-1.1 0-2-.9-2-2V7H5V5h4V3h6v2h4v2h-2v12c0 1.1-.9 2-2 2zm-6-2h6V7H9v12zm-2-8H7v2h2v-2zm0 4H7v2h2v-2z"/>
                 </svg>
             {/if}
-            </button>
+            </button> -->
       </div>
     {/each}
 
