@@ -57,7 +57,7 @@
                     <td class="border border-gray-300 px-4 py-2">{user.username}</td>
                     <td class="border border-gray-300 px-2 py-2 flex justify-center space-x-2">
                         <a 
-                            href={`edit/${user.id}`} 
+                            href={`usuarios/editar/${user.id}`} 
                             class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-colors"
                         >
                             Editar

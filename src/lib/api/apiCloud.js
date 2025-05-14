@@ -22,6 +22,24 @@ export async function addUser({ name, phoneNumber, username, password, role }) {
     return await response.text();
 }
 
+export async function updateUser(userId, userData) {
+    const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData),
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const errorText = await response.text(); // Extraer el mensaje de error del backend
+        throw new Error(errorText || "Error al actualizar el usuario");
+    }
+
+    return await response.text();
+}
+
 export async function deleteUser(userId) {
     const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
         method: 'DELETE',
