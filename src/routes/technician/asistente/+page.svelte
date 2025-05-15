@@ -8,7 +8,7 @@
   let chatEndRef: HTMLDivElement | null = null;
 
   async function sendMessage() {
-    if (!inputMessage.trim()) return;
+    if (isLoading || !inputMessage.trim()) return;
 
     messages.update(msgs => [...msgs, { role: 'user', content: inputMessage }]);
     isLoading = true;
@@ -107,14 +107,25 @@
   </div>
 
   <div class="flex items-center rounded-2xl bg-gray-300 p-4 mt-4">
-    <input
-      type="text"
+    <textarea
       placeholder="Escribir un mensaje:"
       bind:value={inputMessage}
-      class="flex-grow bg-transparent focus:outline-none font-semibold"
-      on:keydown={(e) => e.key === 'Enter' && sendMessage()}
-    />
-    <button on:click={sendMessage} aria-label="Send message">
+      class="flex-grow bg-transparent focus:outline-none font-semibold resize-none"
+      rows="1"
+      on:keydown={(e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          if (!isLoading) sendMessage();
+        }
+      }}
+      disabled={isLoading}
+    ></textarea>
+    <button 
+      on:click={sendMessage} 
+      aria-label="Send message"
+      disabled={isLoading}
+      class:opacity-50={isLoading}
+    >
       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-black" viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
     </button>
   </div>
