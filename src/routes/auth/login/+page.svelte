@@ -73,7 +73,7 @@
                 type="submit"
                 class="w-48 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg rounded-full transition duration-200"
             >
-                Login
+                Iniciar sesión
             </button>
         </form>
 
