@@ -1,10 +1,13 @@
+const API_AUTH_BASE_URL = 'http://localhost:8080/api/auth';
+const JSON_HEADERS = {
+    'Content-Type': 'application/json'
+};
+
 export async function login(username, password) {
     try {
-        const response = await fetch('http://localhost:8080/api/auth/signin', {
+        const response = await fetch(`${API_AUTH_BASE_URL}/signin`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: JSON_HEADERS,
             credentials: 'include',
             body: JSON.stringify({ username, password }),
         });
@@ -23,7 +26,7 @@ export async function login(username, password) {
 
 export async function logout() {
     try {
-        const response = await fetch('http://localhost:8080/api/auth/logout', {
+        const response = await fetch(`${API_AUTH_BASE_URL}/logout`, {
             method: 'POST',
             credentials: 'include',
         });
@@ -43,11 +46,9 @@ export async function register(userRegistrationData) {
     const { workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password } = userRegistrationData;
 
     try {
-        const response = await fetch('http://localhost:8080/api/auth/signup', {
+        const response = await fetch(`${API_AUTH_BASE_URL}/signup`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: JSON_HEADERS,
             body: JSON.stringify({ workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password }),
         });
 
@@ -55,20 +56,18 @@ export async function register(userRegistrationData) {
         const contentType = response.headers.get('Content-Type');
 
         if (contentType && contentType.includes('application/json')) {
-            data = await response.json(); // Analizar como JSON si el contenido es JSON
+            data = await response.json();
         } else {
-            data = await response.text(); // Leer como texto si no es JSON
+            data = await response.text();
         }
 
         if (!response.ok) {
-            // Devolver el mensaje de error del backend
             return { success: false, errors: typeof data === 'string' ? { general: data } : data };
         }
 
         return { success: true, data };
     } catch (error) {
         console.error(error);
-        // Devolver la excepción capturada
         return { success: false, errors: { general: error.message } };
     }
 }

@@ -123,7 +123,7 @@
                     placeholder=""
                     class="input-style peer"
                 />
-                <label for="password" class="floating-label">Contraseña del administrador</label>
+                <label for="password" class="floating-label">Contraseña</label>
                 <!-- Botón para mostrar/ocultar contraseña -->
                 <button
                     type="button"

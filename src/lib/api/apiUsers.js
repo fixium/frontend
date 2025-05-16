@@ -1,21 +1,18 @@
+const API_BASE_URL = 'http://localhost:8080/api/users';
+const JSON_HEADERS = {
+    'Content-Type': 'application/json'
+};
+
 export async function addUser({ name, phoneNumber, username, password, role }) {
-    const response = await fetch('http://localhost:8080/api/users', {
+    const response = await fetch(API_BASE_URL, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name,
-            phoneNumber,
-            username,
-            password,
-            role
-        }),
+        headers: JSON_HEADERS,
+        body: JSON.stringify({ name, phoneNumber, username, password, role }),
         credentials: 'include'
     });
 
     if (!response.ok) {
-        const errorText = await response.text(); // Extraer el mensaje de error del backend
+        const errorText = await response.text();
         throw new Error(errorText || 'Error adding user');
     }
 
@@ -23,17 +20,15 @@ export async function addUser({ name, phoneNumber, username, password, role }) {
 }
 
 export async function updateUser(userId, userData) {
-    const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+    const response = await fetch(`${API_BASE_URL}/${userId}`, {
         method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: JSON_HEADERS,
         body: JSON.stringify(userData),
         credentials: "include"
     });
 
     if (!response.ok) {
-        const errorText = await response.text(); // Extraer el mensaje de error del backend
+        const errorText = await response.text();
         throw new Error(errorText || "Error al actualizar el usuario");
     }
 
@@ -41,7 +36,7 @@ export async function updateUser(userId, userData) {
 }
 
 export async function deleteUser(userId) {
-    const response = await fetch(`http://localhost:8080/api/users/${userId}`, {
+    const response = await fetch(`${API_BASE_URL}/${userId}`, {
         method: 'DELETE',
         credentials: 'include'
     });
@@ -50,11 +45,11 @@ export async function deleteUser(userId) {
         throw new Error('Error deleting user');
     }
 
-    return true; // Indica que la eliminación fue exitosa
+    return true;
 }
 
 export async function fetchUsers() {
-    const response = await fetch('http://localhost:8080/api/users', {
+    const response = await fetch(API_BASE_URL, {
         credentials: 'include'
     });
     if (!response.ok) {
@@ -63,10 +58,10 @@ export async function fetchUsers() {
     return await response.json();
 }
 
-async function fetchUserById(userId) {
-	const response = await fetch(`http://localhost:8080/api/users/${userId}`);
-	if (!response.ok) {
-		throw new Error('Error fetching user');
-	}
-	return await response.json();
+export async function fetchUserById(userId) {
+    const response = await fetch(`${API_BASE_URL}/${userId}`);
+    if (!response.ok) {
+        throw new Error('Error fetching user');
+    }
+    return await response.json();
 }
