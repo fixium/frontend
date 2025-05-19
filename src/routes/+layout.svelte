@@ -5,6 +5,10 @@
     export let data;
     
     let role = data.role;
+
+    // onMount(() => {
+    //     import('$lib/cursor.js');
+    // });
 </script>
 
 <style>
@@ -47,3 +51,13 @@
         <slot />
     </div>
 </div>
+<svg xmlns="http://www.w3.org/2000/svg" class="goo" version="1.1" width="100%">
+    <defs>
+        <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"></feGaussianBlur>
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 35 -15" result="goo"></feColorMatrix>
+            <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
+        </filter>
+    </defs>
+</svg>
+<div id="cursor"></div>
