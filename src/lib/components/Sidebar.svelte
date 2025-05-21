@@ -158,7 +158,7 @@
 								<a
 									href={item.href}
 									data-sveltekit-navigate
-									class="flex items-center p-2 rounded-md hover:bg-gray-800 transition-colors
+									class="flex items-center p-2 rounded-md  transition-colors a-item
                                 {currentPath === item.href
 										? 'bg-gray-800 text-white'
 										: 'text-gray-400'}"
@@ -204,7 +204,7 @@
 							Gestionar cuenta
 						</li>
 						<li
-							class="px-4 py-2 hover:bg-red-600 hover:text-white cursor-pointer"
+							class="px-4 py-2 hover:text-white cursor-pointer close-session"
 							on:click={handleLogout}
 							on:keydown={(e) => e.key === 'Enter' && handleLogout()}
 							role="menuitem"
@@ -227,4 +227,68 @@
 	nav::-webkit-scrollbar {
 		display: none; /* Oculta la scrollbar en Chrome, Safari y Edge */
 	}
+
+	.close-session {
+        z-index: 0;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .close-session::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        transition: left 0.4s ease;
+    }
+
+	.close-session::after {
+        background: linear-gradient(90deg, #f63030, #f86666);
+
+	}
+
+
+    .close-session:hover::after {
+        left: 0;
+    }
+
+    .close-session:hover {
+        color: #fff;
+		}
+
+	.a-item {
+        z-index: 0;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .a-item::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        transition: left 0.4s ease;
+    }
+
+	.a-item::after {
+        background: linear-gradient(90deg, transparent, #006b8f);
+
+	}
+
+
+    .a-item:hover::after {
+        left: 0;
+    }
+
+    .a-item:hover {
+        color: #fff;
+		}
 </style>

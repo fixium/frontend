@@ -20,7 +20,7 @@
 			<div class="relative">
 				<input
 					id="username"
-					type="text"
+					type="email"
 					bind:value={username}
 					placeholder=" "
 					class="input-style peer w-full"
@@ -34,7 +34,7 @@
 
 			<button
 				type="submit"
-				class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg rounded-full transition"
+				class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg rounded-full  login-button"
 			>
 				Login
 			</button>
@@ -42,7 +42,7 @@
 
 		<button
 			on:click={() => goto('/auth/register')}
-			class="w-full mt-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium text-lg rounded-full transition"
+			class="w-full mt-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium text-lg rounded-full register-button"
 		>
 			Registrar taller
 		</button>
@@ -72,4 +72,40 @@
 		font-size: 0.75rem;
 		color: #000;
 	}
+
+	button {
+        z-index: 0;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+
+    button::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        transition: left 0.8s ease;
+    }
+
+	.login-button::after {
+        background: linear-gradient(90deg, transparent, #669ef8);
+
+	}
+	.register-button::after {
+		background: linear-gradient(90deg, transparent, #66c188);
+	}
+
+    button:hover::after {
+        left: 0;
+    }
+
+    button:hover {
+        color: #fff;
+		}
+	
+	
 </style>
