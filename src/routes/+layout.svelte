@@ -1,10 +1,13 @@
 <script>
     import '../app.css';
     import Sidebar from '$lib/components/Sidebar.svelte';
+    import NavigationControls from '$lib/components/NavigationControls.svelte';
     
     export let data;
     
     let role = data.role;
+    let username = data.username;
+    let name = data.name;
 </script>
 
 <style>
@@ -38,12 +41,13 @@
 <div class="flex">
     {#if data.isAuthenticated}
         <div class="sidebar bg-gray-900 text-white">
-            <Sidebar {role}/>
+            <Sidebar {role} {username} {name} />
         </div>
     {/if}
 
     <!-- Contenido principal -->
     <div class="content {data.isAuthenticated ? 'with-sidebar' : 'full-width'} flex-1 h-screen bg-gray-50 p-6 overflow-auto">
+        <NavigationControls />
         <slot />
     </div>
 </div>

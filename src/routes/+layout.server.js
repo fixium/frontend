@@ -2,42 +2,61 @@ import { redirect } from '@sveltejs/kit';
 
 export function load({ cookies, url }) {
 	const jwt = cookies.get('jwt');
-	const path = url.pathname;
+    const path = url.pathname;
 
-	// Rutas públicas (sin login)
-	const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized'];
-	const isPublic = publicPaths.some(p => path.startsWith(p));
+    // Rutas públicas (sin login)
+    const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized'];
+    const isPublic = publicPaths.some(p => path.startsWith(p));
 
-	// Rutas accesibles para cualquier usuario autenticado
-	const sharedAuthPaths = ['/dashboard', '/'];
+    // Rutas accesibles para cualquier usuario autenticado
+    const sharedAuthPaths = ['/dashboard', '/'];
 
-	if (!jwt) {
-		if (isPublic) return {};
-		throw redirect(302, '/auth/login');
-	}
+    if (!jwt) {
+        if (isPublic) return {};
+        throw redirect(302, '/auth/login');
+    }
 
-	// Decodificar el JWT para obtener el rol
-	const { role } = parseJwt(jwt) || {};
+    // Decodificar el JWT para obtener el rol, username y name
+    const { role, username, name } = parseJwt(jwt) || {};
 
-	if (!role) {
-		throw redirect(302, '/auth/login');
-	}
+    if (!role) {
+        throw redirect(302, '/auth/login');
+    }
 
-	const allowedPaths = {
-		ROLE_TECHNICIAN: '/technician',
-		ROLE_ADMIN: '/admin'
-	};
+    const allowedPaths = {
+        ROLE_ADMIN: '/admin',
+        ROLE_TECHNICIAN: '/technician',
+        ROLE_RECEPTIONIST: '/receptionist',
+    };
 
-	const allowedPrefix = allowedPaths[role];
+    // Excepciones de acceso por rol (Rutas especificas a las que puede acceder el rol)
+    const roleExceptions = {
+        ROLE_TECHNICIAN: [
+            '/receptionist/tickets'
+        ],
+        ROLE_RECEPTIONIST: [
+            '/technician/reparaciones'
+        ]
+    };
 
-	if (!isPublic && !sharedAuthPaths.includes(path)) {
-		// Permitir acceso completo a ROLE_ADMIN
-		if (role !== 'ROLE_ADMIN' && allowedPrefix && !path.startsWith(allowedPrefix)) {
-			throw redirect(302, '/auth/unauthorized');
-		}
-	}
+    const allowedPrefix = allowedPaths[role];
+    const exceptions = roleExceptions[role] || [];
 
-	return { role, isAuthenticated: true };
+    const hasException = exceptions.some(exceptionPath => path.startsWith(exceptionPath));
+
+    if (!isPublic && !sharedAuthPaths.includes(path)) {
+        // Permitir acceso completo a ROLE_ADMIN
+        if (
+            role !== 'ROLE_ADMIN' &&
+            allowedPrefix &&
+            !path.startsWith(allowedPrefix) &&
+            !hasException
+        ) {
+            throw redirect(302, '/auth/unauthorized');
+        }
+    }
+
+    return { role, username, name, isAuthenticated: true };
 }
 
 function parseJwt(token) {

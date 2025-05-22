@@ -4,15 +4,13 @@
 	import { logout } from '$lib/api/apiAuth';
 	import { goto } from '$app/navigation';
 
-	export let role; // recibe el rol como prop
+	export let role, username, name;
 
 	import Icon from '$lib/components/Icon.svelte';
 
 	// let isOpen = false;
 	let currentPath = '/';
 	let showMenu = false;
-
-
 
 	async function handleLogout() {
 		const success = await logout();
@@ -44,14 +42,35 @@
 				}
 			]
 		},
-		// {
-		//     section: 'Reparaciones',
-		//     items: [
-		// { name: 'Recepción', icon: 'inbox', href: '/reparaciones/recepcion' },
-		// { name: 'Lista de dispositivos', icon: 'list-bullet', href: '/reparaciones/lista' },
-		// { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
-		// ]
-		// },
+		{
+			section: 'Reparaciones',
+			items: [
+				// {
+				// 	name: 'Clientes',
+				// 	icon: 'user',
+				// 	href: '/receptionist/clientes',
+				// 	roles: ['ROLE_ADMIN', 'ROLE_RECEPTIONIST']
+				// },
+				// {
+				// 	name: 'Dispositivos',
+				// 	icon: 'device-phone-mobile',
+				// 	href: '/technician/dispositivos',
+				// 	roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+				// },
+				{
+					name: 'Recepción',
+					icon: 'inbox',
+					// href: '/receptionist/tickets',
+					roles: ['ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_RECEPTIONIST']
+				},
+				{
+					name: 'Reparaciones',
+					icon: 'clock',
+					// href: '/technician/reparaciones',
+					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN', 'ROLE_RECEPTIONIST']
+				}
+			]
+		},
 		{
 			section: 'Administrar Taller',
 			items: [
@@ -78,7 +97,6 @@
 					href: '/technician/asistente',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				}
-				// { name: 'Historial de diagnósticos', icon: 'clock', href: '/diagnostico/historial' },
 				// { name: 'Analizar Logs Panic', icon: 'bug-ant', href: '/diagnostico/panic' },
 			]
 		}
@@ -92,13 +110,6 @@
 		//             href: '/colaboracion/alertas'
 		//         },
 		//         { name: 'Contribuir solución', icon: 'plus-circle', href: '/colaboracion/contribuir' }
-		//     ]
-		// },
-		// {
-		//     section: 'Usuarios',
-		//     items: [
-		//         { name: 'Gestión de usuarios', icon: 'users', href: '/usuarios' },
-		//         { name: 'Actividad', icon: 'finger-print', href: '/usuarios/actividad' } // Ícono ya definido
 		//     ]
 		// },
 		// {
@@ -135,7 +146,7 @@
 	<!-- Sidebar -->
 	<aside
 		class="bg-gray-900 text-white transition-all duration-300 ease-in-out group-hover:w-64 w-18 fixed md:relative h-full z-50 flex flex-col overflow-hidden"
-        on:mouseleave={() => (showMenu = false)}
+		on:mouseleave={() => (showMenu = false)}
 	>
 		<!-- Header de la sidebar -->
 		<div class="flex items-center justify-start h-16 px-4 border-b border-gray-800">
@@ -188,8 +199,8 @@
 					<span class="text-sm font-medium">US</span>
 				</div>
 				<div class="hidden group-hover:block ml-3">
-					<p class="text-sm font-medium">User</p>
-					<p class="text-xs text-gray-400">User@fixium.com</p>
+					<p class="text-sm font-medium">{name}</p>
+					<p class="text-xs text-gray-400">{username}</p>
 				</div>
 			</button>
 
