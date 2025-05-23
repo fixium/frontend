@@ -93,7 +93,7 @@
   {/if}
 
   <form on:submit|preventDefault={submit} class="space-y-4">
-    <label for="device-select" class="block font-semibold mb-1">Selecciona un dispositivo existente (IMEI - Modelo):</label>
+    <label for="device-select" class="block font-semibold mb-1">Selecciona un dispositivo existente:</label>
     <select
       id="device-select"
       class="form-select w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -102,7 +102,7 @@
       required
       disabled={isNewClient}
     >
-      <option value="" disabled selected>-- Selecciona --</option>
+      <option value="" disabled selected>Selecciona un dispositivo... (IMEI - Modelo)</option>
       {#each devices as d}
         <option value={d.id}>{d.imei} - {d.model}</option>
       {/each}

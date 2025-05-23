@@ -76,15 +76,15 @@
           }
         }}
       >
-        <option value="" disabled selected>Selecciona un cliente...</option>
+        <option value="" disabled selected>Selecciona un cliente... (Email - Teléfono)</option>
         {#each clients as c}
-          <option value={c.id}>{c.name} ({c.phone})</option>
+          <option value={c.id}>{c.email} ({c.phone})</option>
         {/each}
         <option value="new">Registrar nuevo cliente</option>
       </select>
     </div>
 
-    {#if !selectedClientId || selectedClientId === 'new'}
+    {#if selectedClientId === 'new'}
       <div class="space-y-3">
         <input
           type="text"
