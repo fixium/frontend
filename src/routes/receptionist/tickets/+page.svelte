@@ -211,13 +211,13 @@
                                             >
                                                 Cambiar estado
                                             </button>
-                                            <!-- <button
+                                            <button
                                                 class="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
                                                 on:click={() => goto(`/technician/reparaciones?ticketId=${ticket.id}`)}
                                                 type="button"
                                             >
                                                 Reparaciones
-                                            </button> -->
+                                            </button>
                                             <!-- <button
                                                 class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
                                                 on:click={() => goto(`/technician/reparaciones/nueva?ticketId=${ticket.id}`)}
