@@ -1,3 +1,5 @@
+import { buildErrorMessage } from "$lib/utils/errorUtils";
+
 const API_BASE_URL = 'http://localhost:8080/api/users';
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
@@ -12,8 +14,8 @@ export async function addUser({ name, phoneNumber, username, password, role }) {
     });
 
     if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || 'Error adding user');
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al agregar usuario'));
     }
 
     return await response.text();
@@ -28,8 +30,8 @@ export async function updateUser(userId, userData) {
     });
 
     if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(errorText || "Error al actualizar el usuario");
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, "Error al actualizar el usuario"));
     }
 
     return await response.text();
@@ -42,7 +44,8 @@ export async function deleteUser(userId) {
     });
 
     if (!response.ok) {
-        throw new Error('Error deleting user');
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al eliminar usuario'));
     }
 
     return true;
@@ -53,7 +56,8 @@ export async function fetchUsers() {
         credentials: 'include'
     });
     if (!response.ok) {
-        throw new Error('Error fetching users');
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuarios'));
     }
     return await response.json();
 }
@@ -61,7 +65,8 @@ export async function fetchUsers() {
 export async function fetchUserById(userId) {
     const response = await fetch(`${API_BASE_URL}/${userId}`);
     if (!response.ok) {
-        throw new Error('Error fetching user');
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuario'));
     }
     return await response.json();
 }

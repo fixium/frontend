@@ -1,3 +1,5 @@
+import { buildErrorMessage } from "$lib/utils/errorUtils";
+
 const API_AUTH_BASE_URL = 'http://localhost:8080/api/auth';
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
@@ -13,14 +15,15 @@ export async function login(username, password) {
         });
 
         if (!response.ok) {
-            throw new Error('Error al iniciar sesión');
+            const errorBody = await response.json();
+            throw new Error(buildErrorMessage(errorBody, 'Error al iniciar sesión'));
         }
 
         const data = await response.json();
         return data;
     } catch (error) {
         console.error(error);
-        return null;
+        return { success: false, errors: { general: error.message } };
     }
 }
 
@@ -32,13 +35,14 @@ export async function logout() {
         });
 
         if (!response.ok) {
-            throw new Error('Error al cerrar sesión');
+            const errorBody = await response.json();
+            throw new Error(buildErrorMessage(errorBody, 'Error al cerrar sesión'));
         }
 
-        return true;
+        return { success: true };
     } catch (error) {
         console.error(error);
-        return false;
+        return { success: false, errors: { general: error.message } };
     }
 }
 
@@ -62,7 +66,10 @@ export async function register(userRegistrationData) {
         }
 
         if (!response.ok) {
-            return { success: false, errors: typeof data === 'string' ? { general: data } : data };
+            const errorMsg = typeof data === 'string'
+                ? buildErrorMessage({ message: data }, 'Error al registrar')
+                : buildErrorMessage(data, 'Error al registrar');
+            return { success: false, errors: { general: errorMsg } };
         }
 
         return { success: true, data };
