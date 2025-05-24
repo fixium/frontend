@@ -3,17 +3,13 @@
   import { registerClient } from '$lib/api/apiRecepcion';
   import { step } from '$lib/stores/stepStore';
   import { onMount } from 'svelte';
-  import { validatePhoneNumber } from '$lib/utils/validation';
+  import { validatePhoneNumber, validateName } from '$lib/utils/validation';
 
-  let clients = [];
-  let selectedClientId = '';
-  let name = '';
-  let phone = '';
-  let email = '';
-  let notes = '';
-
-  let loading = false;
-  let error = null;
+  let clients = [], filteredClients = [];
+  let name = '', phone = '', notes = '';
+  let email = ''; // solo para búsqueda
+  let registerEmail = ''; // solo para registro
+  let selectedClientId = '', loading = false, error = null;
 
   onMount(async () => {
     try {
@@ -25,107 +21,165 @@
     }
   });
 
-  const submit = async () => {
+  $: filteredClients = email.length
+    ? clients.filter(c => c.email.toLowerCase().includes(email.toLowerCase()))
+    : [];
+
+  function cargarCliente(c) {
+    selectedClientId = String(c.id);
+    name = c.name ?? '';
+    phone = c.phone ?? '';
+    registerEmail = c.email ?? '';
+    notes = c.notes ?? '';
+  }
+
+  function resetFormulario() {
+    selectedClientId = 'new';
+    name = '';
+    phone = '';
+    registerEmail = '';
+    notes = '';
+  }
+
+  async function submit() {
     loading = true;
     error = null;
 
     try {
       if (selectedClientId && selectedClientId !== 'new') {
-        wizardData.update((data) => ({ ...data, clientId: Number(selectedClientId) }));
-        step.set(2);
+        wizardData.update(data => ({ ...data, clientId: Number(selectedClientId) }));
       } else {
-        const clientId = await registerClient({ name, phone, email, notes });
-        wizardData.update((data) => ({ ...data, clientId, isNewClient: true }));
-        step.set(2);
+        const clientId = await registerClient({ name, phone, email: registerEmail, notes });
+        wizardData.update(data => ({ ...data, clientId, isNewClient: true }));
       }
+      step.set(2);
     } catch (err) {
       error = err.message;
     } finally {
       loading = false;
     }
-  };
+  }
 </script>
 
-<div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-100">
-  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center tracking-tight">Registrar cliente</h2>
+<div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-200">
+  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center">Registrar cliente</h2>
 
   {#if error}
     <p class="text-red-600 mb-4 text-center font-semibold">{error}</p>
   {/if}
 
-  <form on:submit|preventDefault={submit} class="space-y-5">
-    <div>
-      <label for="client-select" class="block mb-2 font-semibold text-gray-700">Selecciona un cliente existente o registra uno nuevo:</label>
-      <select
-        id="client-select"
-        class="form-select w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-        bind:value={selectedClientId}
+  <!-- Buscar cliente -->
+  <label for="buscar-cliente-email" class="block mb-2 font-semibold text-gray-700">Buscar cliente:</label>
+  <input
+    id="buscar-cliente-email"
+    type="email"
+    placeholder="Ej: cliente@email.com"
+    class="form-input w-full mb-2 px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+    bind:value={email}
+    on:input={() => {
+      if (email.length === 0) {
+        resetFormulario();
+      } else {
+        const c = clients.find(c => c.email === email);
+        if (c) cargarCliente(c);
+        else selectedClientId = '';
+      }
+    }}
+    autocomplete="off"
+  />
+
+  {#if email.length > 0 && filteredClients.length > 0 && !selectedClientId}
+    <ul class="border border-blue-200 rounded-lg mt-2 shadow max-h-40 overflow-auto animate-fade-in">
+      {#each filteredClients as c}
+        <button
+          type="button"
+          class="w-full text-left px-4 py-2 cursor-pointer hover:bg-blue-100 focus:outline-none focus:bg-blue-200"
+          on:click={() => cargarCliente(c)}
+        >
+          {c.email} ({c.phone})
+        </button>
+      {/each}
+    </ul>
+  {:else if email.length > 0 && filteredClients.length === 0}
+    <div class="text-gray-400 text-sm mt-2">No se encontraron clientes.</div>
+  {/if}
+
+  <div class="mt-4 text-right">
+    <button on:click={resetFormulario} class="text-sm font-semibold text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg shadow transition focus:outline-none focus:ring-2 focus:ring-blue-400">Registrar nuevo cliente</button>
+  </div>
+
+  <!-- Datos del cliente -->
+  {#if selectedClientId && selectedClientId !== 'new'}
+    <div class="bg-blue-50 border border-blue-300 rounded-lg p-4 mt-4 animate-fade-in">
+      <p class="text-blue-900 text-sm">Nombre: <strong>{name}</strong></p>
+      <p class="text-blue-900 text-sm">Correo: <strong>{email}</strong></p>
+      <p class="text-blue-900 text-sm">Teléfono: <strong>{phone}</strong></p>
+      {#if notes}
+        <p class="text-blue-900 text-sm">Notas: <strong>{notes}</strong></p>
+      {/if}
+    </div>
+  {/if}
+
+  {#if !selectedClientId || selectedClientId === 'new'}
+    <form on:submit|preventDefault={submit} class="space-y-4 mt-6 animate-fade-in">
+      <input
+        type="text"
+        bind:value={name}
+        placeholder="Nombre completo"
+        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         required
-        on:change={() => {
-          if (selectedClientId !== 'new' && selectedClientId) {
-            const c = clients.find(c => c.id === Number(selectedClientId));
-            name = c?.name ?? '';
-            phone = c?.phone ?? '';
-            email = c?.email ?? '';
-            notes = c?.notes ?? '';
-          } else {
-            name = '';
-            phone = '';
-            email = '';
-            notes = '';
-          }
-        }}
-      >
-        <option value="" disabled selected>Selecciona un cliente... (Email - Teléfono)</option>
-        {#each clients as c}
-          <option value={c.id}>{c.email} ({c.phone})</option>
-        {/each}
-        <option value="new">Registrar nuevo cliente</option>
-      </select>
-    </div>
+        on:input={(e) => name = validateName(e.target.value)}
+      />
+      <input
+        type="tel"
+        bind:value={phone}
+        placeholder="Teléfono (10 dígitos)"
+        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        required
+        on:input={(e) => phone = validatePhoneNumber(e.target.value)}
+        maxlength="10"
+      />
+      <input
+        type="email"
+        bind:value={registerEmail}
+        placeholder="Correo electrónico"
+        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        autocomplete="email"
+        required
+      />
+      <textarea
+        bind:value={notes}
+        placeholder="Notas (opcional)"
+        class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        rows="3"
+      ></textarea>
+    </form>
+  {/if}
 
-    {#if selectedClientId === 'new'}
-      <div class="space-y-3">
-        <input
-          type="text"
-          bind:value={name}
-          placeholder="Nombre completo"
-          class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
-        <input
-          type="tel"
-          bind:value={phone}
-          placeholder="Teléfono"
-          class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-          on:input={(e) => phone = validatePhoneNumber(e.target.value)}
-        />
-        <input
-          type="email"
-          bind:value={email}
-          placeholder="Correo electrónico"
-          class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
-        <textarea
-          bind:value={notes}
-          placeholder="Notas (opcional)"
-          class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          rows="3"
-        ></textarea>
-      </div>
-    {/if}
-
-    <div class="flex justify-end">
-      <button
-        type="submit"
-        class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition-all duration-150 disabled:opacity-60"
-        disabled={loading}
-      >
-        {#if loading}Procesando...{/if}
-        {#if !loading}Siguiente →{/if}
-      </button>
-    </div>
-  </form>
+  <div class="flex justify-end mt-6">
+    <button
+      on:click={submit}
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
+      disabled={loading || !name || !phone || !registerEmail}
+    >
+      {loading ? 'Cargando...' : 'Siguiente →'}
+    </button>
+  </div>
 </div>
+
+<style>
+  .animate-fade-in {
+    animation: fadeIn 0.3s;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  button:disabled {
+    background-color: #cbd5e1; /* gris claro */
+    color: #94a3b8;           /* texto gris */
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+</style>

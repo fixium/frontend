@@ -5,14 +5,16 @@
     let username = '';
     let password = '';
     let showPassword = false;
+    let loginError = ''; // Nueva variable para el error
 
     async function handleLogin() {
+        loginError = '';
         const data = await login(username, password);
 
-        if (data) {
+        if (data && data.success !== false) {
             window.location.href = '/';
         } else {
-            console.error('Login inválido');
+            loginError = data?.errors?.general || 'Login inválido';
         }
     }
 
@@ -66,6 +68,10 @@
                     {/if}
                 </button>
             </div>
+
+            {#if loginError}
+                <p class="text-red-600 text-sm mb-2">{loginError}</p>
+            {/if}
 
             <p class="text-sm text-gray-500 mt-1">Forgot Password?</p>
 

@@ -17,9 +17,9 @@ export function load({ cookies, url }) {
     }
 
     // Decodificar el JWT para obtener el rol, username y name
-    const { role, username, name } = parseJwt(jwt) || {};
+    const { role, username, name, exp } = parseJwt(jwt) || {};
 
-    if (!role) {
+    if (!role || !exp || Date.now() / 1000 > exp) {
         throw redirect(302, '/auth/login');
     }
 

@@ -19,7 +19,7 @@
             wizardData.update((s) => ({ ...s, deviceImages: urls }));
             step.set(5); // Avanza al paso 5
         } catch (e) {
-            error = 'Error al subir imágenes.';
+            error = e?.message || 'Error al subir imágenes.';
         } finally {
             loading = false;
         }
@@ -41,10 +41,27 @@
         file:bg-blue-50 file:text-blue-700
         hover:file:bg-blue-100
         cursor-pointer"
+        on:change={(e) => {
+        const selected = Array.from(e.target.files);
+        const invalid = selected.find(file => !file.type.startsWith('image/'));
+        if (invalid) {
+          error = 'Solo se permiten archivos de imagen.';
+          files = [];
+          e.target.value = ''; // Limpia el input
+        } else {
+          error = '';
+          files = selected;
+        }
+      }}
     />
   </label>
   {#if error}
-    <p class="text-red-600 mb-4 text-center font-semibold">{error}</p>
+    <p class="text-red-600 mb-2 text-center font-semibold">{error}</p>
+    <ul class="text-xs text-gray-500 mb-4 text-center">
+      <li>• Verifica que los archivos sean imágenes válidas.</li>
+      <li>• El tamaño máximo permitido puede ser 5MB por imagen.</li>
+      <li>• Intenta nuevamente o contacta al administrador si el problema persiste.</li>
+    </ul>
   {/if}
   <div class="flex justify-end gap-2">
     <button
