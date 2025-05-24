@@ -63,12 +63,12 @@
 					href: '/receptionist/tickets',
 					roles: ['ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_RECEPTIONIST']
 				},
-				// {
-				// 	name: 'Reparaciones',
-				// 	icon: 'clock',
-				// 	href: '/technician/reparaciones',
-				// 	roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN', 'ROLE_RECEPTIONIST']
-				// }
+				{
+					name: 'Reparaciones',
+					icon: 'clock',
+					href: '/technician/reparaciones',
+					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN', 'ROLE_RECEPTIONIST']
+				}
 			]
 		},
 		{

@@ -5,7 +5,7 @@
   import { registerDevice } from '$lib/api/apiRecepcion';
 	import { onMount } from 'svelte';
 	import { validatePhoneNumber } from '$lib/utils/validation';
-  onMount
+  import { fetchDevices } from '$lib/api/devices';
 
   let serialNumber = '';
   let imei = '';
@@ -28,21 +28,13 @@
   let error = null;
 
   onMount(async () => {
+    const { clientId } = get(wizardData);
     try {
-      devices = await fetchDevices();
+      devices = await fetchDevices(clientId);
     } catch (err) {
       error = err.message;
     }
   });
-
-  // Nuevo: función para obtener dispositivos
-  async function fetchDevices() {
-    const res = await fetch('http://localhost:8080/api/devices', {
-      credentials: 'include',
-    });
-    if (!res.ok) throw new Error('Error al obtener dispositivos');
-    return await res.json();
-  }
 
   let devices = [];
   let selectedDeviceId = '';
