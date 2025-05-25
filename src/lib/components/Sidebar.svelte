@@ -96,8 +96,8 @@
 					icon: 'chat-bubble-bottom-center-text',
 					href: '/technician/asistente',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
-				}
-				// { name: 'Analizar Logs Panic', icon: 'bug-ant', href: '/diagnostico/panic' },
+				},
+				{ name: 'Análisis de Panic', icon: 'bug-ant', href: '/technician/analyze-panic' },
 			]
 		}
 		// {
