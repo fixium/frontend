@@ -56,9 +56,10 @@ export async function uploadDeviceImages(ticketId, files) {
 	files.forEach((file) => formData.append('files', file));
 	formData.append('ticketId', ticketId.toString());
 
-	const response = await fetch('/api/images', {
+	const response = await fetch(`${BASE_URL}/images`, {
 		method: 'POST',
-		body: formData
+		body: formData,
+		credentials: 'include'
 	});
 
 	if (!response.ok) {

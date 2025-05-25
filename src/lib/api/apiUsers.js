@@ -63,7 +63,9 @@ export async function fetchUsers() {
 }
 
 export async function fetchUserById(userId) {
-    const response = await fetch(`${API_BASE_URL}/${userId}`);
+    const response = await fetch(`${API_BASE_URL}/${userId}`, {
+        credentials: 'include'
+    });
     if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
         throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuario'));

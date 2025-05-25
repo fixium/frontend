@@ -135,18 +135,20 @@
             <p class="font-semibold">{error}</p>
         </div>
     {:else}
-        {#if tickets.length === 0}
-            <div class="mt-10 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-6 rounded shadow-md text-center max-w-xl mx-auto flex flex-col items-center gap-4">
-                <p class="text-lg font-semibold mb-2">No hay tickets registrados.</p>
-                <p>Por favor, crea un nuevo ticket.</p>
-            </div>
-        {:else}
+            {#if role !== 'ROLE_TECHNICIAN'}
             <button
                 class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors font-semibold"
                 on:click={() => goto('/receptionist/tickets/nuevo')}
             >
                 Registrar recepción
             </button>
+            {/if}
+        {#if tickets.length === 0}
+            <div class="mt-10 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-6 rounded shadow-md text-center max-w-xl mx-auto flex flex-col items-center gap-4">
+                <p class="text-lg font-semibold mb-2">No hay tickets registrados.</p>
+                <p>Por favor, crea un nuevo ticket.</p>
+            </div>
+        {:else}
             <div class="mt-6 bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
