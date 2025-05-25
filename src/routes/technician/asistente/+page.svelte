@@ -10,22 +10,32 @@
   async function sendMessage() {
     if (isLoading || !inputMessage.trim()) return;
 
+    // Añade el mensaje del usuario al historial local
     messages.update(msgs => [...msgs, { role: 'user', content: inputMessage }]);
     isLoading = true;
 
     try {
+      // Obtén el historial actual de mensajes (sin el mensaje de sistema, que lo agrega el backend)
+      let currentMessages;
+      messages.subscribe(value => { currentMessages = value; })();
+
+      // Prepara el body con el historial completo
+      const body = {
+        messages: currentMessages.map(msg => ({
+          role: msg.role,
+          content: msg.content
+        }))
+      };
+
       const response = await fetch('http://localhost:8080/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: inputMessage,
-          user: "frank"
-        }),
+        body: JSON.stringify(body),
         credentials: "include"
       });
 
       const data = await response.json();
-      const assistantMessage = data.choices[0]?.message?.content || 'No se recibió una respuesta válida.';
+      const assistantMessage = data.choices?.[0]?.message?.content || 'No se recibió una respuesta válida.';
       messages.update(msgs => [...msgs, { role: 'assistant', content: assistantMessage }]);
     } catch (error) {
       console.error('Error al enviar el mensaje:', error);
