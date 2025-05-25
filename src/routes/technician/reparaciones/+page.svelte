@@ -254,12 +254,14 @@
                                 <td class="px-4 py-2 border-b">{new Date(repair.createdAt).toLocaleString('es-MX')}</td>
                                 <td class="px-4 py-2 border-b">{new Date(repair.updatedAt).toLocaleString('es-MX')}</td>
                                 <td class="px-4 py-2 border-b flex gap-2 justify-center">
-                                    <button
-                                        class="bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
-                                        on:click={() => handleEditModal(repair)}
-                                    >
-                                        Editar
-                                    </button>
+                                    {#if role !== 'ROLE_RECEPTIONIST'}
+                                        <button
+                                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
+                                            on:click={() => handleEditModal(repair)}
+                                        >
+                                            Editar
+                                        </button>
+                                    {/if}
                                     <button
                                         class="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
                                         on:click={() => handleView(repair)}
