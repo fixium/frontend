@@ -53,7 +53,8 @@
         throw new Error(errorText || 'Error al procesar el log');
       }
       const resTemp = await res.json();
-      respuesta = resTemp.choices?.[0]?.message?.content;
+      // respuesta = resTemp.choices?.[0]?.message?.content;
+      respuesta = resTemp.choices?.[0]?.message?.content || 'El log es demasiado largo y no se pudo procesar completamente. Intenta con un log más corto o revisa el contenido manualmente.';
     } catch (e) {
       error = e.message || 'Ocurrió un error al procesar el log';
     } finally {
