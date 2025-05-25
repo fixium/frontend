@@ -97,7 +97,9 @@
 					href: '/technician/asistente',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				},
-				{ name: 'Análisis de Panic', icon: 'bug-ant', href: '/technician/analyze-panic' },
+				{ 
+					name: 'Análisis de Panic', icon: 'bug-ant', href: '/technician/analyze-panic', roles:  ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+				},
 			]
 		}
 		// {
