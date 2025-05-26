@@ -1,6 +1,6 @@
 <script>
   import { wizardData } from '$lib/stores/wizardStore';
-  import { registerClient } from '$lib/api/apiRecepcion';
+  import { registerClient } from '$lib/api/apiClients';
   import { step } from '$lib/stores/stepStore';
   import { onMount } from 'svelte';
   import { validatePhoneNumber, validateName } from '$lib/utils/validation';

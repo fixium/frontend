@@ -2,7 +2,7 @@
     import { step } from '$lib/stores/stepStore';
     import { wizardData } from '$lib/stores/wizardStore';
     import { get } from 'svelte/store';
-    import { registerTicket } from '$lib/api/apiRecepcion';
+    import { registerTicket } from '$lib/api/apiTickets';
 
     let initialStateDescription = '';
     let loading = false;

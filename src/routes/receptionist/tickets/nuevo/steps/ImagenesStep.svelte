@@ -1,7 +1,7 @@
 <script>
     import { wizardData } from '$lib/stores/wizardStore';
     import { step } from '$lib/stores/stepStore';
-    import { uploadDeviceImages } from '$lib/api/apiRecepcion';
+    import { uploadDeviceImages } from '$lib/api/apiImages';
     import { get } from 'svelte/store';
 
     let files = [];

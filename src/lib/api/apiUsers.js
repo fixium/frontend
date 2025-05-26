@@ -1,12 +1,12 @@
 import { buildErrorMessage } from "$lib/utils/errorUtils";
 
-const API_BASE_URL = 'http://localhost:8080/api/users';
+const API_URL = 'http://localhost:8080/api/users';
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
 export async function addUser({ name, phoneNumber, username, password, role }) {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(API_URL, {
         method: 'POST',
         headers: JSON_HEADERS,
         body: JSON.stringify({ name, phoneNumber, username, password, role }),
@@ -22,7 +22,7 @@ export async function addUser({ name, phoneNumber, username, password, role }) {
 }
 
 export async function updateUser(userId, userData) {
-    const response = await fetch(`${API_BASE_URL}/${userId}`, {
+    const response = await fetch(`${API_URL}/${userId}`, {
         method: "PUT",
         headers: JSON_HEADERS,
         body: JSON.stringify(userData),
@@ -38,7 +38,7 @@ export async function updateUser(userId, userData) {
 }
 
 export async function deleteUser(userId) {
-    const response = await fetch(`${API_BASE_URL}/${userId}`, {
+    const response = await fetch(`${API_URL}/${userId}`, {
         method: 'DELETE',
         credentials: 'include'
     });
@@ -52,7 +52,7 @@ export async function deleteUser(userId) {
 }
 
 export async function fetchUsers() {
-    const response = await fetch(API_BASE_URL, {
+    const response = await fetch(API_URL, {
         credentials: 'include'
     });
     if (!response.ok) {
@@ -63,7 +63,7 @@ export async function fetchUsers() {
 }
 
 export async function fetchUserById(userId) {
-    const response = await fetch(`${API_BASE_URL}/${userId}`, {
+    const response = await fetch(`${API_URL}/${userId}`, {
         credentials: 'include'
     });
     if (!response.ok) {

@@ -4,7 +4,9 @@
   import { step } from '$lib/stores/stepStore';
   import { get } from 'svelte/store';
   import { onMount } from 'svelte';
-  import { getClient, getDevice, getTicket } from '$lib/api/apiRecepcion';
+  import { getTicket } from '$lib/api/apiTickets';
+  import { getClient } from '$lib/api/apiClients';
+  import { getDevice } from '$lib/api/apiDevices';
 	import { goto } from '$app/navigation';
 
   let client = null;

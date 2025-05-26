@@ -1,9 +1,9 @@
-const BASE_URL = 'http://localhost:8080/api/repairs';
-
 import { buildErrorMessage } from "$lib/utils/errorUtils";
 
+const API_URL = 'http://localhost:8080/api/repairs';
+
 export async function getAllRepairs(ticketId) {
-    const response = await fetch(`${BASE_URL}/${ticketId}`, {
+    const response = await fetch(`${API_URL}/${ticketId}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
@@ -16,7 +16,7 @@ export async function getAllRepairs(ticketId) {
 }
 
 export async function createRepair(repairRequest) {
-    const response = await fetch(BASE_URL, {
+    const response = await fetch(API_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(repairRequest),
@@ -30,7 +30,7 @@ export async function createRepair(repairRequest) {
 }
 
 export async function getRepairsByImei(imei) {
-    const response = await fetch(`${BASE_URL}/by-imei/${imei}`, {
+    const response = await fetch(`${API_URL}/by-imei/${imei}`, {
         credentials: 'include'
     });
     if (!response.ok) {
