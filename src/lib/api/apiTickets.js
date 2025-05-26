@@ -13,6 +13,24 @@ export async function getAllTickets() {
     return await res.json();
 }
 
+export async function filterTickets({ clientName, ticketNumber, imei }) {
+    const formData = new FormData();
+    if (clientName) formData.append('clientName', clientName);
+    if (ticketNumber) formData.append('ticketNumber', ticketNumber);
+    if (imei) formData.append('imei', imei);
+
+    const res = await fetch(`${API_URL}/filter`, {
+        method: 'POST',
+        credentials: 'include',
+        body: formData
+    });
+    if (!res.ok) {
+        const errorBody = await res.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al filtrar tickets'));
+    }
+    return await res.json();
+}
+
 export async function downloadTicketPdf(id) {
     const res = await fetch(`${API_URL}/${id}/pdf`, {
         method: 'GET',

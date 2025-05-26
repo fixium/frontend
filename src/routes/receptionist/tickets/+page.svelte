@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { getAllTickets, downloadTicketPdf, updateTicketStatus, getTicketDetail } from '$lib/api/apiTickets.js';
+    import { getAllTickets, downloadTicketPdf, updateTicketStatus, getTicketDetail, filterTickets } from '$lib/api/apiTickets.js';
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
 
@@ -41,6 +41,41 @@
     let showDetailModal = false;
     let selectedTicket = null;
 
+    let filtroNombre = '';
+    let filtroTicket = '';
+    let filtroImei = '';
+
+    async function aplicarFiltro() {
+        try {
+            tickets = await filterTickets({
+                clientName: filtroNombre,
+                ticketNumber: filtroTicket,
+                imei: filtroImei
+            });
+            error = '';
+        } catch (e) {
+            error = e.message;
+        }
+    }
+
+    function limpiarFiltro() {
+        filtroNombre = '';
+        filtroTicket = '';
+        filtroImei = '';
+        onMountCallback();
+    }
+
+    async function onMountCallback() {
+        try {
+            tickets = await getAllTickets();
+            error = '';
+        } catch (e) {
+            error = e.message;
+        }
+    }
+
+    onMount(onMountCallback);
+
     function showInfo(status) {
         currentStatus = status;
         currentDescription = statusDescriptions[status] || "Sin descripción";
@@ -50,14 +85,6 @@
     function closeInfo() {
         showStatusInfo = false;
     }
-
-    onMount(async () => {
-        try {
-            tickets = await getAllTickets();
-        } catch (e) {
-            error = e.message;
-        }
-    });
 
     function descargarPdf(id) {
         downloadTicketPdf(id);
@@ -130,19 +157,39 @@
 
 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
     <h1 class="text-3xl font-extrabold text-blue-700 mb-8 text-center tracking-tight">Tickets de recepción</h1>
-    {#if error}
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md mb-6">
-            <p class="font-semibold">{error}</p>
+    <div class="mb-6 flex flex-wrap gap-4 items-end">
+        <div class="flex flex-wrap gap-4 items-end flex-grow">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Nombre cliente</label>
+            <input type="text" bind:value={filtroNombre} class="border rounded px-2 py-1" placeholder="Nombre cliente" />
         </div>
-    {:else}
-            {#if role !== 'ROLE_TECHNICIAN'}
+        <div>
+            <label class="block text-sm font-medium text-gray-700"># Ticket</label>
+            <input type="text" bind:value={filtroTicket} class="border rounded px-2 py-1" placeholder="Número ticket" />
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">IMEI</label>
+            <input type="text" bind:value={filtroImei} class="border rounded px-2 py-1" placeholder="IMEI" />
+        </div>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" on:click={aplicarFiltro}>Filtrar</button>
+        <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" on:click={limpiarFiltro}>Limpiar</button>
+    </div>
+    {#if role !== 'ROLE_TECHNICIAN'}
+        <div class="ml-auto">
             <button
                 class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors font-semibold"
                 on:click={() => goto('/receptionist/tickets/nuevo')}
             >
                 Registrar recepción
             </button>
-            {/if}
+        </div>
+    {/if}
+    </div>
+    {#if error}
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md mb-6">
+            <p class="font-semibold">{error}</p>
+        </div>
+    {:else}
         {#if tickets.length === 0}
             <div class="mt-10 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-6 rounded shadow-md text-center max-w-xl mx-auto flex flex-col items-center gap-4">
                 <p class="text-lg font-semibold mb-2">No hay tickets registrados.</p>
