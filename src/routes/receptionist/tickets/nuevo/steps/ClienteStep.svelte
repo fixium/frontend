@@ -112,7 +112,7 @@
   {#if selectedClientId && selectedClientId !== 'new'}
     <div class="bg-blue-50 border border-blue-300 rounded-lg p-4 mt-4 animate-fade-in">
       <p class="text-blue-900 text-sm">Nombre: <strong>{name}</strong></p>
-      <p class="text-blue-900 text-sm">Correo: <strong>{email}</strong></p>
+      <p class="text-blue-900 text-sm">Correo: <strong>{registerEmail}</strong></p>
       <p class="text-blue-900 text-sm">Teléfono: <strong>{phone}</strong></p>
       {#if notes}
         <p class="text-blue-900 text-sm">Notas: <strong>{notes}</strong></p>
