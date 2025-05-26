@@ -71,16 +71,14 @@
     >
       {loading ? 'Subiendo...' : uploaded ? 'Imágenes subidas' : 'Subir imágenes'}
     </button>
-    {#if files.length === 0}
-      <button
-        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-2 rounded-lg shadow transition-all duration-150 w-full sm:w-auto"
-        on:click={() => step.set(5)}
-        disabled={loading}
-        type="button"
-      >
-        Omitir
-      </button>
-    {/if}
+    <button
+      class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold px-6 py-2 rounded-lg shadow transition-all duration-150 w-full sm:w-auto"
+      on:click={() => step.set(5)}
+      disabled={loading}
+      type="button"
+    >
+      Omitir
+    </button>
   </div>
   {#if files.length > 0}
     <ul class="mt-4 space-y-1 text-gray-600 text-sm">
