@@ -22,13 +22,26 @@
     event.preventDefault();
     isDragActive = false;
     if (event.dataTransfer?.files && event.dataTransfer.files.length > 0) {
-      file = event.dataTransfer.files[0];
+      const droppedFile = event.dataTransfer.files[0];
+      if (isValidFile(droppedFile)) {
+        file = droppedFile;
+        error = '';
+      } else {
+        file = null;
+        error = 'Solo se permiten archivos de texto (.txt o .ips) y máximo 5 MB.';
+      }
     }
   }
-
+  
   async function enviarLog() {
     if (!useFile && !logContent.trim()) return;
     if (useFile && !file) return;
+
+    // Validación extra antes de enviar
+    if (useFile && !isValidFile(file)) {
+      error = 'Solo se permiten archivos de texto (.txt o .ips) y máximo 5 MB.';
+      return;
+    }
 
     isLoading = true;
     respuesta = '';
@@ -61,6 +74,16 @@
       isLoading = false;
     }
   }
+
+  function isValidFile(file) {
+    if (!file) return false;
+    const validExtensions = ['.txt', '.ips'];
+    const fileName = file.name.toLowerCase();
+    const hasValidExtension = validExtensions.some(ext => fileName.endsWith(ext));
+    // Algunos navegadores pueden no establecer correctamente el type para .ips, así que solo validamos extensión
+    return hasValidExtension && file.size <= 5 * 1024 * 1024;
+  }
+
 </script>
 
 <main class="flex items-start justify-center py-8">
