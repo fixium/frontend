@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080/device-api';
+const BASE_URL = 'http://localhost:8081/device-api';
 
 async function apiFetch(endpoint, options = {}) {
     try {
