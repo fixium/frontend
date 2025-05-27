@@ -1,6 +1,8 @@
 <script>
     import { addUser } from "$lib/api/apiUsers";
     import { goto } from "$app/navigation";
+    import { tick } from "svelte";
+    import CameraModal from "$lib/components/CameraModal.svelte";
 
     let name = '';
     let phoneNumber = '';
@@ -16,36 +18,22 @@
     let isLoading = false;
 
     // --- NUEVO: para la cámara ---
-    let videoRef;
-    let canvasRef;
-    let stream = null;
     let imageBlob = null;
     let imagePreview = null;
+    let showCameraModal = false;
 
-    async function startCamera() {
-        try {
-            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-            videoRef.srcObject = stream;
-            await videoRef.play();
-        } catch (err) {
-            errorMessage = "No se pudo acceder a la cámara.";
-        }
+    function openCameraModal() {
+        errorMessage = '';
+        showCameraModal = true;
     }
 
-    function takePhoto() {
-        const context = canvasRef.getContext("2d");
-        context.drawImage(videoRef, 0, 0, canvasRef.width, canvasRef.height);
-        canvasRef.toBlob(blob => {
-            imageBlob = blob;
-            imagePreview = URL.createObjectURL(blob);
-        }, "image/jpeg");
+    function closeCameraModal() {
+        showCameraModal = false;
     }
 
-    function stopCamera() {
-        if (stream) {
-            stream.getTracks().forEach(track => track.stop());
-            stream = null;
-        }
+    function handlePhoto(event) {
+        imageBlob = event.detail.blob;
+        imagePreview = event.detail.url;
     }
 
     async function handleRegister() {
@@ -66,7 +54,6 @@
         }
 
         try {
-            // Si hay foto, la enviamos como images
             let images = [];
             if (imageBlob) images = [imageBlob];
             await addUser({ name, phoneNumber, username, password, role, images });
@@ -76,7 +63,6 @@
             errorMessage = error.message || 'Error al registrar el usuario.';
         } finally {
             isLoading = false;
-            stopCamera();
         }
     }
 
@@ -227,23 +213,12 @@
 
         <!-- Camara -->
         <div class="relative mb-3">
-            <label class="block mb-1 font-semibold">Foto del usuario</label>
-            {#if !stream && !imagePreview}
-                <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded mb-2" on:click={startCamera}>
+            <label for="user-photo-input" class="block mb-1 font-semibold">Foto del usuario</label>
+            <input id="user-photo-input" type="file" accept="image/*" class="hidden" tabindex="-1" aria-hidden="true" />
+            {#if !imagePreview}
+                <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
                     Abrir cámara
                 </button>
-            {/if}
-            {#if stream}
-                <div class="flex flex-col items-center">
-                    <video bind:this={videoRef} width="240" height="180" autoplay class="rounded border mb-2"></video>
-                    <canvas bind:this={canvasRef} width="240" height="180" class="hidden"></canvas>
-                    <button type="button" class="bg-green-600 text-white px-4 py-2 rounded mb-2" on:click={takePhoto}>
-                        Tomar foto
-                    </button>
-                    <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded" on:click={stopCamera}>
-                        Cancelar cámara
-                    </button>
-                </div>
             {/if}
             {#if imagePreview}
                 <div class="flex flex-col items-center">
@@ -254,6 +229,12 @@
                 </div>
             {/if}
         </div>
+
+        <CameraModal
+            bind:show={showCameraModal}
+            on:photo={handlePhoto}
+            on:close={closeCameraModal}
+        />
 
         <div class="flex justify-between gap-4 mt-4 w-full">
             <button

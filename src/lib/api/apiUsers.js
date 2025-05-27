@@ -27,17 +27,17 @@ export async function addUser({ name, phoneNumber, username, password, role, ima
     if (images && images.length > 0) {
         images.forEach((file) => formData.append('images', file));
     }
-    // Agrega los datos del usuario como un campo JSON
-    formData.append(
-        'request',
-        JSON.stringify({ name, phoneNumber, username, password, role })
+
+    const jsonBlob = new Blob(
+        [JSON.stringify({ name, phoneNumber, username, password, role })],
+        { type: "application/json" }
     );
+    formData.append("data", jsonBlob);
 
     const response = await fetch(API_URL, {
         method: 'POST',
         body: formData,
         credentials: 'include'
-        // No pongas headers, el navegador los gestiona
     });
 
     if (!response.ok) {

@@ -46,19 +46,64 @@ export async function logout() {
     }
 }
 
-export async function register(userRegistrationData) {
+// export async function register(userRegistrationData) {
+//     const { workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password } = userRegistrationData;
+
+//     try {
+//         const response = await fetch(`${API_AUTH_BASE_URL}/signup`, {
+//             method: 'POST',
+//             headers: JSON_HEADERS,
+//             body: JSON.stringify({ workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password }),
+//         });
+
+//         let data;
+//         const contentType = response.headers.get('Content-Type');
+
+//         if (contentType && contentType.includes('application/json')) {
+//             data = await response.json();
+//         } else {
+//             data = await response.text();
+//         }
+
+//         if (!response.ok) {
+//             const errorMsg = typeof data === 'string'
+//                 ? buildErrorMessage({ message: data }, 'Error al registrar')
+//                 : buildErrorMessage(data, 'Error al registrar');
+//             return { success: false, errors: { general: errorMsg } };
+//         }
+
+//         return { success: true, data };
+//     } catch (error) {
+//         console.error(error);
+//         return { success: false, errors: { general: error.message } };
+//     }
+// }
+export async function register(userRegistrationData, images = []) {
     const { workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password } = userRegistrationData;
 
     try {
+        const formData = new FormData();
+
+        const jsonBlob = new Blob(
+            [JSON.stringify({ workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password })],
+            { type: "application/json" }
+        );
+        formData.append("data", jsonBlob);
+
+        if (images && images.length > 0) {
+            images.forEach((img) => formData.append('images', img));
+        } else {
+            // Enviar parte vacía si no hay imágenes
+            formData.append('images', new Blob([], { type: 'application/octet-stream' }));
+        }
+
         const response = await fetch(`${API_AUTH_BASE_URL}/signup`, {
             method: 'POST',
-            headers: JSON_HEADERS,
-            body: JSON.stringify({ workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password }),
+            body: formData,
         });
 
         let data;
         const contentType = response.headers.get('Content-Type');
-
         if (contentType && contentType.includes('application/json')) {
             data = await response.json();
         } else {

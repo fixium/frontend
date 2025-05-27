@@ -1,6 +1,7 @@
 <script>
     import { register } from "$lib/api/apiAuth";
     import { validateName, validatePhoneNumber } from "$lib/utils/validation";
+    import CameraModal from "$lib/components/CameraModal.svelte";
 
     let workshopName = '';
     let workshopPhoneNumber = '';
@@ -14,6 +15,20 @@
     let successMessage = '';
     let errorMessage = '';
 
+    let showCameraModal = false;
+    let imageBlob = null;
+    let imagePreview = null;
+
+    function openCameraModal() {
+        errorMessage = '';
+        showCameraModal = true;
+    }
+
+    function handlePhoto(event) {
+        imageBlob = event.detail.blob;
+        imagePreview = event.detail.url;
+    }
+
     async function confirmarRegistro() {
         successMessage = '';
         errorMessage = '';
@@ -23,15 +38,18 @@
             return;
         }
 
-        const response = await register({
-            workshopName,
-            workshopPhoneNumber,
-            workshopContactEmail,
-            name,
-            phoneNumber,
-            username,
-            password
-        });
+        const response = await register(
+            {
+                workshopName,
+                workshopPhoneNumber,
+                workshopContactEmail,
+                name,
+                phoneNumber,
+                username,
+                password
+            },
+            imageBlob ? [imageBlob] : []
+        );
 
         if (response.success) {
             successMessage = 'Registro exitoso. Redirigiendo...';
@@ -156,6 +174,29 @@
                 </button>
             </div>
         </div>
+
+        <div class="relative mb-3">
+            <label class="block mb-1 font-semibold">Foto del taller</label>
+            {#if !imagePreview}
+                <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
+                    Abrir cámara
+                </button>
+            {/if}
+            {#if imagePreview}
+                <div class="flex flex-col items-center">
+                    <img src={imagePreview} alt="Foto tomada" class="w-32 h-32 object-cover rounded mb-2" />
+                    <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded" on:click={() => { imagePreview = null; imageBlob = null; }}>
+                        Tomar otra foto
+                    </button>
+                </div>
+            {/if}
+        </div>
+
+        <CameraModal
+            bind:show={showCameraModal}
+            on:photo={handlePhoto}
+            on:close={() => showCameraModal = false}
+        />
 
         <div class="flex flex-col items-center gap-3 mt-4 w-full">
             <button
