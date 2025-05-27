@@ -21,8 +21,13 @@
     }
 
     function takePhoto() {
+        // Ajustar el tamaño del canvas al tamaño real del video
+        const width = videoRef.videoWidth;
+        const height = videoRef.videoHeight;
+        canvasRef.width = width;
+        canvasRef.height = height;
         const context = canvasRef.getContext("2d");
-        context.drawImage(videoRef, 0, 0, canvasRef.width, canvasRef.height);
+        context.drawImage(videoRef, 0, 0, width, height);
         canvasRef.toBlob(blob => {
             dispatch("photo", { blob, url: URL.createObjectURL(blob) });
         }, "image/jpeg");
@@ -41,13 +46,13 @@
 
 {#if show}
 <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center relative" style="width: 540px;">
+    <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center relative" style="width: 640px;">
         <button class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl" on:click={() => { stopCamera(); dispatch("close"); }}>&times;</button>
         <h2 class="text-xl font-bold mb-4">Tomar foto</h2>
-        <video bind:this={videoRef} width="640" height="360" autoplay class="rounded border mb-2 bg-black">
-            <track kind="captions" label="No captions available" />
+        <video bind:this={videoRef} autoplay class="rounded border mb-2 bg-black" style="max-width: 100%; max-height: 360px;">
+            <track kind="captions" label="Sin subtítulos" />
         </video>
-        <canvas bind:this={canvasRef} width="640" height="360" class="hidden"></canvas>
+        <canvas bind:this={canvasRef} class="hidden"></canvas>
         <div class="flex gap-4 mt-2">
             <button type="button" class="bg-green-600 text-white px-4 py-2 rounded" on:click={() => { takePhoto(); stopCamera(); dispatch("close"); }}>
                 Tomar foto
