@@ -23,10 +23,8 @@ const JSON_HEADERS = {
 
 export async function addUser({ name, phoneNumber, username, password, role, images = [] }) {
     const formData = new FormData();
-    // Agrega los archivos (si hay)
-    if (images && images.length > 0) {
-        images.forEach((file) => formData.append('images', file));
-    }
+    
+    images.forEach((file) => formData.append('images', file));
 
     const jsonBlob = new Blob(
         [JSON.stringify({ name, phoneNumber, username, password, role })],

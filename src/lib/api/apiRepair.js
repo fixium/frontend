@@ -15,11 +15,29 @@ export async function getAllRepairs(ticketId) {
     return await response.json();
 }
 
-export async function createRepair(repairRequest) {
+// export async function createRepair(repairRequest) {
+//     const response = await fetch(API_URL, {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify(repairRequest),
+//         credentials: 'include'
+//     });
+//     if (!response.ok) {
+//         const errorBody = await response.json().catch(() => ({}));
+//         throw new Error(buildErrorMessage(errorBody, 'Error al crear la reparación'));
+//     }
+//     return await response.text();
+// }
+
+export async function createRepair(repairRequest, verificationImage) {
+    const formData = new FormData();
+    formData.append('repairRequest', new Blob([JSON.stringify(repairRequest)], { type: 'application/json' }));
+    
+    formData.append('verificationImage', verificationImage);
+
     const response = await fetch(API_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(repairRequest),
+        body: formData,
         credentials: 'include'
     });
     if (!response.ok) {
