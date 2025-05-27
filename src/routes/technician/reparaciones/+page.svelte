@@ -109,6 +109,8 @@
             selectedRepair.diagnosis = editDiagnosis;
             selectedRepair.repairActions = editRepairActions;
             editMode = false;
+            // recargar para reflejar cambios
+            window.location.reload();
         } catch (e) {
             error = e.message;
         }

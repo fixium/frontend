@@ -4,6 +4,16 @@
     import { createRepair } from '$lib/api/apiRepair.js';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
+    import CameraModal from '$lib/components/CameraModal.svelte';
+
+    let showCameraModal = false;
+    let verificationImage = null;
+    let imagePreview = null;
+    let loading = false;
+
+    function openCameraModal() {
+        showCameraModal = true;
+    }
 
     let tickets = [];
     let ticketId = '';
@@ -27,24 +37,47 @@
         }
     });
 
+    function handlePhoto(event) {
+        verificationImage = event.detail.blob;
+        imagePreview = event.detail.url;
+    }
+
     async function handleSubmit() {
         error = '';
         success = '';
-        if (!ticketId || diagnosis.length < 5 || repairActions.length < 5) {
-            error = 'Completa todos los campos correctamente.';
+        loading = true;
+        if (!ticketId || diagnosis.length < 5 || repairActions.length < 5 || !verificationImage) {
+            error = 'Completa todos los campos correctamente y toma una foto de verificación.';
+            loading = false;
             return;
         }
         try {
-            await createRepair({ ticketId: Number(ticketId), diagnosis, repairActions });
+            await createRepair({ ticketId: Number(ticketId), diagnosis, repairActions }, verificationImage);
             success = 'Reparación creada con éxito';
             setTimeout(() => goto('/receptionist/tickets'), 1000);
         } catch (e) {
             error = e.message;
+        } finally {
+            loading = false;
         }
     }
 </script>
 
 <style>
+    .spinner {
+        border: 4px solid #e5e7eb;
+        border-top: 4px solid #2563eb;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem auto;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg);}
+        100% { transform: rotate(360deg);}
+    }
+
     .form-container {
         max-width: 520px;
         margin: 2.5rem auto 0 auto;
@@ -127,39 +160,63 @@
     {/if}
 
     <form on:submit|preventDefault={handleSubmit} class="space-y-6">
+        {#if loading}
+
         <div>
-            <label for="diagnosis" class="form-label">Diagnóstico:</label>
-            <input
-                id="diagnosis"
-                type="text"
-                bind:value={diagnosis}
-                minlength="5"
-                maxlength="100"
-                required
-                class="form-input"
-                placeholder="Describe el diagnóstico del problema"
-            />
+            <div class="spinner"></div>
+            <p class="form-message">Verificando foto y creando reparación, por favor espera...</p>
         </div>
-        <div>
-            <label for="repairActions" class="form-label">Acciones de reparación:</label>
-            <textarea
-                id="repairActions"
-                bind:value={repairActions}
-                minlength="5"
-                maxlength="1000"
-                required
-                rows="4"
-                class="form-textarea"
-                placeholder="Indica las acciones realizadas para la reparación"
-            ></textarea>
-        </div>
-        <div class="flex justify-end">
-            <button
-                type="submit"
-                class="form-btn"
-            >
-                Crear reparación
-            </button>
-        </div>
+        {/if}
+            <div class:opacity-50={loading}>
+                <label for="diagnosis" class="form-label">Diagnóstico:</label>
+                <input
+                    id="diagnosis"
+                    type="text"
+                    bind:value={diagnosis}
+                    minlength="5"
+                    maxlength="100"
+                    required
+                    class="form-input"
+                    placeholder="Describe el diagnóstico del problema"
+                    disabled={loading}
+                />
+            </div>
+            <div class:opacity-50={loading}>
+                <label for="repairActions" class="form-label">Acciones de reparación:</label>
+                <textarea
+                    id="repairActions"
+                    bind:value={repairActions}
+                    minlength="5"
+                    maxlength="1000"
+                    required
+                    rows="4"
+                    class="form-textarea"
+                    placeholder="Indica las acciones realizadas para la reparación"
+                    disabled={loading}
+                ></textarea>
+            </div>
+            <div class="verification-area mb-4">
+                <label class="form-label" for="verificationImageInput">Toma una foto tuya para verificar tu identidad</label>
+                <input id="verificationImageInput" type="file" style="display: none;" tabindex="-1" aria-hidden="true" />
+                <div class="flex flex-col items-center">
+                    {#if !imagePreview}
+                        <button type="button" class="form-btn" on:click={openCameraModal}>Tomar foto</button>
+                    {/if}
+                    {#if imagePreview}
+                        <img src={imagePreview} alt="Foto de verificación" class="max-w-xs max-h-48 rounded mb-2 shadow" style="height:auto; width:auto; display:block;" />
+                        <button type="button" class="form-btn" on:click={() => { imagePreview = null; verificationImage = null; }}>Tomar otra foto</button>
+                    {/if}
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button
+                    type="submit"
+                    class="form-btn"
+                    disabled={loading}
+                >
+                    Crear reparación
+                </button>
+            </div>
     </form>
+    <CameraModal bind:show={showCameraModal} on:photo={handlePhoto} on:close={() => showCameraModal = false} />
 </div>
