@@ -18,8 +18,8 @@
     let isLoading = false;
 
     // --- NUEVO: para la cámara ---
-    let imageBlob = null;
-    let imagePreview = null;
+    let imageBlobs = [];      // Cambia a arreglo
+    let imagePreviews = [];   // Cambia a arreglo
     let showCameraModal = false;
 
     function openCameraModal() {
@@ -31,9 +31,17 @@
         showCameraModal = false;
     }
 
+    // Permitir agregar varias fotos
     function handlePhoto(event) {
-        imageBlob = event.detail.blob;
-        imagePreview = event.detail.url;
+        if (imageBlobs.length < 3) {
+            imageBlobs = [...imageBlobs, event.detail.blob];
+            imagePreviews = [...imagePreviews, event.detail.url];
+        }
+    }
+
+    function removePhoto(index) {
+        imageBlobs = imageBlobs.filter((_, i) => i !== index);
+        imagePreviews = imagePreviews.filter((_, i) => i !== index);
     }
 
     async function handleRegister() {
@@ -53,10 +61,14 @@
             return;
         }
 
+        if (imageBlobs.length < 3) {
+            errorMessage = 'Debes tomar al menos 3 fotos del usuario.';
+            isLoading = false;
+            return;
+        }
+
         try {
-            let images = [];
-            if (imageBlob) images = [imageBlob];
-            await addUser({ name, phoneNumber, username, password, role, images });
+            await addUser({ name, phoneNumber, username, password, role, images: imageBlobs });
             successMessage = 'Usuario registrado exitosamente.';
             setTimeout(() => goto('/admin/usuarios'), 500);
         } catch (error) {
@@ -213,20 +225,25 @@
 
         <!-- Camara -->
         <div class="relative mb-3">
-            <label for="user-photo-input" class="block mb-1 font-semibold">Foto del usuario</label>
-            <input id="user-photo-input" type="file" accept="image/*" class="hidden" tabindex="-1" aria-hidden="true" />
-            {#if !imagePreview}
-                <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
-                    Abrir cámara
+            <label for="take-photo-btn" class="block mb-1 font-semibold">Fotos del usuario (mínimo 3)</label>
+            {#if imagePreviews.length < 3}
+                <button id="take-photo-btn" type="button" class="bg-blue-600 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
+                    Tomar foto
                 </button>
             {/if}
-            {#if imagePreview}
-                <div class="flex flex-col items-center">
-                    <img src={imagePreview} alt="Foto tomada" class="w-32 h-32 object-cover rounded mb-2" />
-                    <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded" on:click={() => { imagePreview = null; imageBlob = null; }}>
-                        Tomar otra foto
-                    </button>
-                </div>
+            <div class="flex gap-2 flex-wrap">
+                {#each imagePreviews as preview, idx}
+                    <div class="relative">
+                        <img src={preview} alt="Foto tomada" class="w-24 object-cover rounded mb-2" />
+                        <button type="button" class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs"
+                            on:click={() => removePhoto(idx)}>
+                            ×
+                        </button>
+                    </div>
+                {/each}
+            </div>
+            {#if imagePreviews.length < 3}
+                <div class="text-sm text-gray-500">Debes tomar al menos 3 fotos.</div>
             {/if}
         </div>
 
