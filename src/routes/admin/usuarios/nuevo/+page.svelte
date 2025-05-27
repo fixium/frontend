@@ -15,6 +15,39 @@
 
     let isLoading = false;
 
+    // --- NUEVO: para la cámara ---
+    let videoRef;
+    let canvasRef;
+    let stream = null;
+    let imageBlob = null;
+    let imagePreview = null;
+
+    async function startCamera() {
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            videoRef.srcObject = stream;
+            await videoRef.play();
+        } catch (err) {
+            errorMessage = "No se pudo acceder a la cámara.";
+        }
+    }
+
+    function takePhoto() {
+        const context = canvasRef.getContext("2d");
+        context.drawImage(videoRef, 0, 0, canvasRef.width, canvasRef.height);
+        canvasRef.toBlob(blob => {
+            imageBlob = blob;
+            imagePreview = URL.createObjectURL(blob);
+        }, "image/jpeg");
+    }
+
+    function stopCamera() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+    }
+
     async function handleRegister() {
         successMessage = '';
         errorMessage = '';
@@ -33,13 +66,17 @@
         }
 
         try {
-            await addUser({ name, phoneNumber, username, password, role });
+            // Si hay foto, la enviamos como images
+            let images = [];
+            if (imageBlob) images = [imageBlob];
+            await addUser({ name, phoneNumber, username, password, role, images });
             successMessage = 'Usuario registrado exitosamente.';
             setTimeout(() => goto('/admin/usuarios'), 500);
         } catch (error) {
             errorMessage = error.message || 'Error al registrar el usuario.';
         } finally {
             isLoading = false;
+            stopCamera();
         }
     }
 
@@ -186,6 +223,36 @@
                 </select>
                 <label for="role" class="floating-label">Rol de usuario</label>
             </div>
+        </div>
+
+        <!-- Camara -->
+        <div class="relative mb-3">
+            <label class="block mb-1 font-semibold">Foto del usuario</label>
+            {#if !stream && !imagePreview}
+                <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded mb-2" on:click={startCamera}>
+                    Abrir cámara
+                </button>
+            {/if}
+            {#if stream}
+                <div class="flex flex-col items-center">
+                    <video bind:this={videoRef} width="240" height="180" autoplay class="rounded border mb-2"></video>
+                    <canvas bind:this={canvasRef} width="240" height="180" class="hidden"></canvas>
+                    <button type="button" class="bg-green-600 text-white px-4 py-2 rounded mb-2" on:click={takePhoto}>
+                        Tomar foto
+                    </button>
+                    <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded" on:click={stopCamera}>
+                        Cancelar cámara
+                    </button>
+                </div>
+            {/if}
+            {#if imagePreview}
+                <div class="flex flex-col items-center">
+                    <img src={imagePreview} alt="Foto tomada" class="w-32 h-32 object-cover rounded mb-2" />
+                    <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded" on:click={() => { imagePreview = null; imageBlob = null; }}>
+                        Tomar otra foto
+                    </button>
+                </div>
+            {/if}
         </div>
 
         <div class="flex justify-between gap-4 mt-4 w-full">

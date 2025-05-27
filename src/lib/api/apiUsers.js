@@ -5,12 +5,39 @@ const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };
 
-export async function addUser({ name, phoneNumber, username, password, role }) {
+// export async function addUser({ name, phoneNumber, username, password, role }) {
+//     const response = await fetch(API_URL, {
+//         method: 'POST',
+//         headers: JSON_HEADERS,
+//         body: JSON.stringify({ name, phoneNumber, username, password, role }),
+//         credentials: 'include'
+//     });
+
+//     if (!response.ok) {
+//         const errorBody = await response.json().catch(() => ({}));
+//         throw new Error(buildErrorMessage(errorBody, 'Error al agregar usuario'));
+//     }
+
+//     return await response.text();
+// }
+
+export async function addUser({ name, phoneNumber, username, password, role, images = [] }) {
+    const formData = new FormData();
+    // Agrega los archivos (si hay)
+    if (images && images.length > 0) {
+        images.forEach((file) => formData.append('images', file));
+    }
+    // Agrega los datos del usuario como un campo JSON
+    formData.append(
+        'request',
+        JSON.stringify({ name, phoneNumber, username, password, role })
+    );
+
     const response = await fetch(API_URL, {
         method: 'POST',
-        headers: JSON_HEADERS,
-        body: JSON.stringify({ name, phoneNumber, username, password, role }),
+        body: formData,
         credentials: 'include'
+        // No pongas headers, el navegador los gestiona
     });
 
     if (!response.ok) {
