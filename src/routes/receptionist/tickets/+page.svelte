@@ -157,23 +157,26 @@
 
 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
     <h1 class="text-3xl font-extrabold text-blue-700 mb-8 text-center tracking-tight">Tickets de recepción</h1>
+    {#if tickets.length > 0}
     <div class="mb-6 flex flex-wrap gap-4 items-end">
         <div class="flex flex-wrap gap-4 items-end flex-grow">
         <div>
-            <label class="block text-sm font-medium text-gray-700">Nombre cliente</label>
-            <input type="text" bind:value={filtroNombre} class="border rounded px-2 py-1" placeholder="Nombre cliente" />
+            <label for="filtro-nombre" class="block text-sm font-medium text-gray-700">Nombre cliente</label>
+            <input id="filtro-nombre" type="text" bind:value={filtroNombre} class="border rounded px-2 py-1" placeholder="Nombre cliente" />
         </div>
         <div>
-            <label class="block text-sm font-medium text-gray-700"># Ticket</label>
-            <input type="text" bind:value={filtroTicket} class="border rounded px-2 py-1" placeholder="Número ticket" />
+            <label for="filtro-ticket" class="block text-sm font-medium text-gray-700"># Ticket</label>
+            <input id="filtro-ticket" type="text" bind:value={filtroTicket} class="border rounded px-2 py-1" placeholder="Número ticket" />
         </div>
         <div>
-            <label class="block text-sm font-medium text-gray-700">IMEI</label>
-            <input type="text" bind:value={filtroImei} class="border rounded px-2 py-1" placeholder="IMEI" />
+            <label for="filtro-imei" class="block text-sm font-medium text-gray-700">IMEI</label>
+            <input id="filtro-imei" type="text" bind:value={filtroImei} class="border rounded px-2 py-1" placeholder="IMEI" />
         </div>
         <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" on:click={aplicarFiltro}>Filtrar</button>
         <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" on:click={limpiarFiltro}>Limpiar</button>
+        </div>
     </div>
+    {/if}
     {#if role !== 'ROLE_TECHNICIAN'}
         <div class="ml-auto">
             <button
@@ -184,7 +187,6 @@
             </button>
         </div>
     {/if}
-    </div>
     {#if error}
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md mb-6">
             <p class="font-semibold">{error}</p>
