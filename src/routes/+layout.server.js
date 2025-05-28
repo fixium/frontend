@@ -30,7 +30,7 @@ export function load({ cookies, url }) {
             deniedRoutes: []
         },
         ROLE_TECHNICIAN: {
-            allowedRoutes: ['/technician', '/receptionist/tickets'],
+            allowedRoutes: ['/technician'],
             deniedRoutes: ['/admin', '/receptionist/tickets/nuevo']
         },
         ROLE_RECEPTIONIST: {

@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { getAllTickets } from '$lib/api/apiTickets.js';
+    import { getAllMyTickets } from '$lib/api/apiTickets.js';
     import { getAllRepairs } from '$lib/api/apiRepair.js';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
@@ -34,8 +34,8 @@
             showActions = true;
         }
         try {
-            tickets = await getAllTickets();
-            // Si viene ticketId en la URL, selecciónalo y carga reparaciones
+            tickets = await getAllMyTickets();
+            
             if (urlTicketId && tickets.some(t => t.id == urlTicketId)) {
                 selectedTicketId = urlTicketId;
                 await handleTicketChange();

@@ -1,6 +1,5 @@
 <script>
 	import { fetchUserById, changePassword, deleteMyAccount } from '$lib/api/apiUsers.js';
-	import { logout } from '$lib/api/apiAuth.js';
 	import { onMount } from 'svelte';
 
 	export let data;
@@ -40,7 +39,7 @@
 		try {
 			await deleteMyAccount();
 			deleteSuccess = 'Tu cuenta ha sido eliminada correctamente.';
-			handleLogout();
+			goto('/auth/login');
 		} catch (e) {
 			deleteError = e.message;
 		}
@@ -50,15 +49,6 @@
 		showDeleteModal = false;
 		confirmEmail = '';
 		confirmEmailError = '';
-	}
-
-	async function handleLogout() {
-		const success = await logout();
-		if (success) {
-			goto('/auth/login'); // Redirige al login después de cerrar sesión
-		} else {
-			alert('Error al cerrar sesión. Inténtalo de nuevo.');
-		}
 	}
 
 	onMount(async () => {

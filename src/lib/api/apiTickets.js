@@ -13,6 +13,17 @@ export async function getAllTickets() {
 	return await res.json();
 }
 
+export async function getAllMyTickets() {
+	const res = await fetch(`${API_URL}/my-tickets`, {
+		credentials: 'include'
+	});
+	if (!res.ok) {
+		const errorBody = await res.json().catch(() => ({}));
+		throw new Error(buildErrorMessage(errorBody, 'Error al obtener tickets'));
+	}
+	return await res.json();
+}
+
 export async function filterTickets({ clientName, ticketNumber, imei }) {
 	const formData = new FormData();
 	if (clientName) formData.append('clientName', clientName);

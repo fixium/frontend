@@ -65,7 +65,13 @@
 					name: 'Recepción',
 					icon: 'inbox',
 					href: '/receptionist/tickets',
-					roles: ['ROLE_ADMIN', 'ROLE_TECHNICIAN', 'ROLE_RECEPTIONIST']
+					roles: ['ROLE_ADMIN', 'ROLE_RECEPTIONIST']
+				},
+				{
+					name: 'Mis tickets',
+					icon: 'inbox',
+					href: '/technician/tickets',
+					roles: ['ROLE_ADMIN', 'ROLE_TECHNICIAN']
 				},
 				{
 					name: 'Reparaciones',
