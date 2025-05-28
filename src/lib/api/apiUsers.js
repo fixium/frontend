@@ -86,6 +86,17 @@ export async function fetchUsers() {
 	return await response.json();
 }
 
+export async function fetchTechnicians() {
+    const response = await fetch(`${API_URL}/technicians`, {
+        credentials: 'include'
+    });
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al obtener técnicos'));
+    }
+    return await response.json();
+}
+
 export async function fetchUserById(userId) {
 	const response = await fetch(`${API_URL}/${userId}`, {
 		credentials: 'include'

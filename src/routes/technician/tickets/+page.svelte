@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { getAllMyTickets, downloadTicketPdf, updateTicketStatus, getTicketDetail, filterTickets } from '$lib/api/apiTickets.js';
+    import { getAllMyTickets, downloadTicketPdf, updateTicketStatus, getTicketDetail, filterTickets, filterMyTickets } from '$lib/api/apiTickets.js';
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
 
@@ -47,7 +47,7 @@
 
     async function aplicarFiltro() {
         try {
-            tickets = await filterTickets({
+            tickets = await filterMyTickets({
                 clientName: filtroNombre,
                 ticketNumber: filtroTicket,
                 imei: filtroImei
@@ -101,7 +101,7 @@
     async function confirmarCambioEstado() {
         try {
             await updateTicketStatus(selectedTicketId, newStatus);
-            tickets = await getAllTickets();
+            tickets = await getAllMyTickets();
             showStatusModal = false;
         } catch (e) {
             statusChangeError = e.message;
@@ -155,7 +155,7 @@
 {/if}
 
 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-    <h1 class="text-3xl font-extrabold text-blue-700 mb-8 text-center tracking-tight">Tickets de reparación</h1>
+    <h1 class="text-3xl font-extrabold text-blue-700 mb-8 text-center tracking-tight">Mis Tickets Asignados</h1>
     {#if existsTickets}
     <div class="mb-6 flex flex-wrap gap-4 items-end">
         <div class="flex flex-wrap gap-4 items-end flex-grow">
@@ -240,7 +240,7 @@
                                             Ver Detalles
                                         </button>
                                         <button
-                                            class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
+                                            class="bg-yellow-600 hover:bg-yellow-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
                                             on:click={() => cambiarEstado(ticket.id)}
                                             type="button"
                                         >

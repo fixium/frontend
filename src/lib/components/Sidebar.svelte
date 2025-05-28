@@ -77,7 +77,7 @@
 					name: 'Reparaciones',
 					icon: 'clock',
 					href: '/technician/reparaciones',
-					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN', 'ROLE_RECEPTIONIST']
+					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				}
 			]
 		},

@@ -42,6 +42,24 @@ export async function filterTickets({ clientName, ticketNumber, imei }) {
 	return await res.json();
 }
 
+export async function filterMyTickets({ clientName, ticketNumber, imei }) {
+	const formData = new FormData();
+	if (clientName) formData.append('clientName', clientName);
+	if (ticketNumber) formData.append('ticketNumber', ticketNumber);
+	if (imei) formData.append('imei', imei);
+
+	const res = await fetch(`${API_URL}/filter-my-tickets`, {
+		method: 'POST',
+		credentials: 'include',
+		body: formData
+	});
+	if (!res.ok) {
+		const errorBody = await res.json().catch(() => ({}));
+		throw new Error(buildErrorMessage(errorBody, 'Error al filtrar tickets'));
+	}
+	return await res.json();
+}
+
 export async function downloadTicketPdf(id) {
 	const res = await fetch(`${API_URL}/${id}/pdf`, {
 		method: 'GET',
@@ -102,11 +120,11 @@ export async function getTicketDetail(id) {
 	return await res.json();
 }
 
-export async function registerTicket({ deviceId, initialStateDescription }) {
+export async function registerTicket({ deviceId, initialStateDescription, technicianId }) {
 	const res = await fetch(`${API_URL}`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ deviceId, initialStateDescription }),
+		body: JSON.stringify({ deviceId, initialStateDescription, technicianId }),
 		credentials: 'include'
 	});
 

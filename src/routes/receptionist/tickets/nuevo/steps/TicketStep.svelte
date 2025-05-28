@@ -3,19 +3,45 @@
     import { wizardData } from '$lib/stores/wizardStore';
     import { get } from 'svelte/store';
     import { registerTicket } from '$lib/api/apiTickets';
+    import { fetchTechnicians } from '$lib/api/apiUsers';
+    import { onMount } from 'svelte';
 
     let initialStateDescription = '';
     let loading = false;
     let error = '';
 
+    // Técnicos
+    let technicians = [];
+    let selectedTechnicianId = '';
+    let technicianError = '';
+
+    onMount(async () => {
+        try {
+            technicians = await fetchTechnicians();
+        } catch (err) {
+            technicianError = err.message;
+        }
+    });
+
+    function resetTecnico() {
+        selectedTechnicianId = '';
+    }
+
     const handleCreateTicket = async () => {
         loading = true;
         error = '';
+        // Validación: técnico obligatorio
+        if (!selectedTechnicianId) {
+            error = 'Debes seleccionar un técnico antes de continuar.';
+            loading = false;
+            return;
+        }
         try {
             const { deviceId } = get(wizardData);
             const ticketId = await registerTicket({
                 deviceId,
-                initialStateDescription
+                initialStateDescription,
+                technicianId: Number(selectedTechnicianId)
             });
             wizardData.update((s) => ({ ...s, ticketId }));
             step.set(4); // Avanza al paso 4
@@ -36,14 +62,50 @@
     placeholder="Ej. No enciende, pantalla rota, etc."
     required
   ></textarea>
+
+  <!-- Campo para asignar técnico -->
+  <div class="mt-6">
+    <label for="technician-select" class="block mb-2 font-semibold text-gray-700">Asignar técnico:</label>
+    <select
+      id="technician-select"
+      class="form-select w-full px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+      bind:value={selectedTechnicianId}
+    >
+      <option value="">-- Sin técnico asignado --</option>
+      {#each technicians as t}
+        <option value={t.id}>
+          {t.name} ({t.username})
+        </option>
+      {/each}
+    </select>
+    {#if technicianError}
+      <p class="text-red-600 mb-2 text-center font-semibold">{technicianError}</p>
+    {/if}
+    {#if selectedTechnicianId}
+      <div class="bg-blue-50 border border-blue-300 rounded-lg p-2 mt-2 animate-fade-in flex items-center justify-between">
+        <span class="text-blue-900 text-sm">
+          Técnico seleccionado:
+          <strong>
+            {#if technicians.length}
+              {#each technicians.filter(t => String(t.id) === selectedTechnicianId) as t}
+                {t.name} ({t.username})
+              {/each}
+            {/if}
+          </strong>
+        </span>
+        <button type="button" class="ml-2 text-xs text-blue-600 hover:underline" on:click={resetTecnico}>Quitar</button>
+      </div>
+    {/if}
+  </div>
+
   {#if error}
     <p class="text-red-600 mb-4 text-center font-semibold">{error}</p>
   {/if}
-  <div class="flex justify-end">
+  <div class="flex justify-end mt-6">
     <button
       on:click={handleCreateTicket}
       class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition-all duration-150 disabled:opacity-60"
-      disabled={loading || !initialStateDescription}
+      disabled={loading || !initialStateDescription || !selectedTechnicianId}
     >
       {loading ? 'Creando...' : 'Crear ticket'}
     </button>
