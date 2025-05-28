@@ -9,7 +9,7 @@ export function load({ cookies, url }) {
     const isPublic = publicPaths.some(p => path.startsWith(p));
 
     // Rutas accesibles para cualquier usuario autenticado
-    const sharedAuthPaths = ['/dashboard', '/'];
+    const sharedAuthPaths = ['/dashboard', '/', '/mi-cuenta'];
 
     if (!jwt) {
         if (isPublic) return {};
@@ -17,7 +17,7 @@ export function load({ cookies, url }) {
     }
 
     // Decodificar el JWT para obtener el rol, username y name
-    const { role, username, name, exp } = parseJwt(jwt) || {};
+    const { role, username, name, id, exp } = parseJwt(jwt) || {};
 
     if (!role || !exp || Date.now() / 1000 > exp) {
         throw redirect(302, '/auth/login');
@@ -51,7 +51,7 @@ export function load({ cookies, url }) {
         }
     }
 
-    return { role, username, name, isAuthenticated: true };
+    return { role, username, name, id, isAuthenticated: true };
 }
 
 function parseJwt(token) {

@@ -21,6 +21,10 @@
 		}
 	}
 
+	function handleAccountManagement() {
+		goto('/mi-cuenta');
+	}
+
 	onMount(() => {
 		currentPath = window.location.pathname;
 	});
@@ -210,9 +214,11 @@
 				<div class="absolute bottom-16 left-4 bg-gray-800 text-white rounded-md shadow-lg w-48">
 					<ul class="py-2">
 						<li
-							class="px-4 py-2 text-gray-500 cursor-not-allowed"
+							class="px-4 py-2 hover:bg-blue-800 cursor-pointer"
+							on:click={() => goto('/mi-cuenta')}
+							on:keydown={(e) => e.key === 'Enter' && handleAccountManagement()}
 							role="menuitem"
-							aria-disabled="true"
+							tabindex="0"
 						>
 							Gestionar cuenta
 						</li>
@@ -221,6 +227,7 @@
 							on:click={handleLogout}
 							on:keydown={(e) => e.key === 'Enter' && handleLogout()}
 							role="menuitem"
+							tabindex="0"
 						>
 							Cerrar sesión
 						</li>

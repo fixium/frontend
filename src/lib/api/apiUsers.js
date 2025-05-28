@@ -97,3 +97,19 @@ export async function fetchUserById(userId) {
     }
     return await response.json();
 }
+
+export async function changePassword(passwordRequest) {
+    const response = await fetch(`${API_URL}/change-password`, {
+        method: 'PATCH',
+        headers: JSON_HEADERS,
+        body: JSON.stringify(passwordRequest),
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al cambiar la contraseña'));
+    }
+
+    return await response.text();
+}
