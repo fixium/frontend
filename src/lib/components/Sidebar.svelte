@@ -71,7 +71,7 @@
 					name: 'Mis tickets',
 					icon: 'inbox',
 					href: '/technician/tickets',
-					roles: ['ROLE_ADMIN', 'ROLE_TECHNICIAN']
+					roles: ['ROLE_TECHNICIAN']
 				},
 				{
 					name: 'Reparaciones',

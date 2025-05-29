@@ -27,7 +27,7 @@ export function load({ cookies, url }) {
     const accessMatrix = {
         ROLE_ADMIN: {
             allowedRoutes: ['/admin', '/receptionist', '/technician'],
-            deniedRoutes: []
+            deniedRoutes: ['/technician/reparaciones/nueva']
         },
         ROLE_TECHNICIAN: {
             allowedRoutes: ['/technician'],
