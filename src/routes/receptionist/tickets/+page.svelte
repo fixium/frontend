@@ -238,15 +238,6 @@
                                         >
                                             PDF
                                         </button>
-                                        {#if role === 'ROLE_ADMIN'}
-                                            <button
-                                                class="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
-                                                on:click={() => goto(`/technician/reparaciones?ticketId=${ticket.id}`)}
-                                                type="button"
-                                            >
-                                                Reparaciones
-                                            </button>
-                                        {/if}
                                     </td>
                                 </tr>
                             {/each}

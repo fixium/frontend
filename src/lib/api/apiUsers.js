@@ -75,15 +75,15 @@ export async function deleteUser(userId) {
 	return true;
 }
 
-export async function fetchUsers() {
-	const response = await fetch(API_URL, {
-		credentials: 'include'
-	});
-	if (!response.ok) {
-		const errorBody = await response.json().catch(() => ({}));
-		throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuarios'));
-	}
-	return await response.json();
+export async function fetchUsers(customFetch = fetch) {
+    const response = await customFetch(API_URL, {
+        credentials: 'include'
+    });
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuarios'));
+    }
+    return await response.json();
 }
 
 export async function fetchTechnicians() {

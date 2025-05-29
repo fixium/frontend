@@ -19,6 +19,8 @@
     let imageBlob = null;
     let imagePreview = null;
 
+    let showReasonModal = false;
+
     function openCameraModal() {
         errorMessage = '';
         showCameraModal = true;
@@ -67,7 +69,7 @@
     }
 </script>
 
-<div class="h-screen flex items-center justify-center p-4 overflow-auto">
+<div class="min-h-screen flex items-center justify-center p-4 overflow-auto">
     <div class="w-full max-w-md flex flex-col items-center">
         <h1 class="text-3xl font-bold mb-4 text-center">Registro de taller</h1>
 
@@ -176,11 +178,25 @@
         </div>
 
         <div class="relative mb-3">
-            <label class="block mb-1 font-semibold">Foto del taller</label>
+            <label class="block mb-1 font-semibold w-full text-center">Foto del administrador del taller
+                <button
+                type="button"
+                class="ml-1 p-1 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs"
+                aria-label="¿Por qué pedimos la foto?"
+                on:click={() => showReasonModal = true}
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="white"/>
+                    <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8v4m0 4h.01"/>
+                </svg>
+            </button>
+            </label>
             {#if !imagePreview}
-                <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
-                    Abrir cámara
-                </button>
+                <div class="flex justify-center">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
+                        Abrir cámara
+                    </button>
+                </div>
             {/if}
             {#if imagePreview}
                 <div class="flex flex-col items-center">
@@ -215,6 +231,20 @@
         </div>
     </div>
 </div>
+
+{#if showReasonModal}
+    <div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">
+            <h2 class="font-bold mb-2 text-lg">¿Por qué pedimos la foto?</h2>
+            <p class="mb-4 text-sm">
+                Solicitamos la foto del administrador para validar su identidad y proteger la seguridad de tu taller y de tus clientes. <br>Esta verificación nos ayuda a garantizar que solo personas autorizadas puedan realizar acciones importantes dentro del sistema.
+            </p>
+            <button class="bg-blue-600 hover:bg-blue-800 text-white px-4 py-1 rounded" on:click={() => showReasonModal = false}>
+                Entendido
+            </button>
+        </div>
+    </div>
+{/if}
 
 <style>
     .relative {

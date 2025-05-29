@@ -48,16 +48,16 @@
 <div class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
     <div class="bg-white rounded-lg shadow-lg p-6 flex flex-col items-center relative" style="width: 640px;">
         <button class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl" on:click={() => { stopCamera(); dispatch("close"); }}>&times;</button>
-        <h2 class="text-xl font-bold mb-4">Tomar foto</h2>
+        <h2 class="text-xl font-bold mb-4">Capturar</h2>
         <video bind:this={videoRef} autoplay class="rounded border mb-2 bg-black" style="max-width: 100%; max-height: 360px;">
             <track kind="captions" label="Sin subtítulos" />
         </video>
         <canvas bind:this={canvasRef} class="hidden"></canvas>
         <div class="flex gap-4 mt-2">
-            <button type="button" class="bg-green-600 text-white px-4 py-2 rounded" on:click={() => { takePhoto(); stopCamera(); dispatch("close"); }}>
-                Tomar foto
+            <button type="button" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded" on:click={() => { takePhoto(); stopCamera(); dispatch("close"); }}>
+                Capturar
             </button>
-            <button type="button" class="bg-gray-400 text-white px-4 py-2 rounded" on:click={() => { stopCamera(); dispatch("close"); }}>
+            <button type="button" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded" on:click={() => { stopCamera(); dispatch("close"); }}>
                 Cancelar
             </button>
         </div>

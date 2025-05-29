@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { getAllMyTickets } from '$lib/api/apiTickets.js';
+    import { getAllMyTickets, getAllTickets } from '$lib/api/apiTickets.js';
     import { getAllRepairs } from '$lib/api/apiRepair.js';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
@@ -34,7 +34,19 @@
             showActions = true;
         }
         try {
-            tickets = await getAllMyTickets();
+            if (urlTicketId) {
+                if (role === 'ROLE_ADMIN') {
+                    tickets = await getAllTickets();
+                } else {
+                    tickets = await getAllMyTickets();
+                }
+            } else {
+                if(role === 'ROLE_TECHNICIAN') {
+                    tickets = await getAllMyTickets();
+                } else {
+                    tickets = await getAllTickets();
+                }
+            }
             
             if (urlTicketId && tickets.some(t => t.id == urlTicketId)) {
                 selectedTicketId = urlTicketId;
@@ -204,7 +216,7 @@
             </div>
         {/if}
         <div class="flex gap-3 mt-4 md:mt-0">
-            {#if (selectedTicketId || (imei && repairs.length > 0)) && role !== 'ROLE_RECEPTIONIST'}
+            {#if (selectedTicketId || (imei && repairs.length > 0)) && role !== 'ROLE_ADMIN'}
                 <button
                     class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded shadow font-semibold"
                     on:click={() => {
@@ -256,7 +268,7 @@
                                 <td class="px-4 py-2 border-b">{new Date(repair.createdAt).toLocaleString('es-MX')}</td>
                                 <td class="px-4 py-2 border-b">{new Date(repair.updatedAt).toLocaleString('es-MX')}</td>
                                 <td class="px-4 py-2 border-b flex gap-2 justify-center">
-                                    {#if role !== 'ROLE_RECEPTIONIST'}
+                                    {#if role !== 'ROLE_ADMIN'}
                                         <button
                                             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
                                             on:click={() => handleEditModal(repair)}

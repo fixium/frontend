@@ -46,6 +46,7 @@
         error = '';
         success = '';
         loading = true;
+
         if (!ticketId || diagnosis.length < 5 || repairActions.length < 5 || !verificationImage) {
             error = 'Completa todos los campos correctamente y toma una foto de verificación.';
             loading = false;
