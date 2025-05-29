@@ -72,18 +72,44 @@
   }
 </script>
 
-<main class="p-6 flex flex-col h-full max-h-full">
-  <h1 class="text-3xl font-bold mb-4">Asistente Técnico</h1>
+<style>
+  /* Scrollbar personalizada */
+  .chat-container::-webkit-scrollbar {
+    width: 8px;
+  }
+  .chat-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+  }
+  .chat-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Spinner animado */
+  .spinner {
+    border-top-color: #2563eb;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
 
-  <div class="chat-container flex flex-col gap-4 flex-grow overflow-y-auto">
+<main class="fixed inset-0 flex flex-col bg-gradient-to-br from-blue-100 via-white to-gray-200 overflow-hidden">
+  <div class="flex flex-col items-center">
+    <h1 class="text-4xl font-extrabold mb-6 mt-8 text-blue-700 drop-shadow">Asistente Técnico</h1>
+  </div>
+
+  <div class="chat-container flex flex-col gap-4 flex-grow overflow-y-auto px-2 md:px-0 py-4 max-w-2xl mx-auto w-full">
     {#each $messages as msg, index}
-      <div class="flex flex-col items-start">
+      <div class="flex flex-col items-start w-full">
         <div
-          class={`rounded-2xl p-4 max-w-2xl whitespace-pre-wrap break-words ${
-            msg.role === 'user'
-              ? 'bg-gray-200 ml-auto text-right'
-              : 'bg-gray-300 mr-auto text-left'
-          }`}
+          class={`relative rounded-3xl px-5 py-3 max-w-xl min-w-[80px] shadow-md transition-all
+            ${
+              msg.role === 'user'
+                ? 'bg-blue-500 text-white ml-auto mr-2 self-end rounded-br-none'
+                : 'bg-white text-gray-800 mr-auto ml-2 self-start rounded-bl-none border border-gray-200'
+            }
+          `}
         >
           {#if msg.role === 'assistant'}
             <MarkdownRenderer content={msg.content} />
@@ -91,52 +117,41 @@
             <p class="font-semibold">{msg.content}</p>
           {/if}
         </div>
-        <!-- <button
-            class="mt-2 text-blue-500 hover:underline self-end flex items-center gap-1 p-2"
-            on:click={() => copyToClipboard(msg.content, index)}
-            >
-            {#if msg.copied}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-green-500" viewBox="0 0 24 24">
-                <path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/>
-                </svg>
-            {:else}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-blue-500" viewBox="0 0 24 24">
-                <path d="M19 21H9c-1.1 0-2-.9-2-2V7H5V5h4V3h6v2h4v2h-2v12c0 1.1-.9 2-2 2zm-6-2h6V7H9v12zm-2-8H7v2h2v-2zm0 4H7v2h2v-2z"/>
-                </svg>
-            {/if}
-            </button> -->
       </div>
     {/each}
 
     {#if isLoading}
-    <div class="self-start bg-gray-300 rounded-2xl p-4 max-w-xl flex items-center gap-2">
-        <div class="spinner w-6 h-6 border-4 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
-    </div>
+      <div class="self-start bg-white border border-gray-200 rounded-3xl px-5 py-3 max-w-xl flex items-center gap-2 shadow-md ml-2">
+        <div class="spinner w-6 h-6 border-4 border-blue-300 border-t-blue-600 rounded-full"></div>
+        <span class="text-gray-500 font-medium">Pensando...</span>
+      </div>
     {/if}
     <div bind:this={chatEndRef}></div>
   </div>
 
-  <div class="flex items-center rounded-2xl bg-gray-300 p-4 mt-4">
-    <textarea
-      placeholder="Escribir un mensaje:"
-      bind:value={inputMessage}
-      class="flex-grow bg-transparent focus:outline-none font-semibold resize-none"
-      rows="1"
-      on:keydown={(e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          if (!isLoading) sendMessage();
-        }
-      }}
-      disabled={isLoading}
-    ></textarea>
-    <button 
-      on:click={sendMessage} 
-      aria-label="Send message"
-      disabled={isLoading}
-      class:opacity-50={isLoading}
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-black" viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
-    </button>
+  <div class="flex items-end justify-center w-full max-w-2xl mx-auto px-2 md:px-0 pb-6">
+    <div class="flex items-center rounded-3xl bg-white shadow-lg border border-gray-200 p-3 w-full gap-2">
+      <textarea
+        placeholder="Escribe tu mensaje..."
+        bind:value={inputMessage}
+        class="flex-grow bg-transparent focus:outline-none font-semibold resize-none text-gray-800 placeholder-gray-400 px-2 py-1"
+        rows="1"
+        on:keydown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            if (!isLoading) sendMessage();
+          }
+        }}
+        disabled={isLoading}
+      ></textarea>
+      <button 
+        on:click={sendMessage} 
+        aria-label="Enviar mensaje"
+        disabled={isLoading}
+        class="transition-all duration-200 rounded-full p-2 bg-blue-500 hover:bg-blue-600 text-white shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-white" viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+      </button>
+    </div>
   </div>
 </main>
