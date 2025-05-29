@@ -16,8 +16,8 @@
     let errorMessage = '';
 
     let showCameraModal = false;
-    let imageBlob = null;
-    let imagePreview = null;
+    let imageBlobs = [];
+    let imagePreviews = [];
 
     let showReasonModal = false;
 
@@ -27,8 +27,15 @@
     }
 
     function handlePhoto(event) {
-        imageBlob = event.detail.blob;
-        imagePreview = event.detail.url;
+        if (imageBlobs.length < 3) {
+            imageBlobs = [...imageBlobs, event.detail.blob];
+            imagePreviews = [...imagePreviews, event.detail.url];
+        }
+    }
+
+    function removePhoto(index) {
+        imageBlobs = imageBlobs.filter((_, i) => i !== index);
+        imagePreviews = imagePreviews.filter((_, i) => i !== index);
     }
 
     async function confirmarRegistro() {
@@ -37,6 +44,11 @@
 
         if (!workshopName || !workshopPhoneNumber || !workshopContactEmail || !name || !phoneNumber || !username || !password) {
             errorMessage = 'Por favor, completa todos los campos.';
+            return;
+        }
+
+        if (imageBlobs.length < 3) {
+            errorMessage = 'Debes tomar al menos 3 fotos del administrador.';
             return;
         }
 
@@ -50,7 +62,7 @@
                 username,
                 password
             },
-            imageBlob ? [imageBlob] : []
+            imageBlobs
         );
 
         if (response.success) {
@@ -178,33 +190,39 @@
         </div>
 
         <div class="relative mb-3">
-            <label class="block mb-1 font-semibold w-full text-center">Foto del administrador del taller
+            <label class="block mb-1 font-semibold w-full text-center">Fotos del administrador del taller
                 <button
-                type="button"
-                class="ml-1 p-1 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs"
-                aria-label="¿Por qué pedimos la foto?"
-                on:click={() => showReasonModal = true}
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="white"/>
-                    <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8v4m0 4h.01"/>
-                </svg>
-            </button>
+                    type="button"
+                    class="ml-1 p-1 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs"
+                    aria-label="¿Por qué pedimos la foto?"
+                    on:click={() => showReasonModal = true}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="white"/>
+                        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8v4m0 4h.01"/>
+                    </svg>
+                </button>
             </label>
-            {#if !imagePreview}
+            {#if imagePreviews.length < 3}
                 <div class="flex justify-center">
                     <button type="button" class="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
                         Abrir cámara
                     </button>
                 </div>
             {/if}
-            {#if imagePreview}
-                <div class="flex flex-col items-center">
-                    <img src={imagePreview} alt="Foto tomada" class="w-32 h-32 object-cover rounded mb-2" />
-                    <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded" on:click={() => { imagePreview = null; imageBlob = null; }}>
-                        Tomar otra foto
-                    </button>
-                </div>
+            <div class="flex gap-2 flex-wrap justify-center">
+                {#each imagePreviews as preview, idx}
+                    <div class="relative">
+                        <img src={preview} alt="Foto tomada" class="w-24 h-24 object-cover rounded mb-2" />
+                        <button type="button" class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs"
+                            on:click={() => removePhoto(idx)}>
+                            ×
+                        </button>
+                    </div>
+                {/each}
+            </div>
+            {#if imagePreviews.length < 3}
+                <div class="text-sm text-gray-500 text-center">Debes tomar al menos 3 fotos.</div>
             {/if}
         </div>
 
