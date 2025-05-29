@@ -13,7 +13,7 @@
     restoreDeviceBackup,
     getSignedFirmwares,
     restoreDeviceWithIPSW
-  } from '$lib/api/apiLocal';
+  } from '$lib/api/local-backend-requests/apiLocal';
   import Message from '$lib/components/Message.svelte';
   import ProgressBar from '$lib/components/ProgressBar.svelte';
   import { onMount } from 'svelte';

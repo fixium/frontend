@@ -1,6 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
-	import { getDashboardData } from '$lib/api/apiDashboard.js';
+	import { getDashboardData } from '$lib/api/main-backend-requests/dashboard.js';
 
 	export let data;
 

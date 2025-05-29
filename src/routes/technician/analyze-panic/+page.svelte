@@ -1,4 +1,5 @@
 <script>
+  import { analyzePanicLog } from "$lib/api/main-backend-requests/ai";
   let logContent = '';
   let respuesta = '';
   let isLoading = false;
@@ -48,25 +49,10 @@
     error = '';
 
     try {
-      const formData = new FormData();
-      if (useFile && file) {
-        formData.append('file', file);
-      } else {
-        formData.append('panicLog', logContent);
-      }
-
-      const res = await fetch('http://localhost:8080/api/ai/analyze-panic-log', {
-        method: 'POST',
-        body: formData,
-        credentials: "include"
+      const resTemp = await analyzePanicLog({
+        logContent: useFile ? '' : logContent,
+        file: useFile ? file : null
       });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(errorText || 'Error al procesar el log');
-      }
-      const resTemp = await res.json();
-      // respuesta = resTemp.choices?.[0]?.message?.content;
       respuesta = resTemp.choices?.[0]?.message?.content || 'El log es demasiado largo y no se pudo procesar completamente. Intenta con un log más corto o revisa el contenido manualmente.';
     } catch (e) {
       error = e.message || 'Ocurrió un error al procesar el log';
@@ -92,7 +78,7 @@
       <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
       </svg>
-      Analizador de Panic Full Log
+      Analizador de Panic Full con IA
     </h1>
     <div class="mb-4 flex gap-4">
       <label class="flex items-center gap-2 cursor-pointer select-none">
@@ -131,8 +117,9 @@
       </label>
     </div>
     {#if !useFile}
-      <label class="font-semibold mb-2 block text-gray-700">Pega aquí el contenido del archivo <code class="bg-blue-100 px-1 rounded text-blue-700">panic-full.ips</code>:</label>
+      <label for="logContent" class="font-semibold mb-2 block text-gray-700">Pega aquí el contenido del archivo <code class="bg-blue-100 px-1 rounded text-blue-700">panic-full.ips</code>:</label>
       <textarea
+        id="logContent"
         bind:value={logContent}
         rows="12"
         class="w-full p-3 border-2 border-blue-200 focus:border-blue-500 rounded-lg resize-y font-mono bg-blue-50 focus:bg-white transition-colors duration-200 outline-none"
@@ -140,7 +127,7 @@
         disabled={isLoading}
       ></textarea>
     {:else}
-      <label class="font-semibold mb-2 block text-gray-700">Selecciona el archivo <code class="bg-blue-100 px-1 rounded text-blue-700">panic-full.ips</code>:</label>
+      <label for="fileInput" class="font-semibold mb-2 block text-gray-700">Selecciona el archivo <code class="bg-blue-100 px-1 rounded text-blue-700">panic-full.ips</code>:</label>
         <div class="flex items-center gap-4">
           <label
             class="flex flex-col items-center px-6 py-4 bg-blue-50 rounded-lg border-2 border-dashed border-blue-300 cursor-pointer transition-colors duration-200 w-full max-w-xs
@@ -149,6 +136,7 @@
             on:dragover={handleDragOver}
             on:dragleave={handleDragLeave}
             on:drop={handleDrop}
+            for="fileInput"
           >
             <svg class="w-8 h-8 text-blue-400 mb-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M7 16v-4a4 4 0 018 0v4M12 12v8m0 0l-3-3m3 3l3-3" />
@@ -158,6 +146,7 @@
             </span>
             <span class="text-xs text-gray-500">.ips o .txt</span>
             <input
+              id="fileInput"
               type="file"
               accept=".ips,.txt"
               on:change={e => file = e.target.files[0]}

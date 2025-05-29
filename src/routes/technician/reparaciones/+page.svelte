@@ -1,10 +1,10 @@
 <script>
     import { onMount } from 'svelte';
-    import { getAllMyTickets, getAllTickets } from '$lib/api/apiTickets.js';
-    import { getAllRepairs } from '$lib/api/apiRepair.js';
+    import { getAllMyTickets, getAllTickets } from '$lib/api/main-backend-requests/tickets.js';
+    import { getAllRepairs, updateRepair } from '$lib/api/main-backend-requests/repairs.js';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
-    import { getRepairsByImei } from '$lib/api/apiRepair.js';
+    import { getRepairsByImei } from '$lib/api/main-backend-requests/repairs.js';
 
     export let data;
     let { role } = data;
@@ -105,23 +105,16 @@
         if (!editDiagnosis || editDiagnosis.trim().length < 5 || !editRepairActions || editRepairActions.trim().length < 5) {
             error = 'Completa todos los campos correctamente para guardar.';
             return;
-       }
+        }
         try {
-            const response = await fetch(`http://localhost:8080/api/repairs/${selectedRepair.id}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include',
-                body: JSON.stringify({
-                    diagnosis: editDiagnosis,
-                    repairActions: editRepairActions
-                })
+            await updateRepair(selectedRepair.id, {
+                diagnosis: editDiagnosis,
+                repairActions: editRepairActions
             });
-            if (!response.ok) throw new Error('Error al actualizar la reparación');
             // Actualiza la lista local
             selectedRepair.diagnosis = editDiagnosis;
             selectedRepair.repairActions = editRepairActions;
             editMode = false;
-            // recargar para reflejar cambios
             window.location.reload();
         } catch (e) {
             error = e.message;

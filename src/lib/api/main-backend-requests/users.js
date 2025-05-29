@@ -97,15 +97,15 @@ export async function fetchTechnicians() {
     return await response.json();
 }
 
-export async function fetchUserById(userId) {
-	const response = await fetch(`${API_URL}/${userId}`, {
-		credentials: 'include'
-	});
-	if (!response.ok) {
-		const errorBody = await response.json().catch(() => ({}));
-		throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuario'));
-	}
-	return await response.json();
+export async function fetchUserById(userId, customFetch = fetch) {
+    const response = await customFetch(`${API_URL}/${userId}`, {
+        credentials: 'include'
+    });
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuario'));
+    }
+    return await response.json();
 }
 
 export async function changePassword(passwordRequest) {

@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
-    import { getAllMyTickets } from '$lib/api/apiTickets.js';
-    import { createRepair } from '$lib/api/apiRepair.js';
+    import { getAllMyTickets } from '$lib/api/main-backend-requests/tickets.js';
+    import { createRepair } from '$lib/api/main-backend-requests/repairs.js';
     import { goto } from '$app/navigation';
     import { page } from '$app/stores';
     import CameraModal from '$lib/components/CameraModal.svelte';

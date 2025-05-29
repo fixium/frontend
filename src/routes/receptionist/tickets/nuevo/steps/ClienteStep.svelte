@@ -1,6 +1,6 @@
 <script>
   import { wizardData } from '$lib/stores/wizardStore';
-  import { registerClient } from '$lib/api/apiClients';
+  import { registerClient, getClients } from '$lib/api/main-backend-requests/clients'; // importa getClients
   import { step } from '$lib/stores/stepStore';
   import { onMount } from 'svelte';
   import { validatePhoneNumber, validateName } from '$lib/utils/validation';
@@ -13,9 +13,7 @@
 
   onMount(async () => {
     try {
-      const res = await fetch('http://localhost:8080/api/clients', { credentials: 'include' });
-      if (!res.ok) throw new Error('Error al obtener clientes');
-      clients = await res.json();
+      clients = await getClients();
     } catch (err) {
       error = err.message;
     }

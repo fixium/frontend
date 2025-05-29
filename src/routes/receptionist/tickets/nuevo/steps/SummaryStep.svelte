@@ -1,12 +1,12 @@
 <script>
   import { wizardData } from '$lib/stores/wizardStore';
-  import { downloadTicketPdf } from '$lib/api/apiTickets';
+  import { downloadTicketPdf } from '$lib/api/main-backend-requests/tickets';
   import { step } from '$lib/stores/stepStore';
   import { get } from 'svelte/store';
   import { onMount } from 'svelte';
-  import { getTicket } from '$lib/api/apiTickets';
-  import { getClient } from '$lib/api/apiClients';
-  import { getDevice } from '$lib/api/apiDevices';
+  import { getTicket } from '$lib/api/main-backend-requests/tickets';
+  import { getClient } from '$lib/api/main-backend-requests/clients';
+  import { getDevice } from '$lib/api/main-backend-requests/devices';
 	import { goto } from '$app/navigation';
 
   let client = null;

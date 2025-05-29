@@ -1,6 +1,6 @@
 <script>
     import { goto } from "$app/navigation";
-    import { login } from "$lib/api/apiAuth";
+    import { login } from "$lib/api/main-backend-requests/auth";
 
     let username = '';
     let password = '';

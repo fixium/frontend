@@ -2,8 +2,8 @@
     import { step } from '$lib/stores/stepStore';
     import { wizardData } from '$lib/stores/wizardStore';
     import { get } from 'svelte/store';
-    import { registerTicket } from '$lib/api/apiTickets';
-    import { fetchTechnicians } from '$lib/api/apiUsers';
+    import { registerTicket } from '$lib/api/main-backend-requests/tickets';
+    import { fetchTechnicians } from '$lib/api/main-backend-requests/users';
     import { onMount } from 'svelte';
 
     let initialStateDescription = '';

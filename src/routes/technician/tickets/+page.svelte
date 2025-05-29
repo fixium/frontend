@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { getAllMyTickets, downloadTicketPdf, updateTicketStatus, getTicketDetail, filterTickets, filterMyTickets } from '$lib/api/apiTickets.js';
+    import { getAllMyTickets, downloadTicketPdf, updateTicketStatus, getTicketDetail, filterTickets, filterMyTickets } from '$lib/api/main-backend-requests/tickets.js';
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
 

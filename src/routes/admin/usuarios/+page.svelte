@@ -1,5 +1,5 @@
 <script>
-    import { deleteUser as apiDeleteUser } from '$lib/api/apiUsers.js';
+    import { deleteUser as apiDeleteUser } from '$lib/api/main-backend-requests/users.js';
 
     export let data;
     let users = data.users;

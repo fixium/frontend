@@ -1,5 +1,5 @@
 <script>
-    import { register } from "$lib/api/apiAuth";
+    import { register } from "$lib/api/main-backend-requests/auth";
     import { validateName, validatePhoneNumber } from "$lib/utils/validation";
     import CameraModal from "$lib/components/CameraModal.svelte";
 

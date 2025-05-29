@@ -32,3 +32,18 @@ export async function getClient(clientId) {
 
 	return await res.json(); // Devuelve el cliente
 }
+
+export async function getClients() {
+    const res = await fetch(`${API_URL}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+    });
+
+    if (!res.ok) {
+        const errorBody = await res.json();
+        throw new Error(buildErrorMessage(errorBody, 'Error al obtener clientes'));
+    }
+
+    return await res.json(); // Devuelve el array de clientes
+}

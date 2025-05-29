@@ -57,3 +57,17 @@ export async function getRepairsByImei(imei) {
     }
     return await response.json();
 }
+
+export async function updateRepair(repairId, { diagnosis, repairActions }) {
+    const response = await fetch(`${API_URL}/${repairId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ diagnosis, repairActions })
+    });
+    if (!response.ok) {
+        const errorBody = await response.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al actualizar la reparación'));
+    }
+    return await response.text();
+}

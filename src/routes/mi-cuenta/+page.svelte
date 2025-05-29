@@ -1,5 +1,5 @@
 <script>
-	import { fetchUserById, changePassword, deleteMyAccount } from '$lib/api/apiUsers.js';
+	import { fetchUserById, changePassword, deleteMyAccount } from '$lib/api/main-backend-requests/users.js';
 	import { onMount } from 'svelte';
 
 	export let data;

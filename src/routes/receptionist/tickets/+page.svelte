@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import { getAllTickets, downloadTicketPdf, getTicketDetail, filterTickets } from '$lib/api/apiTickets.js';
+    import { getAllTickets, downloadTicketPdf, getTicketDetail, filterTickets } from '$lib/api/main-backend-requests/tickets.js';
     import { page } from '$app/stores';
     import { goto } from '$app/navigation';
 
@@ -138,36 +138,39 @@
 
 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
     <h1 class="text-3xl font-extrabold text-blue-700 mb-8 text-center tracking-tight">Tickets de recepción</h1>
-    {#if existsTickets}
+    
     <div class="mb-6 flex flex-wrap gap-4 items-end">
-        <div class="flex flex-wrap gap-4 items-end flex-grow">
-        <div>
-            <label for="filtro-nombre" class="block text-sm font-medium text-gray-700">Nombre cliente</label>
-            <input id="filtro-nombre" type="text" bind:value={filtroNombre} class="border rounded px-2 py-1" placeholder="Nombre cliente" />
-        </div>
-        <div>
-            <label for="filtro-ticket" class="block text-sm font-medium text-gray-700"># Ticket</label>
-            <input id="filtro-ticket" type="text" bind:value={filtroTicket} class="border rounded px-2 py-1" placeholder="Número ticket" />
-        </div>
-        <div>
-            <label for="filtro-imei" class="block text-sm font-medium text-gray-700">IMEI</label>
-            <input id="filtro-imei" type="text" bind:value={filtroImei} class="border rounded px-2 py-1" placeholder="IMEI" />
-        </div>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" on:click={aplicarFiltro}>Filtrar</button>
-        <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" on:click={limpiarFiltro}>Limpiar</button>
-        </div>
-    </div>
-    {/if}
-    {#if role !== 'ROLE_TECHNICIAN'}
+        {#if existsTickets}
+            <div class="flex flex-wrap gap-4 items-end flex-grow">
+            <div>
+                <label for="filtro-nombre" class="block text-sm font-medium text-gray-700">Nombre cliente</label>
+                <input id="filtro-nombre" type="text" bind:value={filtroNombre} class="border rounded px-2 py-1" placeholder="Nombre cliente" />
+            </div>
+            <div>
+                <label for="filtro-ticket" class="block text-sm font-medium text-gray-700"># Ticket</label>
+                <input id="filtro-ticket" type="text" bind:value={filtroTicket} class="border rounded px-2 py-1" placeholder="Número ticket" />
+            </div>
+            <div>
+                <label for="filtro-imei" class="block text-sm font-medium text-gray-700">IMEI</label>
+                <input id="filtro-imei" type="text" bind:value={filtroImei} class="border rounded px-2 py-1" placeholder="IMEI" />
+            </div>
+            <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" on:click={aplicarFiltro}>Filtrar</button>
+            <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" on:click={limpiarFiltro}>Limpiar</button>
+            </div>
+        {/if}
+
+        {#if role !== 'ROLE_TECHNICIAN'}
         <div class="ml-auto">
-            <button
-                class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors font-semibold"
-                on:click={() => goto('/receptionist/tickets/nuevo')}
-            >
-                Registrar recepción
-            </button>
-        </div>
-    {/if}
+                <button
+                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors font-semibold"
+                    on:click={() => goto('/receptionist/tickets/nuevo')}
+                >
+                    Registrar recepción
+                </button>
+            </div>
+        {/if}
+    </div>
+    
     {#if error}
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md mb-6">
             <p class="font-semibold">{error}</p>

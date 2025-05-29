@@ -2,10 +2,10 @@
   import { wizardData } from '$lib/stores/wizardStore';
   import { step } from '$lib/stores/stepStore';
   import { get } from 'svelte/store';
-  import { registerDevice } from '$lib/api/apiDevices';
+  import { registerDevice } from '$lib/api/main-backend-requests/devices';
 	import { onMount } from 'svelte';
 	import { validatePhoneNumber } from '$lib/utils/validation';
-  import { fetchDevices } from '$lib/api/apiDevices';
+  import { fetchDevices } from '$lib/api/main-backend-requests/devices';
 
   let serialNumber = '';
   let imei = '';

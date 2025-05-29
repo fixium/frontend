@@ -1,5 +1,5 @@
 <script>
-    import { addUser } from "$lib/api/apiUsers";
+    import { addUser } from "$lib/api/main-backend-requests/users";
     import { goto } from "$app/navigation";
     import { tick } from "svelte";
     import CameraModal from "$lib/components/CameraModal.svelte";

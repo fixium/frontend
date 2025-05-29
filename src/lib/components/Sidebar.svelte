@@ -1,7 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
-	import { logout } from '$lib/api/apiAuth';
+	import { logout } from '$lib/api/main-backend-requests/auth';
 	import { goto } from '$app/navigation';
 
 	export let role, username, name;
