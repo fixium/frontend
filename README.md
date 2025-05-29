@@ -1,59 +1,74 @@
-# Fixium - Frontend
+# Fixium WebApp - Frontend
 
-## Tecnologías
+This is the frontend of **Fixium**, a platform for managing electronic device repair shops. The application is developed with [SvelteKit](https://kit.svelte.dev/), uses TailwindCSS for styling, and is prepared to work both on the web and as a desktop app via Electron.
 
-Este proyecto utiliza las siguientes tecnologías:
+## Main Features
 
-- **[SvelteKit](https://kit.svelte.dev/):** Framework moderno para construir aplicaciones web rápidas y escalables.
-- **[TailwindCSS](https://tailwindcss.com/):** Framework de utilidades CSS para un diseño rápido y eficiente.
+- User and role management (administrator, technician, receptionist)
+- Reception and tracking of repair tickets
+- Customer and device management
+- Registration and editing of repairs with photo verification
+- Tools for technicians (firmware downloads, backup, logs, recovery mode, etc.)
+- Dashboard with key statistics
+- Smart assistant and panic log analysis
+- Modern and responsive interface
+- **Route protection according to user role (authentication and authorization)**
+- Real-time form validation
+- Camera modal for identity verification
+- Electron integration for desktop environment
+- Error handling and success/failure messages in the interface
 
-## Requisitos previos
+## 🚦 Requirements
 
-Antes de comenzar, asegúrate de tener instalado lo siguiente:
+- [Node.js](https://nodejs.org/) >= 18.x
+- [npm](https://www.npmjs.com/) >= 9.x
+- Operating system: Linux, macOS or Windows
 
-- **[Node.js](https://nodejs.org/):** Versión 22 o superior.
-- **[npm](https://www.npmjs.com/):** Administrador de paquetes incluido con Node.js.
+## 🛠️ Main Technologies
 
-## Instalación
+- [SvelteKit](https://kit.svelte.dev/) — Main framework
+- [TailwindCSS](https://tailwindcss.com/) — Utility-first CSS
+- [Electron](https://www.electronjs.org/) — Desktop environment (optional)
+- [Vite](https://vitejs.dev/) — Bundler and development server
 
-Sigue estos pasos para configurar el proyecto en tu entorno local:
+## Installation
 
-1. Clona este repositorio:
-   ```bash
+1. Clone this repository:
+
+   ```sh
    git clone https://github.com/fixium/frontend.git
-   cd fixium-frontend
+   cd frontend
    ```
 
-2. Instala las dependencias:
-   ```bash
+2. Install dependencies:
+
+   ```sh
    npm install
    ```
 
-## Ejecución en desarrollo
+3. Start the development environment:
 
-Para iniciar el servidor de desarrollo, ejecuta:
+   ```sh
+   npm run dev
+   ```
 
-```bash
-npm run dev
-```
+4. (Optional) To run in desktop mode with Electron:
 
-El proyecto estará disponible en [http://localhost:5173](http://localhost:5173) (puerto predeterminado de Vite).
+   ```sh
+   npm run electron
+   ```
 
-## Scripts disponibles
+## Project Structure
 
-- `npm run dev`: Inicia el servidor de desarrollo.
-- `npm run build`: Genera una versión optimizada para producción.
-- `npm run preview`: Previsualiza la versión de producción.
-- `npm run format`: Formatea el código con Prettier.
-- `npm run lint`: Verifica el formato del código con Prettier.
+- [`src/`](src/) — Main source code (components, routes, styles, requests)
+- [`static/`](static/) — Static files (images, icons)
+- [`main.mjs`](main.mjs) — Main entry point for Electron
+- [`preload.js`](preload.js) — Preload for Electron
+- [`package.json`](package.json) — Scripts and dependencies configuration
 
-## Estructura del proyecto
+## Credits
 
-```
-src/
-├── lib/                # Componentes reutilizables y utilidades
-├── routes/             # Rutas de la aplicación
-├── app.css             # Estilos globales
-├── app.html            # Plantilla HTML principal
-static/                 # Archivos estáticos (imágenes, íconos, etc.)
-```
+- **[Pedro](https://github.com/PedroxionX)** - Analyst
+- **[David](https://github.com/Deivi171)** - Designer
+- **[Frank](https://github.com/FrankSkep)** - Developer
+- **[Diego](https://github.com/Dekstro999)** - Tester and frontend designer
