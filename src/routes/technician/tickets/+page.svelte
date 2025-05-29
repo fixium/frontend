@@ -48,7 +48,7 @@
     async function aplicarFiltro() {
         try {
             tickets = await filterMyTickets({
-                clientName: filtroNombre,
+                customerName: filtroNombre,
                 ticketNumber: filtroTicket,
                 imei: filtroImei
             });
@@ -230,7 +230,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(ticket.receivedAt).toLocaleString()}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{ticket.clientEmail}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{ticket.customerEmail}</td>
                                     <td class="px-6 py-4 whitespace-nowrap flex justify-center gap-2">
                                         <button
                                             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
@@ -282,10 +282,10 @@
             
             <div class="mb-4">
                 <h3 class="font-semibold text-blue-700 mb-2">Cliente</h3>
-                <div class="mb-1"><b>Nombre:</b> {selectedTicket.client.name}</div>
-                <div class="mb-1"><b>Teléfono:</b> {selectedTicket.client.phone}</div>
-                <div class="mb-1"><b>Email:</b> {selectedTicket.client.email}</div>
-                <div class="mb-1"><b>Notas:</b> {selectedTicket.client.notes}</div>
+                <div class="mb-1"><b>Nombre:</b> {selectedTicket.customer.name}</div>
+                <div class="mb-1"><b>Teléfono:</b> {selectedTicket.customer.phone}</div>
+                <div class="mb-1"><b>Email:</b> {selectedTicket.customer.email}</div>
+                <div class="mb-1"><b>Notas:</b> {selectedTicket.customer.notes}</div>
             </div>
             
             <div class="mb-4">

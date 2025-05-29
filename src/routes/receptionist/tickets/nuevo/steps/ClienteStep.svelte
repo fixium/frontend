@@ -1,30 +1,30 @@
 <script>
   import { wizardData } from '$lib/stores/wizardStore';
-  import { registerClient, getClients } from '$lib/api/main-backend-requests/clients'; // importa getClients
+  import { registerCustomer, getCustomers } from '$lib/api/main-backend-requests/customers';
   import { step } from '$lib/stores/stepStore';
   import { onMount } from 'svelte';
   import { validatePhoneNumber, validateName } from '$lib/utils/validation';
 
-  let clients = [], filteredClients = [];
+  let customers = [], filteredCustomers = [];
   let name = '', phone = '', notes = '';
   let email = ''; // solo para búsqueda
   let registerEmail = ''; // solo para registro
-  let selectedClientId = '', loading = false, error = null;
+  let selectedCustomerId = '', loading = false, error = null;
 
   onMount(async () => {
     try {
-      clients = await getClients();
+      customers = await getCustomers();
     } catch (err) {
       error = err.message;
     }
   });
 
-  $: filteredClients = email.length
-    ? clients.filter(c => c.email.toLowerCase().includes(email.toLowerCase()))
+  $: filteredCustomers = email.length
+    ? customers.filter(c => c.email.toLowerCase().includes(email.toLowerCase()))
     : [];
 
   function cargarCliente(c) {
-    selectedClientId = String(c.id);
+    selectedCustomerId = String(c.id);
     name = c.name ?? '';
     phone = c.phone ?? '';
     registerEmail = c.email ?? '';
@@ -32,7 +32,7 @@
   }
 
   function resetFormulario() {
-    selectedClientId = 'new';
+    selectedCustomerId = 'new';
     name = '';
     phone = '';
     registerEmail = '';
@@ -44,11 +44,11 @@
     error = null;
 
     try {
-      if (selectedClientId && selectedClientId !== 'new') {
-        wizardData.update(data => ({ ...data, clientId: Number(selectedClientId) }));
+      if (selectedCustomerId && selectedCustomerId !== 'new') {
+        wizardData.update(data => ({ ...data, customerId: Number(selectedCustomerId) }));
       } else {
-        const clientId = await registerClient({ name, phone, email: registerEmail, notes });
-        wizardData.update(data => ({ ...data, clientId, isNewClient: true }));
+        const customerId = await registerCustomer({ name, phone, email: registerEmail, notes });
+        wizardData.update(data => ({ ...data, customerId: customerId, isNewClient: true }));
       }
       step.set(2);
     } catch (err) {
@@ -78,17 +78,17 @@
       if (email.length === 0) {
         resetFormulario();
       } else {
-        const c = clients.find(c => c.email === email);
+        const c = customers.find(c => c.email === email);
         if (c) cargarCliente(c);
-        else selectedClientId = '';
+        else selectedCustomerId = '';
       }
     }}
     autocomplete="off"
   />
 
-  {#if email.length > 0 && filteredClients.length > 0 && !selectedClientId}
+  {#if email.length > 0 && filteredCustomers.length > 0 && !selectedCustomerId}
     <ul class="border border-blue-200 rounded-lg mt-2 shadow max-h-40 overflow-auto animate-fade-in">
-      {#each filteredClients as c}
+      {#each filteredCustomers as c}
         <button
           type="button"
           class="w-full text-left px-4 py-2 cursor-pointer hover:bg-blue-100 focus:outline-none focus:bg-blue-200"
@@ -98,7 +98,7 @@
         </button>
       {/each}
     </ul>
-  {:else if email.length > 0 && filteredClients.length === 0}
+  {:else if email.length > 0 && filteredCustomers.length === 0}
     <div class="text-gray-400 text-sm mt-2">No se encontraron clientes.</div>
   {/if}
 
@@ -107,7 +107,7 @@
   </div>
 
   <!-- Datos del cliente -->
-  {#if selectedClientId && selectedClientId !== 'new'}
+  {#if selectedCustomerId && selectedCustomerId !== 'new'}
     <div class="bg-blue-50 border border-blue-300 rounded-lg p-4 mt-4 animate-fade-in">
       <p class="text-blue-900 text-sm">Nombre: <strong>{name}</strong></p>
       <p class="text-blue-900 text-sm">Correo: <strong>{registerEmail}</strong></p>
@@ -118,7 +118,7 @@
     </div>
   {/if}
 
-  {#if !selectedClientId || selectedClientId === 'new'}
+  {#if !selectedCustomerId || selectedCustomerId === 'new'}
     <form on:submit|preventDefault={submit} class="space-y-4 mt-6 animate-fade-in">
       <input
         type="text"

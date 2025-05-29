@@ -24,9 +24,9 @@ export async function getAllMyTickets() {
 	return await res.json();
 }
 
-export async function filterTickets({ clientName, ticketNumber, imei }) {
+export async function filterTickets({ customerName, ticketNumber, imei }) {
 	const formData = new FormData();
-	if (clientName) formData.append('clientName', clientName);
+	if (customerName) formData.append('customerName', customerName);
 	if (ticketNumber) formData.append('ticketNumber', ticketNumber);
 	if (imei) formData.append('imei', imei);
 
@@ -42,9 +42,9 @@ export async function filterTickets({ clientName, ticketNumber, imei }) {
 	return await res.json();
 }
 
-export async function filterMyTickets({ clientName, ticketNumber, imei }) {
+export async function filterMyTickets({ customerName, ticketNumber, imei }) {
 	const formData = new FormData();
-	if (clientName) formData.append('clientName', clientName);
+	if (customerName) formData.append('customerName', customerName);
 	if (ticketNumber) formData.append('ticketNumber', ticketNumber);
 	if (imei) formData.append('imei', imei);
 

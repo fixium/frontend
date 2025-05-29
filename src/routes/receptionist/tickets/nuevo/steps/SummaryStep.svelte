@@ -5,11 +5,11 @@
   import { get } from 'svelte/store';
   import { onMount } from 'svelte';
   import { getTicket } from '$lib/api/main-backend-requests/tickets';
-  import { getClient } from '$lib/api/main-backend-requests/clients';
+  import { getCustomer } from '$lib/api/main-backend-requests/customers';
   import { getDevice } from '$lib/api/main-backend-requests/devices';
 	import { goto } from '$app/navigation';
 
-  let client = null;
+  let customer = null;
   let device = null;
   let ticket = null;
   let loading = true;
@@ -21,7 +21,7 @@
     loading = true;
     error = null;
     try {
-      client = await getClient(data.clientId);
+      customer = await getCustomer(data.customerId);
       device = await getDevice(data.deviceId);
       ticket = await getTicket(data.ticketId);
     } catch (e) {
@@ -48,11 +48,11 @@
     </div>
   {:else}
     <ul class="mb-6 divide-y divide-gray-100 bg-gray-50 rounded-lg p-4">
-      <li class="py-2"><span class="font-semibold text-gray-700">ID Cliente:</span> <span class="text-gray-900">{client.id}</span></li>
-      <li class="py-2"><span class="font-semibold text-gray-700">Nombre:</span> <span class="text-gray-900">{client.name}</span></li>
-      <li class="py-2"><span class="font-semibold text-gray-700">Teléfono:</span> <span class="text-gray-900">{client.phone}</span></li>
-      <li class="py-2"><span class="font-semibold text-gray-700">Email:</span> <span class="text-gray-900">{client.email}</span></li>
-      <li class="py-2"><span class="font-semibold text-gray-700">Notas Cliente:</span> <span class="text-gray-900">{client.notes}</span></li>
+      <li class="py-2"><span class="font-semibold text-gray-700">ID Cliente:</span> <span class="text-gray-900">{customer.id}</span></li>
+      <li class="py-2"><span class="font-semibold text-gray-700">Nombre:</span> <span class="text-gray-900">{customer.name}</span></li>
+      <li class="py-2"><span class="font-semibold text-gray-700">Teléfono:</span> <span class="text-gray-900">{customer.phone}</span></li>
+      <li class="py-2"><span class="font-semibold text-gray-700">Email:</span> <span class="text-gray-900">{customer.email}</span></li>
+      <li class="py-2"><span class="font-semibold text-gray-700">Notas Cliente:</span> <span class="text-gray-900">{customer.notes}</span></li>
       <li class="py-2 mt-2"><span class="font-semibold text-gray-700">ID Dispositivo:</span> <span class="text-gray-900">{device.id}</span></li>
       <li class="py-2"><span class="font-semibold text-gray-700">Modelo:</span> <span class="text-gray-900">{device.model}</span></li>
       <li class="py-2"><span class="font-semibold text-gray-700">Color:</span> <span class="text-gray-900">{device.color}</span></li>
@@ -85,7 +85,7 @@
           goto('/receptionist/tickets');
           step.set(1);
           wizardData.set({
-            clientId: null,
+            customerId: null,
             deviceId: null,
             ticketId: null,
             deviceImages: [],

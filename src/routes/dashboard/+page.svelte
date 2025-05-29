@@ -10,7 +10,7 @@
 	// Variables reactivas para los valores del dashboard
 	let totalTickets = '--';
 	let totalRepairs = '--';
-	let totalClients = '--';
+	let totalCustomers = '--';
 
 	onMount(async () => {
 		try {
@@ -19,9 +19,9 @@
 
 			totalTickets = dashboardData.totalTickets;
 			totalRepairs = dashboardData.totalRepairs;
-			totalClients = dashboardData.totalClients;
+			totalCustomers = dashboardData.totalCustomers;
 		} catch (e) {
-			totalTickets = totalRepairs = totalClients = 'Error';
+			totalTickets = totalRepairs = totalCustomers = 'Error';
 		}
 	});
 </script>
@@ -46,7 +46,7 @@
 		</div>
 		<div class="dashboard-card">
 			<h2>Clientes registrados</h2>
-			<p class="dashboard-value">{totalClients}</p>
+			<p class="dashboard-value">{totalCustomers}</p>
 		</div>
 	</div>
 </div>

@@ -1,8 +1,8 @@
 import { buildErrorMessage } from '$lib/utils/errorUtils';
 
-const API_URL = 'http://localhost:8080/api/clients';
+const API_URL = 'http://localhost:8080/api/customers';
 
-export async function registerClient({ name, phone, email, notes }) {
+export async function registerCustomer({ name, phone, email, notes }) {
 	const res = await fetch(`${API_URL}`, {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
@@ -18,8 +18,8 @@ export async function registerClient({ name, phone, email, notes }) {
 
 	return await res.json(); // Devuelve el clientId
 }
-export async function getClient(clientId) {
-	const res = await fetch(`${API_URL}/${clientId}`, {
+export async function getCustomer(customerId) {
+	const res = await fetch(`${API_URL}/${customerId}`, {
 		method: 'GET',
 		headers: { 'Content-Type': 'application/json' },
 		credentials: 'include'
@@ -33,7 +33,7 @@ export async function getClient(clientId) {
 	return await res.json(); // Devuelve el cliente
 }
 
-export async function getClients() {
+export async function getCustomers() {
     const res = await fetch(`${API_URL}`, {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },

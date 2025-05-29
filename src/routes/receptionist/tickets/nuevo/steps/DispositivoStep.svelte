@@ -28,9 +28,9 @@
   let error = null;
 
   onMount(async () => {
-    const { clientId } = get(wizardData);
+    const { customerId } = get(wizardData);
     try {
-      devices = await fetchDevices(clientId);
+      devices = await fetchDevices(customerId);
     } catch (err) {
       error = err.message;
     }
@@ -41,8 +41,8 @@
   let showNewForm = false;
 
   const submit = async () => {
-    const { clientId } = get(wizardData);
-    if (!clientId) {
+    const { customerId } = get(wizardData);
+    if (!customerId) {
       error = 'No hay cliente registrado.';
       return;
     }
@@ -58,7 +58,7 @@
       } else {
         // Registrar nuevo dispositivo
         deviceId = await registerDevice({
-          clientId,
+          customerId,
           serialNumber,
           imei,
           model,

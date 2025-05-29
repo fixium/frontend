@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 export const wizardData = writable({
-  clientId: null,
+  customerId: null,
   deviceId: null,
   ticketId: null,
   deviceImages: []
