@@ -1,25 +1,10 @@
+import { API_BASE_URL } from '$lib/utils/apiConfig';
 import { buildErrorMessage } from '$lib/utils/errorUtils';
 
-const API_URL = 'http://localhost:8080/api/users';
+const API_URL = `${API_BASE_URL}/users`;
 const JSON_HEADERS = {
 	'Content-Type': 'application/json'
 };
-
-// export async function addUser({ name, phoneNumber, username, password, role }) {
-//     const response = await fetch(API_URL, {
-//         method: 'POST',
-//         headers: JSON_HEADERS,
-//         body: JSON.stringify({ name, phoneNumber, username, password, role }),
-//         credentials: 'include'
-//     });
-
-//     if (!response.ok) {
-//         const errorBody = await response.json().catch(() => ({}));
-//         throw new Error(buildErrorMessage(errorBody, 'Error al agregar usuario'));
-//     }
-
-//     return await response.text();
-// }
 
 export async function addUser({ name, phoneNumber, username, password, role, images = [] }) {
 	const formData = new FormData();

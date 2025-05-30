@@ -1,6 +1,7 @@
+import { API_BASE_URL } from "$lib/utils/apiConfig";
 import { buildErrorMessage } from "$lib/utils/errorUtils";
 
-const API_AUTH_BASE_URL = 'http://localhost:8080/api/auth';
+const API_AUTH_BASE_URL = `${API_BASE_URL}/auth`;
 const JSON_HEADERS = {
     'Content-Type': 'application/json'
 };

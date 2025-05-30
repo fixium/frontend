@@ -1,6 +1,7 @@
+import { API_BASE_URL } from "$lib/utils/apiConfig";
 import { buildErrorMessage } from "$lib/utils/errorUtils";
 
-const API_URL = 'http://localhost:8080/api/dashboard';
+const API_URL = `${API_BASE_URL}/dashboard`;
 
 export async function getDashboardData() {
     try {
