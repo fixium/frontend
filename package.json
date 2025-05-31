@@ -31,6 +31,7 @@
 	"dependencies": {
 		"adapter": "^1.0.0-beta.10",
 		"chart.js": "^4.4.9",
+		"gsap": "^3.13.0",
 		"marked": "^15.0.11",
 		"tree-kill": "^1.2.2",
 		"types": "^0.1.1",
