@@ -233,7 +233,7 @@
 
     {#if selectedTicketId || (imei && repairs.length > 0)}
         {#if showActions}
-            <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center">Reparaciones del ticket seleccionado</h2>
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 text-center dark:text-white">Reparaciones del ticket seleccionado</h2>
         {/if}
         
         {#if repairs.length === 0}
@@ -251,9 +251,9 @@
                             <th class="px-4 py-2 text-left font-semibold text-gray-700">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-700">
                         {#each repairs as repair}
-                            <tr class="hover:bg-blue-50 transition">
+                            <tr class="hover:bg-blue-50 transition dark:text-white dark:hover:text-black ">
                                 <td class="px-4 py-2 border-b">{repair.id}</td>
                                 <td class="px-4 py-2 border-b">{repair.ticketNumber}</td>
                                 <td class="px-4 py-2 border-b">{repair.userEmail}</td>

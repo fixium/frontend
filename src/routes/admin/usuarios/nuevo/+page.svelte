@@ -95,9 +95,9 @@
     }
 </script>
 
-<div class="h-screen flex items-center justify-center bg-white p-4 overflow-auto">
+<div class="h-screen flex items-center justify-center p-4 overflow-auto">
     <div class="w-full max-w-md flex flex-col items-center">
-        <h1 class="text-3xl font-bold mb-4 text-center">Registro de nuevo usuario</h1>
+        <h1 class="text-3xl font-bold mb-4 text-center dark:text-white">Registro de nuevo usuario</h1>
         <div class="mb-4"></div>
 
         {#if successMessage}
@@ -308,6 +308,21 @@
 {/if}
 
 <style>
+
+    :global(.dark) .input-style {
+		background-color: #222;
+		color: #f3f3f3;
+		border-color: #66c188;
+	}
+	:global(.dark) .floating-label {
+		color: #bbb;
+		background: #222;
+	}
+	:global(.dark) .input-style:focus + .floating-label,
+	:global(.dark) .input-style:not(:placeholder-shown) + .floating-label {
+		color: #66c188;
+		background: transparent;
+	}
     .input-style {
         border: 2px solid black;
         border-radius: 2rem;
