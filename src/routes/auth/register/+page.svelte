@@ -1,6 +1,7 @@
 <script>
-    import { register } from "$lib/api/apiAuth";
+    import { register } from "$lib/api/main-backend-requests/auth";
     import { validateName, validatePhoneNumber } from "$lib/utils/validation";
+    import CameraModal from "$lib/components/CameraModal.svelte";
 
     let workshopName = '';
     let workshopPhoneNumber = '';
@@ -14,6 +15,29 @@
     let successMessage = '';
     let errorMessage = '';
 
+    let showCameraModal = false;
+    let imageBlobs = [];
+    let imagePreviews = [];
+
+    let showReasonModal = false;
+
+    function openCameraModal() {
+        errorMessage = '';
+        showCameraModal = true;
+    }
+
+    function handlePhoto(event) {
+        if (imageBlobs.length < 3) {
+            imageBlobs = [...imageBlobs, event.detail.blob];
+            imagePreviews = [...imagePreviews, event.detail.url];
+        }
+    }
+
+    function removePhoto(index) {
+        imageBlobs = imageBlobs.filter((_, i) => i !== index);
+        imagePreviews = imagePreviews.filter((_, i) => i !== index);
+    }
+
     async function confirmarRegistro() {
         successMessage = '';
         errorMessage = '';
@@ -23,15 +47,23 @@
             return;
         }
 
-        const response = await register({
-            workshopName,
-            workshopPhoneNumber,
-            workshopContactEmail,
-            name,
-            phoneNumber,
-            username,
-            password
-        });
+        if (imageBlobs.length < 3) {
+            errorMessage = 'Debes tomar al menos 3 fotos del administrador.';
+            return;
+        }
+
+        const response = await register(
+            {
+                workshopName,
+                workshopPhoneNumber,
+                workshopContactEmail,
+                name,
+                phoneNumber,
+                username,
+                password
+            },
+            imageBlobs
+        );
 
         if (response.success) {
             successMessage = 'Registro exitoso. Redirigiendo...';
@@ -49,7 +81,7 @@
     }
 </script>
 
-<div class="h-screen flex items-center justify-center p-4 overflow-auto">
+<div class="min-h-screen flex items-center justify-center p-4 overflow-auto">
     <div class="w-full max-w-md flex flex-col items-center">
         <h1 class="text-3xl font-bold mb-4 text-center">Registro de taller</h1>
 
@@ -157,6 +189,49 @@
             </div>
         </div>
 
+        <div class="relative mb-3">
+            <label class="block mb-1 font-semibold w-full text-center">Fotos del administrador del taller
+                <button
+                    type="button"
+                    class="ml-1 p-1 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs"
+                    aria-label="¿Por qué pedimos la foto?"
+                    on:click={() => showReasonModal = true}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="white"/>
+                        <path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 8v4m0 4h.01"/>
+                    </svg>
+                </button>
+            </label>
+            {#if imagePreviews.length < 3}
+                <div class="flex justify-center">
+                    <button type="button" class="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
+                        Abrir cámara
+                    </button>
+                </div>
+            {/if}
+            <div class="flex gap-2 flex-wrap justify-center">
+                {#each imagePreviews as preview, idx}
+                    <div class="relative">
+                        <img src={preview} alt="Foto tomada" class="w-24 h-24 object-cover rounded mb-2" />
+                        <button type="button" class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs"
+                            on:click={() => removePhoto(idx)}>
+                            ×
+                        </button>
+                    </div>
+                {/each}
+            </div>
+            {#if imagePreviews.length < 3}
+                <div class="text-sm text-gray-500 text-center">Debes tomar al menos 3 fotos.</div>
+            {/if}
+        </div>
+
+        <CameraModal
+            bind:show={showCameraModal}
+            on:photo={handlePhoto}
+            on:close={() => showCameraModal = false}
+        />
+
         <div class="flex flex-col items-center gap-3 mt-4 w-full">
             <button
                 on:click={confirmarRegistro}
@@ -174,6 +249,20 @@
         </div>
     </div>
 </div>
+
+{#if showReasonModal}
+    <div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">
+            <h2 class="font-bold mb-2 text-lg">¿Por qué pedimos la foto?</h2>
+            <p class="mb-4 text-sm">
+                Solicitamos la foto del administrador para validar su identidad y proteger la seguridad de tu taller y de tus clientes. <br>Esta verificación nos ayuda a garantizar que solo personas autorizadas puedan realizar acciones importantes dentro del sistema.
+            </p>
+            <button class="bg-blue-600 hover:bg-blue-800 text-white px-4 py-1 rounded" on:click={() => showReasonModal = false}>
+                Entendido
+            </button>
+        </div>
+    </div>
+{/if}
 
 <style>
     .relative {

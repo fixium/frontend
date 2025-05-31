@@ -1,18 +1,16 @@
 <script>
 	import { onMount } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
-	import { logout } from '$lib/api/apiAuth';
+	import { logout } from '$lib/api/main-backend-requests/auth';
 	import { goto } from '$app/navigation';
 
-	export let role; // recibe el rol como prop
+	export let role, username, name;
 
 	import Icon from '$lib/components/Icon.svelte';
 
 	// let isOpen = false;
 	let currentPath = '/';
 	let showMenu = false;
-
-
 
 	async function handleLogout() {
 		const success = await logout();
@@ -21,6 +19,10 @@
 		} else {
 			alert('Error al cerrar sesión. Inténtalo de nuevo.');
 		}
+	}
+
+	function handleAccountManagement() {
+		goto('/mi-cuenta');
 	}
 
 	onMount(() => {
@@ -44,14 +46,41 @@
 				}
 			]
 		},
-		// {
-		//     section: 'Reparaciones',
-		//     items: [
-		// { name: 'Recepción', icon: 'inbox', href: '/reparaciones/recepcion' },
-		// { name: 'Lista de dispositivos', icon: 'list-bullet', href: '/reparaciones/lista' },
-		// { name: 'Seguimiento', icon: 'eye', href: '/reparaciones/seguimiento' } // Ícono ya definido
-		// ]
-		// },
+		{
+			section: 'Reparaciones',
+			items: [
+				// {
+				// 	name: 'Clientes',
+				// 	icon: 'user',
+				// 	href: '/receptionist/clientes',
+				// 	roles: ['ROLE_ADMIN', 'ROLE_RECEPTIONIST']
+				// },
+				// {
+				// 	name: 'Dispositivos',
+				// 	icon: 'device-phone-mobile',
+				// 	href: '/technician/dispositivos',
+				// 	roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+				// },
+				{
+					name: 'Recepción',
+					icon: 'inbox',
+					href: '/receptionist/tickets',
+					roles: ['ROLE_ADMIN', 'ROLE_RECEPTIONIST']
+				},
+				{
+					name: 'Mis tickets',
+					icon: 'inbox',
+					href: '/technician/tickets',
+					roles: ['ROLE_TECHNICIAN']
+				},
+				{
+					name: 'Reparaciones',
+					icon: 'clock',
+					href: '/technician/reparaciones',
+					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+				}
+			]
+		},
 		{
 			section: 'Administrar Taller',
 			items: [
@@ -77,9 +106,10 @@
 					icon: 'chat-bubble-bottom-center-text',
 					href: '/technician/asistente',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
-				}
-				// { name: 'Historial de diagnósticos', icon: 'clock', href: '/diagnostico/historial' },
-				// { name: 'Analizar Logs Panic', icon: 'bug-ant', href: '/diagnostico/panic' },
+				},
+				{ 
+					name: 'Análisis de Panic', icon: 'bug-ant', href: '/technician/analyze-panic', roles:  ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+				},
 			]
 		}
 		// {
@@ -92,13 +122,6 @@
 		//             href: '/colaboracion/alertas'
 		//         },
 		//         { name: 'Contribuir solución', icon: 'plus-circle', href: '/colaboracion/contribuir' }
-		//     ]
-		// },
-		// {
-		//     section: 'Usuarios',
-		//     items: [
-		//         { name: 'Gestión de usuarios', icon: 'users', href: '/usuarios' },
-		//         { name: 'Actividad', icon: 'finger-print', href: '/usuarios/actividad' } // Ícono ya definido
 		//     ]
 		// },
 		// {
@@ -135,7 +158,7 @@
 	<!-- Sidebar -->
 	<aside
 		class="bg-gray-900 text-white transition-all duration-300 ease-in-out group-hover:w-64 w-18 fixed md:relative h-full z-50 flex flex-col overflow-hidden"
-        on:mouseleave={() => (showMenu = false)}
+		on:mouseleave={() => (showMenu = false)}
 	>
 		<!-- Header de la sidebar -->
 		<div class="flex items-center justify-start h-16 px-4 border-b border-gray-800">
@@ -188,8 +211,8 @@
 					<span class="text-sm font-medium">US</span>
 				</div>
 				<div class="hidden group-hover:block ml-3">
-					<p class="text-sm font-medium">User</p>
-					<p class="text-xs text-gray-400">User@fixium.com</p>
+					<p class="text-sm font-medium">{name}</p>
+					<p class="text-xs text-gray-400">{username}</p>
 				</div>
 			</button>
 
@@ -197,9 +220,11 @@
 				<div class="absolute bottom-16 left-4 bg-gray-800 text-white rounded-md shadow-lg w-48">
 					<ul class="py-2">
 						<li
-							class="px-4 py-2 text-gray-500 cursor-not-allowed"
+							class="px-4 py-2 hover:bg-blue-800 cursor-pointer"
+							on:click={() => goto('/mi-cuenta')}
+							on:keydown={(e) => e.key === 'Enter' && handleAccountManagement()}
 							role="menuitem"
-							aria-disabled="true"
+							tabindex="0"
 						>
 							Gestionar cuenta
 						</li>
@@ -208,6 +233,7 @@
 							on:click={handleLogout}
 							on:keydown={(e) => e.key === 'Enter' && handleLogout()}
 							role="menuitem"
+							tabindex="0"
 						>
 							Cerrar sesión
 						</li>

@@ -1,12 +1,11 @@
-export async function load({ fetch, params }) {
-    const response = await fetch(`http://localhost:8080/api/users/${params.id}`, {
-        credentials: "include"
-    });
+import { fetchUserById } from '$lib/api/main-backend-requests/users';
 
-    if (!response.ok) {
-        throw new Error("Error al obtener los datos del usuario");
+export async function load({ params, fetch }) {
+    try {
+        // Pasamos fetch como customFetch para mantener las cookies/sesión del SSR
+        const user = await fetchUserById(params.id, fetch);
+        return { user };
+    } catch (error) {
+        throw new Error(error.message || 'Error al obtener los datos del usuario');
     }
-
-    const user = await response.json();
-    return { user };
 }

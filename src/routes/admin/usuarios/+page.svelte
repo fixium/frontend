@@ -1,5 +1,5 @@
 <script>
-    import { deleteUser as apiDeleteUser } from '$lib/api/apiUsers.js';
+    import { deleteUser as apiDeleteUser } from '$lib/api/main-backend-requests/users.js';
 
     export let data;
     let users = data.users;
@@ -31,54 +31,67 @@
     }
 </script>
 
-<h1 class="text-2xl font-bold mb-4">Usuarios registrados</h1>
+<h1 class="text-3xl font-extrabold text-blue-700 mb-8 text-center tracking-tight">Usuarios registrados</h1>
 
 <div class="flex justify-end mb-4">
-    <a href="/admin/usuarios/nuevo" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
+    <a href="/admin/usuarios/nuevo" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors font-semibold mb-4">
         Registrar Usuario
     </a>
 </div>
 
-<div class="overflow-x-auto">
-    <table class="table-auto w-full border-collapse border border-gray-500">
-        <thead>
-            <tr class="bg-blue-400">
-                <th class="border border-gray-300 px-4 py-2">ID</th>
-                <th class="border border-gray-300 px-4 py-2">Nombre</th>
-                <th class="border border-gray-300 px-4 py-2">Correo</th>
-                <th class="border border-gray-300 px-4 py-2">Teléfono</th>
-                <th class="border border-gray-300 px-4 py-2">Rol</th>
-                <th class="border border-gray-300 px-4 py-2">Fecha de Creación</th>
-                <th class="border border-gray-300 px-4 py-2">Acciones</th>
+<div class="overflow-x-auto rounded-xl shadow-lg bg-white">
+    <!-- Header fijo -->
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-blue-600 sticky top-0 z-10">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">ID</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Nombre</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Correo</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Teléfono</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Rol</th>
+                <th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Fecha de Creación</th>
+                <th class="px-6 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">Acciones</th>
             </tr>
         </thead>
-        <tbody>
-            {#each users as user}
-                <tr class="hover:bg-gray-50">
-                    <td class="border border-gray-300 px-4 py-2">{user.id}</td>
-                    <td class="border border-gray-300 px-4 py-2">{user.name}</td>
-                    <td class="border border-gray-300 px-4 py-2">{user.username}</td>
-                    <td class="border border-gray-300 px-4 py-2">{user.phoneNumber}</td>
-                    <td class="border border-gray-300 px-4 py-2">{user.role}</td>
-                    <td class="border border-gray-300 px-4 py-2">{new Date(user.createdAt).toLocaleDateString()}</td>
-                    <td class="border border-gray-300 px-2 py-2 flex justify-center space-x-2">
-                        <a 
-                            href={`usuarios/editar/${user.id}`} 
-                            class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition-colors"
-                        >
-                            Editar
-                        </a>
-                        <button 
-                            on:click={() => confirmDelete(user)} 
-                            class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600 transition-colors"
-                        >
-                            Eliminar
-                        </button>
-                    </td>
-                </tr>
-            {/each}
-        </tbody>
     </table>
+    <!-- Cuerpo con scroll -->
+    <div class="max-h-[500px] overflow-y-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <tbody class="bg-white divide-y divide-gray-100">
+                {#each users as user}
+                    <tr class="hover:bg-blue-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.username}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{user.phoneNumber}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="inline-block px-2 py-1 rounded-full text-xs font-semibold 
+                                {user.role === 'TECHNICIAN' ? 'bg-blue-100 text-blue-800' : ''}
+                                {user.role === 'RECEPTIONIST' ? 'bg-yellow-100 text-yellow-800' : ''}
+                                {user.role === 'ADMIN' ? 'bg-green-100 text-green-800' : ''}">
+                                {user.role}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(user.createdAt).toLocaleDateString()}</td>
+                        <td class="px-6 py-4 whitespace-nowrap flex justify-center gap-2">
+                            <a 
+                                href={`usuarios/editar/${user.id}`} 
+                                class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
+                            >
+                                Editar
+                            </a>
+                            <button 
+                                on:click={() => confirmDelete(user)} 
+                                class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
+                            >
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                {/each}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 {#if showModal}

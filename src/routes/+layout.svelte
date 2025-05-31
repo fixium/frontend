@@ -1,15 +1,35 @@
 <script>
-	import '../app.css';
-	import Sidebar from '$lib/components/Sidebar.svelte';
+    import '../app.css';
+    import Sidebar from '$lib/components/Sidebar.svelte';
+    import NavigationControls from '$lib/components/NavigationControls.svelte';
+    import { toggleDarkMode } from '$lib/theme.js';
+    import { onMount } from 'svelte';
+    import { initializeTheme } from '$lib/theme.js';
 
-	export let data;
+    export let data;
 
-	let role = data.role;
+    let role = data.role;
+    let username = data.username;
+    let name = data.name;
 
-	import { onMount } from 'svelte';
-	onMount(() => {
-		import('$lib/cursor.js');
-	});
+    let isDarkMode = false;
+
+    function updateDarkMode() {
+        isDarkMode = document.documentElement.classList.contains('dark');
+    }
+
+    onMount(() => {
+        initializeTheme();
+        updateDarkMode();
+        // Escucha cambios manuales en la clase dark
+        const observer = new MutationObserver(updateDarkMode);
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    });
+
+    function handleToggleDarkMode() {
+        toggleDarkMode();
+        updateDarkMode();
+    }
 </script>
 
 <div class="flex">
@@ -23,9 +43,24 @@
 	<div
 		class="content {data.isAuthenticated
 			? 'with-sidebar'
-			: 'full-width'} flex-1 h-screen bg-gray-50 p-6 overflow-auto"
+			: 'full-width'} flex-1 h-screen  p-6 overflow-auto"
 	>
 		<slot />
+        <!-- Botón flotante para modo oscuro/claro -->
+        <div class="fixed bottom-4 right-4 z-50">
+            <button
+                on:click={handleToggleDarkMode}
+                class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 p-3 rounded-full shadow-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+                aria-label="Alternar modo oscuro"
+            >
+                {#if isDarkMode}
+                    🌙
+                {:else}
+                    ☀️
+                {/if}
+            </button>
+        </div>
+
 	</div>
 </div>
 <svg xmlns="http://www.w3.org/2000/svg" class="goo" version="1.1" width="100%">
@@ -66,3 +101,4 @@
 		transition: padding-left 0.3s ease-in-out; /* Transición suave */
 	}
 </style>
+
