@@ -136,7 +136,6 @@
         max-width: 1280px;
         margin: 2rem auto 0 auto;
         padding: 2rem 1rem 3rem 1rem;
-        background: #f8fafc;
         border-radius: 1rem;
         box-shadow: 0 2px 16px 0 rgba(0,0,0,0.07);
     }
@@ -162,7 +161,7 @@
 </style>
 
 <div class="main-container">
-    <h1 class="text-3xl font-extrabold text-blue-700 mb-6 text-center tracking-tight">{showActions ? 'Gestión de Reparaciones' : 'Reparaciones'}</h1>
+    <h1 class="text-3xl font-extrabold text-blue-700 dark:text-blue-300 mb-6 text-center tracking-tight">{showActions ? 'Gestión de Reparaciones' : 'Reparaciones'}</h1>
 
     {#if error}
         <p class="text-red-600 font-semibold mb-4 text-center">{error}</p>
@@ -172,7 +171,7 @@
         {#if showActions}
             <div class="flex-1 flex flex-col md:flex-row md:items-end gap-4">
                 <div>
-                    <label for="ticket-select" class="block mb-2 font-medium text-gray-700">Filtrar por ticket:</label>
+                    <label for="ticket-select" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">Filtrar por ticket:</label>
                     <select
                         id="ticket-select"
                         bind:value={selectedTicketId}
@@ -188,7 +187,7 @@
                     </select>
                 </div>
                 <div>
-                    <label for="imei-input" class="block mb-2 font-medium text-gray-700">Buscar por IMEI:</label>
+                    <label for="imei-input" class="block mb-2 font-medium text-gray-700 dark:text-gray-300">Buscar por IMEI:</label>
                     <div class="flex gap-2">
                         <input
                             id="imei-input"
@@ -225,7 +224,7 @@
 
     {#if !selectedTicketId && !(imei && repairs.length > 0)}
         <div class="text-center mt-10 mb-10">
-            <p class="text-gray-600 mb-4 text-lg">
+            <p class="text-gray-600 dark:text-gray-300 mb-4 text-lg">
                 Selecciona o crea un ticket para poder registrar una reparación.
             </p>
             <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="Selecciona ticket" class="mx-auto w-24 opacity-60" />

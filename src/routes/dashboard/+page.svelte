@@ -59,7 +59,6 @@
 		justify-content: flex-start;
 		min-height: 100vh;
 		padding: 2rem 1rem;
-		background: #f8fafc;
 	}
 	.dashboard-header {
 		width: 100%;

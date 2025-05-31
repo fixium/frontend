@@ -84,9 +84,9 @@
   }
 </style>
 
-<main class="fixed inset-0 flex flex-col bg-gradient-to-br from-blue-100 via-white to-gray-200 overflow-hidden">
+<main class="fixed inset-0 flex flex-col  from-blue-100 via-white to-gray-200 overflow-hidden">
   <div class="flex flex-col items-center">
-    <h1 class="text-4xl font-extrabold mb-6 mt-8 text-blue-700 drop-shadow">Asistente Técnico</h1>
+    <h1 class="text-4xl font-extrabold mb-6 mt-8 text-blue-700 dark:text-blue-300 drop-shadow">Asistente Técnico</h1>
   </div>
 
   <div class="chat-container flex flex-col gap-4 flex-grow overflow-y-auto px-2 md:px-0 py-4 max-w-2xl mx-auto w-full">

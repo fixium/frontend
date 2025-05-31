@@ -230,13 +230,13 @@
   <ProgressBar {progress} onCancel={cancelDownload} />
 {/if}
 
-<div class="flex min-h-screen bg-gray-50 p-6">
+<div class="flex min-h-screen  p-6">
   <!-- Contenido principal -->
   <div class="w-full space-y-8">
 
     <!-- Acciones Básicas -->
-    <section class="bg-white shadow-lg rounded-lg p-6">
-      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+    <section class=" shadow-lg rounded-lg p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
         </svg>
@@ -274,8 +274,8 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Modo Recovery -->
-      <section class="bg-white shadow-lg rounded-lg p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <section class=" shadow-lg rounded-lg p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
@@ -303,12 +303,12 @@
       </section>
       
       <!-- Gestión de Respaldo -->
-      <section class="bg-white shadow-lg rounded-lg p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <section class=" shadow-lg rounded-lg p-6">
+        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
           </svg>
-            Gestión de Respaldo <span class="text-red-600 text-sm">(Compatible únicamente con iOS 13 o versiones anteriores)</span>
+            Gestión de Respaldo <span class="text-red-600 dark:text-red-400 text-sm">(Compatible únicamente con iOS 13 o versiones anteriores)</span>
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <!-- Botón para seleccionar carpeta -->
@@ -352,8 +352,8 @@
     </div>
 
     <!-- Gestión de Firmware -->
-    <section class="bg-white shadow-lg rounded-lg p-6">
-      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+    <section class="shadow-lg rounded-lg p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
         </svg>
@@ -400,8 +400,8 @@
     </section>
 
     <!-- Logs -->
-    <section class="bg-white shadow-lg rounded-lg p-6">
-      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+    <section class="shadow-lg rounded-lg p-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
         </svg>
@@ -423,8 +423,8 @@
   </div>
 
     <!-- Panel lateral -->
-  <div class="hidden md:block ml-7 w-72 bg-white shadow-lg rounded-lg p-6 sticky top-6 max-h-[670px] overflow-y-auto overflow-x-hidden">
-    <h2 class="text-l font-bold text-gray-800 mb-4 flex items-center gap-2">
+  <div class="hidden md:block ml-7 w-72  shadow-lg rounded-lg p-6 sticky top-6 max-h-[670px] overflow-y-auto overflow-x-hidden">
+    <h2 class="text-l font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
       <!-- Ícono móvil -->
       <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 2H8a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2zM12 18h.01" />
@@ -437,7 +437,7 @@
         
         <!-- Información principal -->
         <div class="space-y-1">
-          <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1">Datos principales</h3>
+          <h3 class="text-xs font-semibold text-gray-500 uppercase mb-1 text-black dark:text-white">Datos principales</h3>
           {#if deviceInfo.DeviceName}<div class="break-words"><strong>Nombre:</strong> {deviceInfo.DeviceName}</div>{/if}
           {#if deviceInfo.DeviceClass}<div class="break-words"><strong>Clase:</strong> {deviceInfo.DeviceClass}</div>{/if}
           {#if deviceInfo.ProductType}<div class="break-words"><strong>Modelo:</strong> {deviceInfo.ProductType}</div>{/if}
@@ -467,9 +467,9 @@
 
       </div>
     {:else}
-      <p class="text-sm text-gray-700">No hay información disponible.</p>
+      <p class="text-sm text-gray-700 dark:text-gray-300">No hay información disponible.</p>
       <br>
-      <p class="text-sm text-red-600">{error}</p>
+      <p class="text-sm text-red-600 dark:text-red-400">{error}</p>
     {/if}
   </div>
 

@@ -73,15 +73,15 @@
 </script>
 
 <main class="flex items-start justify-center py-8">
-  <div class="relative bg-white shadow-xl rounded-xl p-8 w-full max-w-2xl border border-blue-100">
-    <h1 class="text-3xl font-extrabold text-blue-700 mb-4 flex items-center gap-2">
-      <svg class="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+  <div class="relative  shadow-xl rounded-xl p-8 w-full max-w-2xl border border-blue-100">
+    <h1 class="text-3xl font-extrabold text-blue-700 dark:text-blue-300 mb-4 flex items-center gap-2">
+      <svg class="w-8 h-8 text-blue-500 " fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
       </svg>
       Analizador de Panic Full con IA
     </h1>
     <div class="mb-4 flex gap-4">
-      <label class="flex items-center gap-2 cursor-pointer select-none">
+      <label class="flex items-center gap-2 cursor-pointer select-none text-dark dark:text-white">
         <input
           type="radio"
           bind:group={useFile}
@@ -90,15 +90,15 @@
         />
         <span
           class="w-5 h-5 rounded-full border-2 border-blue-400 flex items-center justify-center
-          peer-checked:border-blue-600 peer-checked:bg-blue-600 transition-colors duration-150"
+          peer-checked:border-blue-600 peer-checked:bg-blue-600 transition-colors duration-150 "
         >
           <span
-            class="w-2.5 h-2.5 rounded-full bg-white peer-checked:bg-white peer-checked:shadow-[0_0_0_4px_rgba(37,99,235,0.5)] transition-all duration-150"
+            class="w-2.5 h-2.5 rounded-full bg-white peer-checked:bg-white peer-checked:shadow-[0_0_0_4px_rgba(37,99,235,0.5)] transition-all duration-150 "
           ></span>
         </span>
         Pegar texto
       </label>
-      <label class="flex items-center gap-2 cursor-pointer select-none">
+      <label class="flex items-center gap-2 cursor-pointer select-none text-dark dark:text-white">
         <input
           type="radio"
           bind:group={useFile}
@@ -117,12 +117,12 @@
       </label>
     </div>
     {#if !useFile}
-      <label for="logContent" class="font-semibold mb-2 block text-gray-700">Pega aquí el contenido del archivo <code class="bg-blue-100 px-1 rounded text-blue-700">panic-full.ips</code>:</label>
+      <label for="logContent" class="font-semibold mb-2 block text-gray-700 dark:text-gray-300">Pega aquí el contenido del archivo <code class="bg-blue-100 px-1 rounded text-blue-700">panic-full.ips</code>:</label>
       <textarea
         id="logContent"
         bind:value={logContent}
         rows="12"
-        class="w-full p-3 border-2 border-blue-200 focus:border-blue-500 rounded-lg resize-y font-mono bg-blue-50 focus:bg-white transition-colors duration-200 outline-none"
+        class="w-full p-3 border-2 border-blue-200 focus:border-blue-500 rounded-lg resize-y font-mono bg-blue-50 focus:bg-white dark:bg-gray-300 dark:text-gray-300 dark:focus:bg-gray-800 transition-colors duration-200 outline-none"
         placeholder="Pega aquí el contenido del log..."
         disabled={isLoading}
       ></textarea>
