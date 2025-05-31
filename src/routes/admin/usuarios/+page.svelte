@@ -23,8 +23,7 @@
             showModal = false;
             userToDelete = null;
         } catch (error) {
-            console.error('Error al eliminar el usuario:', error);
-            alert('Error al eliminar el usuario.');
+            alert('Error al eliminar el usuario: ' + error.message);
         } finally {
             isDeleting = false;
         }
