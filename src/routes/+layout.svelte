@@ -32,37 +32,7 @@
     }
 </script>
 
-<div class="flex">
-	{#if data.isAuthenticated}
-		<div class="sidebar bg-gray-900 text-white">
-			<Sidebar {role} />
-		</div>
-	{/if}
 
-	<!-- Contenido principal -->
-	<div
-		class="content {data.isAuthenticated
-			? 'with-sidebar'
-			: 'full-width'} flex-1 h-screen  p-6 overflow-auto"
-	>
-		<slot />
-        <!-- Botón flotante para modo oscuro/claro -->
-        <div class="fixed bottom-4 right-4 z-50">
-            <button
-                on:click={handleToggleDarkMode}
-                class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 p-3 rounded-full shadow-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
-                aria-label="Alternar modo oscuro"
-            >
-                {#if isDarkMode}
-                    🌙
-                {:else}
-                    ☀️
-                {/if}
-            </button>
-        </div>
-
-	</div>
-</div>
 <svg xmlns="http://www.w3.org/2000/svg" class="goo" version="1.1" width="100%">
     <defs>
         <filter id="goo">
@@ -102,3 +72,32 @@
 	}
 </style>
 
+
+<div class="flex">
+    {#if data.isAuthenticated}
+        <div class="sidebar bg-gray-900 text-white">
+            <Sidebar {role} {username} {name} />
+        </div>
+    {/if}
+
+    <!-- Contenido principal -->
+    <div class="content {data.isAuthenticated ? 'with-sidebar' : 'full-width'} flex-1 h-screen  p-6 overflow-auto">
+        <NavigationControls />
+        <slot />
+
+                <!-- Botón flotante para modo oscuro/claro -->
+        <div class="fixed bottom-4 right-4 z-50">
+            <button
+                on:click={handleToggleDarkMode}
+                class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-100 p-3 rounded-full shadow-lg hover:bg-gray-300 dark:hover:bg-gray-700 transition"
+                aria-label="Alternar modo oscuro"
+            >
+                {#if isDarkMode}
+                    🌙
+                {:else}
+                    ☀️
+                {/if}
+            </button>
+        </div>
+    </div>
+</div>

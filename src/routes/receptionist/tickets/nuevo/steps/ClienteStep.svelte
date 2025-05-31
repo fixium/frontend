@@ -59,20 +59,20 @@
   }
 </script>
 
-<div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-200">
-  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center">Registrar cliente</h2>
+<div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center dark:text-blue-300">Registrar cliente</h2>
 
   {#if error}
     <p class="text-red-600 mb-4 text-center font-semibold">{error}</p>
   {/if}
 
   <!-- Buscar cliente -->
-  <label for="buscar-cliente-email" class="block mb-2 font-semibold text-gray-700">Buscar cliente:</label>
+  <label for="buscar-cliente-email" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Buscar cliente:</label>
   <input
     id="buscar-cliente-email"
     type="email"
     placeholder="Ej: cliente@email.com"
-    class="form-input w-full mb-2 px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+    class="form-input w-full mb-2 px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 focus:outline-none"
     bind:value={email}
     on:input={() => {
       if (email.length === 0) {
@@ -91,7 +91,7 @@
       {#each filteredCustomers as c}
         <button
           type="button"
-          class="w-full text-left px-4 py-2 cursor-pointer hover:bg-blue-100 focus:outline-none focus:bg-blue-200"
+          class="w-full text-left px-4 py-2 cursor-pointer hover:bg-blue-100 focus:outline-none focus:bg-blue-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:bg-gray-600"
           on:click={() => cargarCliente(c)}
         >
           {c.email} ({c.phone})
@@ -108,12 +108,12 @@
 
   <!-- Datos del cliente -->
   {#if selectedCustomerId && selectedCustomerId !== 'new'}
-    <div class="bg-blue-50 border border-blue-300 rounded-lg p-4 mt-4 animate-fade-in">
-      <p class="text-blue-900 text-sm">Nombre: <strong>{name}</strong></p>
-      <p class="text-blue-900 text-sm">Correo: <strong>{registerEmail}</strong></p>
-      <p class="text-blue-900 text-sm">Teléfono: <strong>{phone}</strong></p>
+    <div class="bg-blue-50 border border-blue-300 rounded-lg p-4 mt-4 animate-fade-in dark:bg-gray-700 dark:border-gray-600">
+      <p class="text-blue-900 text-sm dark:text-gray-300">Nombre: <strong>{name}</strong></p>
+      <p class="text-blue-900 text-sm dark:text-gray-300">Correo: <strong>{registerEmail}</strong></p>
+      <p class="text-blue-900 text-sm dark:text-gray-300">Teléfono: <strong>{phone}</strong></p>
       {#if notes}
-        <p class="text-blue-900 text-sm">Notas: <strong>{notes}</strong></p>
+        <p class="text-blue-900 text-sm dark:text-gray-300">Notas: <strong>{notes}</strong></p>
       {/if}
     </div>
   {/if}
@@ -124,7 +124,7 @@
         type="text"
         bind:value={name}
         placeholder="Nombre completo"
-        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
         required
         on:input={(e) => name = validateName(e.target.value)}
       />
@@ -132,7 +132,7 @@
         type="tel"
         bind:value={phone}
         placeholder="Teléfono (10 dígitos)"
-        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
         required
         on:input={(e) => phone = validatePhoneNumber(e.target.value)}
         maxlength="10"
@@ -141,14 +141,14 @@
         type="email"
         bind:value={registerEmail}
         placeholder="Correo electrónico"
-        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
         autocomplete="email"
         required
       />
       <textarea
         bind:value={notes}
         placeholder="Notas (opcional)"
-        class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
         rows="3"
       ></textarea>
     </form>

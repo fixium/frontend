@@ -107,9 +107,12 @@
 					href: '/technician/asistente',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				},
-				{ 
-					name: 'Análisis de Panic', icon: 'bug-ant', href: '/technician/analyze-panic', roles:  ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
-				},
+				{
+					name: 'Análisis de Panic',
+					icon: 'bug-ant',
+					href: '/technician/analyze-panic',
+					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+				}
 			]
 		}
 		// {
@@ -181,7 +184,7 @@
 								<a
 									href={item.href}
 									data-sveltekit-navigate
-									class="flex items-center p-2 rounded-md hover:bg-gray-800 transition-colors
+									class="flex items-center p-2 rounded-md transition-colors section-title
                                 {currentPath === item.href
 										? 'bg-gray-800 text-white'
 										: 'text-gray-400'}"
@@ -220,7 +223,7 @@
 				<div class="absolute bottom-16 left-4 bg-gray-800 text-white rounded-md shadow-lg w-48">
 					<ul class="py-2">
 						<li
-							class="px-4 py-2 hover:bg-blue-800 cursor-pointer"
+							class="px-4 py-2 cursor-pointer account-management"
 							on:click={() => goto('/mi-cuenta')}
 							on:keydown={(e) => e.key === 'Enter' && handleAccountManagement()}
 							role="menuitem"
@@ -229,7 +232,7 @@
 							Gestionar cuenta
 						</li>
 						<li
-							class="px-4 py-2 hover:bg-red-600 hover:text-white cursor-pointer"
+							class="px-4 py-2 hover:text-white cursor-pointer logout"
 							on:click={handleLogout}
 							on:keydown={(e) => e.key === 'Enter' && handleLogout()}
 							role="menuitem"
@@ -252,5 +255,65 @@
 
 	nav::-webkit-scrollbar {
 		display: none; /* Oculta la scrollbar en Chrome, Safari y Edge */
+	}
+
+	.section-title {
+		z-index: 0;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.section-title::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		background: linear-gradient(90deg, transparent, #669ef8);
+		z-index: -1;
+		transition: left 0.5s ease;
+	}
+
+	.section-title:hover::after {
+		left: 0;
+	}
+
+	.section-title:hover {
+		color: #fff;
+	}
+
+	li {
+		z-index: 0;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
+
+	li::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -100%;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+		transition: left 0.5s ease;
+	}
+
+	li:hover::after {
+		left: 0;
+	}
+
+	li:hover {
+		color: #fff;
+	}
+
+	li.account-management::after {
+		background: linear-gradient(90deg, #669ef8, #3e88ff);
+	}
+	li.logout::after {
+		background: linear-gradient(90deg, #f87171, #ff3333);
 	}
 </style>

@@ -53,22 +53,22 @@
     };
 </script>
 
-<div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-100">
-  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center tracking-tight">Estado del dispositivo</h2>
+<div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
+  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center tracking-tight dark:text-blue-300">Estado del dispositivo</h2>
   <textarea
     bind:value={initialStateDescription}
     rows="5"
-    class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+    class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
     placeholder="Ej. No enciende, pantalla rota, etc."
     required
   ></textarea>
 
   <!-- Campo para asignar técnico -->
   <div class="mt-6">
-    <label for="technician-select" class="block mb-2 font-semibold text-gray-700">Asignar técnico:</label>
+    <label for="technician-select" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Asignar técnico:</label>
     <select
       id="technician-select"
-      class="form-select w-full px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+      class="form-select w-full px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
       bind:value={selectedTechnicianId}
     >
       <option value="">-- Sin técnico asignado --</option>
@@ -82,8 +82,8 @@
       <p class="text-red-600 mb-2 text-center font-semibold">{technicianError}</p>
     {/if}
     {#if selectedTechnicianId}
-      <div class="bg-blue-50 border border-blue-300 rounded-lg p-2 mt-2 animate-fade-in flex items-center justify-between">
-        <span class="text-blue-900 text-sm">
+      <div class="bg-blue-50 border border-blue-300 rounded-lg p-2 mt-2 animate-fade-in flex items-center justify-between dark:bg-gray-700"> 
+        <span class="text-blue-900 text-sm dark:text-blue-300">
           Técnico seleccionado:
           <strong>
             {#if technicians.length}
@@ -93,7 +93,7 @@
             {/if}
           </strong>
         </span>
-        <button type="button" class="ml-2 text-xs text-blue-600 hover:underline" on:click={resetTecnico}>Quitar</button>
+        <button type="button" class="ml-2 text-xs text-blue-600 hover:underline dark:text-blue-300" on:click={resetTecnico}>Quitar</button>
       </div>
     {/if}
   </div>

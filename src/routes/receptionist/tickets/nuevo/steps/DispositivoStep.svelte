@@ -77,8 +77,8 @@
   };
 </script>
 
-<div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-100">
-  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center tracking-tight">Registrar dispositivo</h2>
+<div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
+  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center tracking-tight dark:text-blue-300">Registrar dispositivo</h2>
 
   {#if error}
     <p class="text-red-600 mb-4 text-center font-semibold">{error}</p>
@@ -86,10 +86,10 @@
 
   <form on:submit|preventDefault={submit} class="space-y-4">
     {#if !isNewClient}
-      <label for="device-select" class="block font-semibold mb-1">Selecciona un dispositivo existente:</label>
+      <label for="device-select" class="block font-semibold mb-1 dark:text-gray-300">Selecciona un dispositivo existente:</label>
       <select
         id="device-select"
-        class="form-select w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="form-select w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
         bind:value={selectedDeviceId}
         on:change={() => showNewForm = selectedDeviceId === 'nuevo'}
         required

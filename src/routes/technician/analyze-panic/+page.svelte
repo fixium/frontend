@@ -127,11 +127,12 @@
         disabled={isLoading}
       ></textarea>
     {:else}
-      <label for="fileInput" class="font-semibold mb-2 block text-gray-700">Selecciona el archivo <code class="bg-blue-100 px-1 rounded text-blue-700">panic-full.ips</code>:</label>
+      <label for="fileInput" class="font-semibold mb-2 block text-gray-700 dark:text-gray-300">Selecciona el archivo <code class="bg-blue-100 px-1 rounded text-blue-700">panic-full.ips</code>:</label>
         <div class="flex items-center gap-4">
           <label
-            class="flex flex-col items-center px-6 py-4 bg-blue-50 rounded-lg border-2 border-dashed border-blue-300 cursor-pointer transition-colors duration-200 w-full max-w-xs
-            hover:bg-blue-100
+            class="flex flex-col items-center px-6 py-4 bg-blue-50 
+           dark:bg-gray-800 rounded-lg border-2 border-dashed border-blue-300 cursor-pointer transition-colors duration-200 w-full max-w-xs
+            hover:bg-blue-100 dark:hover:bg-gray-700
             {isDragActive ? 'border-blue-500 bg-blue-100' : ''}"
             on:dragover={handleDragOver}
             on:dragleave={handleDragLeave}
