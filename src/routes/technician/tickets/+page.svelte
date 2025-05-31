@@ -267,55 +267,79 @@
 
 {#if showDetailModal && selectedTicket}
     <div class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-        <div class="modal-content bg-white rounded-lg shadow-lg p-6 max-w-lg w-full relative">
+        <div class="modal-content bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full relative">
             <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl" on:click={closeDetailModal}>&times;</button>
             <h2 class="text-xl font-bold mb-4">Detalle del Ticket</h2>
             
-            <div class="mb-4">
-                <h3 class="font-semibold text-blue-700 mb-2">Ticket</h3>
-                <div class="mb-1"><b># Ticket:</b> {selectedTicket.ticketNumber}</div>
-                <div class="mb-1"><b>Estado:</b> {selectedTicket.status}</div>
-                <div class="mb-1"><b>Recibido:</b> {new Date(selectedTicket.receivedAt).toLocaleString()}</div>
-                <div class="mb-1"><b>Descripción inicial:</b> {selectedTicket.initialStateDescription}</div>
-                <div class="mb-1"><b>Creador:</b> {selectedTicket.ticketCreator.name} ({selectedTicket.ticketCreator.email})</div>
-            </div>
-            
-            <div class="mb-4">
-                <h3 class="font-semibold text-blue-700 mb-2">Cliente</h3>
-                <div class="mb-1"><b>Nombre:</b> {selectedTicket.customer.name}</div>
-                <div class="mb-1"><b>Teléfono:</b> {selectedTicket.customer.phone}</div>
-                <div class="mb-1"><b>Email:</b> {selectedTicket.customer.email}</div>
-                <div class="mb-1"><b>Notas:</b> {selectedTicket.customer.notes}</div>
-            </div>
-            
-            <div class="mb-4">
-                <h3 class="font-semibold text-blue-700 mb-2">Dispositivo</h3>
-                <div class="mb-1"><b>Modelo:</b> {selectedTicket.device.model}</div>
-                <div class="mb-1"><b>Color:</b> {selectedTicket.device.color}</div>
-                <div class="mb-1"><b>IMEI:</b> {selectedTicket.device.imei}</div>
-                <div class="mb-1"><b>Número de serie:</b> {selectedTicket.device.serialNumber}</div>
-                <div class="mb-1"><b>Notas:</b> {selectedTicket.device.notes}</div>
-            </div>
-            
-            <div class="mb-4">
-                <h3 class="font-semibold text-blue-700 mb-2">Imágenes</h3>
-                {#if selectedTicket.images && selectedTicket.images.length > 0}
-                    <div class="flex gap-2 mt-1 flex-wrap">
-                        {#each selectedTicket.images as img}
-                            <img src={img} alt="Imagen ticket" class="w-20 h-20 object-cover rounded border" />
-                        {/each}
+            <div class="flex flex-col md:flex-row md:gap-6">
+                <div class="flex-1 flex flex-col gap-4">
+                    <!-- Sección Ticket -->
+                    <div>
+                        <h3 class="font-semibold text-blue-700 mb-2">Ticket</h3>
+                        <div class="mb-1"><b># Ticket:</b> {selectedTicket.ticketNumber}</div>
+                        <div class="mb-1"><b>Estado:</b> {selectedTicket.status}</div>
+                        <div class="mb-1"><b>Recibido:</b> {new Date(selectedTicket.receivedAt).toLocaleString()}</div>
+                        <div class="mb-1"><b>Descripción inicial:</b> {selectedTicket.initialStateDescription}</div>
                     </div>
-                {:else}
-                    <span>No hay imágenes</span>
-                {/if}
+                    <!-- Sección Cliente -->
+                    <div>
+                        <h3 class="font-semibold text-blue-700 mb-2">Cliente</h3>
+                        <div class="mb-1"><b>Nombre:</b> {selectedTicket.customer.name}</div>
+                        <div class="mb-1"><b>Teléfono:</b> {selectedTicket.customer.phone}</div>
+                        <div class="mb-1"><b>Email:</b> {selectedTicket.customer.email}</div>
+                        <div class="mb-1"><b>Notas:</b> {selectedTicket.customer.notes}</div>
+                    </div>
+                    <!-- Sección Imágenes -->
+                    <div>
+                        <h3 class="font-semibold text-blue-700 mb-2">Imágenes</h3>
+                        {#if selectedTicket.images && selectedTicket.images.length > 0}
+                            <div class="flex gap-2 mt-1 flex-wrap">
+                                {#each selectedTicket.images as img}
+                                    <img src={img} alt="Imagen ticket" class="w-20 h-20 object-cover rounded border" />
+                                {/each}
+                            </div>
+                        {:else}
+                            <span>No hay imágenes</span>
+                        {/if}
+                    </div>
+                </div>
+                <div class="flex-1 flex flex-col gap-4 mt-6 md:mt-0">
+                    <!-- Sección Creador del Ticket -->
+                    <div>
+                        <h3 class="font-semibold text-blue-700 mb-2">Creador del Ticket</h3>
+                        <div class="mb-1"><b>Nombre:</b> {selectedTicket.ticketCreator?.name}</div>
+                        <div class="mb-1"><b>Email:</b> {selectedTicket.ticketCreator?.email}</div>
+                    </div>
+                    <!-- Sección Técnico Asignado -->
+                    <div>
+                        <h3 class="font-semibold text-blue-700 mb-2">Técnico Asignado</h3>
+                        {#if selectedTicket.assignedTechnician}
+                            <div class="mb-1"><b>Nombre:</b> {selectedTicket.assignedTechnician.name}</div>
+                            <div class="mb-1"><b>Email:</b> {selectedTicket.assignedTechnician.username}</div>
+                            <div class="mb-1"><b>Teléfono:</b> {selectedTicket.assignedTechnician.phoneNumber}</div>
+                            <div class="mb-1"><b>Asignado el:</b> {new Date(selectedTicket.assignedTechnician.createdAt).toLocaleString()}</div>
+                        {:else}
+                            <span>No hay técnico asignado</span>
+                        {/if}
+                    </div>
+                    <!-- Sección Dispositivo -->
+                    <div>
+                        <h3 class="font-semibold text-blue-700 mb-2">Dispositivo</h3>
+                        <div class="mb-1"><b>Modelo:</b> {selectedTicket.device.model}</div>
+                        <div class="mb-1"><b>Color:</b> {selectedTicket.device.color}</div>
+                        <div class="mb-1"><b>IMEI:</b> {selectedTicket.device.imei}</div>
+                        <div class="mb-1"><b>Número de serie:</b> {selectedTicket.device.serialNumber}</div>
+                        <div class="mb-1"><b>Notas:</b> {selectedTicket.device.notes}</div>
+                    </div>
+                </div>
             </div>
-            
             <div class="mt-4 flex justify-end">
                 <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" on:click={closeDetailModal}>Cerrar</button>
             </div>
         </div>
     </div>
 {/if}
+
 
 <style>
     .modal-content {

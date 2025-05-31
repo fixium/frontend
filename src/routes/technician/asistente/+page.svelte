@@ -137,7 +137,7 @@
       <button 
         on:click={sendMessage} 
         aria-label="Enviar mensaje"
-        disabled={isLoading}
+        disabled={isLoading || !inputMessage.trim()}
         class="transition-all duration-200 rounded-full p-2 bg-blue-500 hover:bg-blue-600 text-white shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 fill-white" viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
