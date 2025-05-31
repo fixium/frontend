@@ -22,3 +22,25 @@ export async function getDashboardData() {
         throw error;
     }
 }
+
+export async function getTicketsCountByStatus() {
+	const res = await fetch(`${API_URL}/count-tickets-by-status`, {
+		credentials: 'include'
+	});
+	if (!res.ok) {
+		const errorBody = await res.json().catch(() => ({}));
+		throw new Error(buildErrorMessage(errorBody, 'Error al obtener conteo de tickets por estado'));
+	}
+	return await res.json(); // [{ status: 'Abierto', count: 5 }, ...]
+}
+
+export async function getUsersCountByRole() {
+    const res = await fetch(`${API_URL}/count-users-by-role`, {
+        credentials: 'include'
+    });
+    if (!res.ok) {
+        const errorBody = await res.json().catch(() => ({}));
+        throw new Error(buildErrorMessage(errorBody, 'Error al obtener conteo de usuarios por rol'));
+    }
+    return await res.json(); // [{ role: 'ADMIN', count: 2 }, ...]
+}

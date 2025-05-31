@@ -1,10 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import Chart from 'chart.js/auto';
-    import { getDashboardData } from '$lib/api/main-backend-requests/dashboard.js';
-    import { getAllTickets } from '$lib/api/main-backend-requests/tickets.js';
-    import { fetchUsers } from '$lib/api/main-backend-requests/users.js';
-    import { getCustomers } from '$lib/api/main-backend-requests/customers.js';
+    import { getDashboardData, getTicketsCountByStatus, getUsersCountByRole } from '$lib/api/main-backend-requests/dashboard.js';
 
     export let data;
 
@@ -29,19 +26,19 @@
         totalCustomers = dashboardData.totalCustomers;
 
         // Tickets por estado
-        const tickets = await getAllTickets();
-        ticketsByStatus = tickets.reduce((acc, t) => {
-            acc[t.ticketStatus] = (acc[t.ticketStatus] || 0) + 1;
+        const statusCounts = await getTicketsCountByStatus();
+        ticketsByStatus = statusCounts.reduce((acc, item) => {
+            acc[item.status] = item.count;
             return acc;
         }, {});
 
-        // Usuarios por rol
-        const users = await fetchUsers();
-        totalUsers = users.length;
-        usersByRole = users.reduce((acc, u) => {
-            acc[u.role] = (acc[u.role] || 0) + 1;
+        // Usuarios por rol (nuevo endpoint)
+        const usersByRoleArr = await getUsersCountByRole();
+        usersByRole = usersByRoleArr.reduce((acc, item) => {
+            acc[item.role] = item.count;
             return acc;
         }, {});
+        totalUsers = Object.values(usersByRole).reduce((a, b) => a + b, 0);
     }
 
     function renderCharts() {
