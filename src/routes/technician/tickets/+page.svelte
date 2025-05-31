@@ -155,21 +155,21 @@
 {/if}
 
 <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-    <h1 class="text-3xl font-extrabold text-blue-700 mb-8 text-center tracking-tight">Mis Tickets Asignados</h1>
+    <h1 class="text-3xl font-extrabold text-blue-700 mb-8 text-center tracking-tight dark:text-white">Mis Tickets Asignados</h1> 
     {#if existsTickets}
     <div class="mb-6 flex flex-wrap gap-4 items-end">
         <div class="flex flex-wrap gap-4 items-end flex-grow">
         <div>
-            <label for="filtro-nombre" class="block text-sm font-medium text-gray-700">Nombre cliente</label>
-            <input id="filtro-nombre" type="text" bind:value={filtroNombre} class="border rounded px-2 py-1" placeholder="Nombre cliente" />
+            <label for="filtro-nombre" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre cliente</label>
+            <input id="filtro-nombre" type="text" bind:value={filtroNombre} class="border rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-300" placeholder="Nombre cliente" /> 
         </div>
         <div>
-            <label for="filtro-ticket" class="block text-sm font-medium text-gray-700"># Ticket</label>
-            <input id="filtro-ticket" type="text" bind:value={filtroTicket} class="border rounded px-2 py-1" placeholder="Número ticket" />
+            <label for="filtro-ticket" class="block text-sm font-medium text-gray-700 dark:text-gray-300"># Ticket</label>
+            <input id="filtro-ticket" type="text" bind:value={filtroTicket} class="border rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-300" placeholder="Número ticket" />
         </div>
         <div>
-            <label for="filtro-imei" class="block text-sm font-medium text-gray-700">IMEI</label>
-            <input id="filtro-imei" type="text" bind:value={filtroImei} class="border rounded px-2 py-1" placeholder="IMEI" />
+            <label for="filtro-imei" class="block text-sm font-medium text-gray-700 dark:text-gray-300">IMEI</label>
+            <input id="filtro-imei" type="text" bind:value={filtroImei} class="border rounded px-2 py-1 dark:bg-gray-800 dark:text-gray-300" placeholder="IMEI" />
         </div>
         <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" on:click={aplicarFiltro}>Filtrar</button>
         <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" on:click={limpiarFiltro}>Limpiar</button>
@@ -191,7 +191,7 @@
         {#if existsTickets}
             <div class="mt-6 bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200 ">
                         <thead class="bg-blue-600">
                             <tr>
                                 <th scope="col" class="px-6 py-3 w-24 text-left text-xs font-bold text-white uppercase tracking-wider"># Ticket</th>
@@ -203,12 +203,12 @@
                         </thead>
                     </table>
                     <div class="max-h-[500px] overflow-y-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                        <tbody class="bg-white divide-y divide-gray-100">
+                        <table class="min-w-full divide-y divide-gray-200 ">
+                        <tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-700">
                             {#each tickets as ticket (ticket.id)}
-                                <tr class="hover:bg-blue-50 transition-colors">
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-semibold">{ticket.ticketNumber}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                <tr class="hover:bg-blue-50 transition-colors dark:text-white dark:hover:text-black">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm  font-semibold">{ticket.ticketNumber}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap ">
                                         <span class="inline-block px-2 py-1 rounded-full text-xs font-semibold
                                             {ticket.ticketStatus === 'RECEIVED' ? 'bg-yellow-100 text-yellow-800' : ''}
                                             {ticket.ticketStatus === 'DIAGNOSED_AWAITING_CUSTOMER' ? 'bg-orange-100 text-orange-800' : ''}
@@ -229,8 +229,8 @@
                                             </button>
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(ticket.receivedAt).toLocaleString()}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{ticket.customerEmail}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm ">{new Date(ticket.receivedAt).toLocaleString()}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm ">{ticket.customerEmail}</td>
                                     <td class="px-6 py-4 whitespace-nowrap flex justify-center gap-2">
                                         <button
                                             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
