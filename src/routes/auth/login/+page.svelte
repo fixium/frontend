@@ -5,10 +5,18 @@
 
 	let username = '';
 	let password = '';
+    let loginError = '';
+
 	async function handleLogin() {
-		if (await login(username, password)) goto('/');
-		else alert('Credenciales incorrectas');
-	}
+        loginError = '';
+        const data = await login(username, password);
+        
+        if (data && data.success !== false) {
+            window.location.href = '/';
+        } else {
+            loginError = data?.errors?.general || 'Login inválido';
+        }
+    }
 </script>
 
 <div class="flex items-center justify-center min-h-screen">
@@ -32,11 +40,15 @@
 			<!-- contraseña fancy -->
 			<PasswordFancy bind:value={password} placeholder="Contraseña" required />
 
+            {#if loginError}
+                <p class="text-red-600 text-sm mb-2">{loginError}</p>
+            {/if}
+
 			<button
 				type="submit"
 				class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg rounded-full  login-button"
 			>
-				Login
+				Iniciar sesión
 			</button>
 		</form>
 
