@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 
 	export let data;
+	let role = data.role;
 	let userId = data.id;
 
 	let user = null;
@@ -169,7 +170,7 @@
 					class="w-28 h-28 rounded-full mb-4 shadow-lg border-4 border-blue-200"
 				/>
 				<h2 class="text-2xl font-semibold text-gray-700">{user.name}</h2>
-				<p class="text-gray-500">@{user.username}</p>
+				<p class="text-gray-500">{user.username}</p>
 			</div>
 			<div class="mb-8 space-y-2">
 				<div class="flex justify-between items-center">
@@ -309,14 +310,16 @@
 				</div>
 			{/if}
 
-			<div class="space-y-4">
-				<button
-					class="w-full bg-gradient-to-r from-red-100 to-red-200 hover:from-red-200 hover:to-red-300 text-red-700 font-bold py-2 px-4 rounded-lg shadow transition"
-					on:click={handleDeleteAccount}
-				>
-					Eliminar cuenta
-				</button>
-			</div>
+			{#if role !== 'ROLE_ADMIN'}
+				<div class="space-y-4">
+					<button
+						class="w-full bg-gradient-to-r from-red-100 to-red-200 hover:from-red-200 hover:to-red-300 text-red-700 font-bold py-2 px-4 rounded-lg shadow transition"
+						on:click={handleDeleteAccount}
+					>
+						Eliminar cuenta
+					</button>
+				</div>
+			{/if}
 		{/if}
 	</div>
 </div>
