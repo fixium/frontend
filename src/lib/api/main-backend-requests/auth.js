@@ -20,6 +20,7 @@ export async function login(username, password) {
         }
 
         const data = await response.json();
+
         // Guardar token en localStorage si existe
         if (data.token) {
             localStorage.setItem('authToken', data.token);

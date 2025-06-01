@@ -3,7 +3,7 @@ import { redirect } from '@sveltejs/kit';
 export function load({ url }) {
     if (typeof window === 'undefined') return; // Solo en cliente
 
-    const jwt = localStorage.getItem('jwt');
+    const jwt = localStorage.getItem('authToken');
     const path = url.pathname;
 
     const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized'];
