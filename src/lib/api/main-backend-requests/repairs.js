@@ -4,10 +4,13 @@ import { buildErrorMessage } from "$lib/utils/errorUtils";
 const API_URL = `${API_BASE_URL}/repairs`;
 
 export async function getAllRepairs(ticketId) {
+    const token = localStorage.getItem('authToken');
     const response = await fetch(`${API_URL}/${ticketId}`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        }
     });
     if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
@@ -33,13 +36,13 @@ export async function getAllRepairs(ticketId) {
 export async function createRepair(repairRequest, verificationImage) {
     const formData = new FormData();
     formData.append('repairRequest', new Blob([JSON.stringify(repairRequest)], { type: 'application/json' }));
-    
     formData.append('verificationImage', verificationImage);
 
+    const token = localStorage.getItem('authToken');
     const response = await fetch(API_URL, {
         method: 'POST',
         body: formData,
-        credentials: 'include'
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     });
     if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
@@ -49,8 +52,9 @@ export async function createRepair(repairRequest, verificationImage) {
 }
 
 export async function getRepairsByImei(imei) {
+    const token = localStorage.getItem('authToken');
     const response = await fetch(`${API_URL}/by-imei/${imei}`, {
-        credentials: 'include'
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {}
     });
     if (!response.ok) {
         const errorBody = await response.json().catch(() => ({}));
@@ -60,10 +64,13 @@ export async function getRepairsByImei(imei) {
 }
 
 export async function updateRepair(repairId, { diagnosis, repairActions }) {
+    const token = localStorage.getItem('authToken');
     const response = await fetch(`${API_URL}/${repairId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ diagnosis, repairActions })
     });
     if (!response.ok) {

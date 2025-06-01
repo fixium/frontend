@@ -10,10 +10,11 @@ export async function analyzePanicLog({ logContent, file }) {
         formData.append('panicLog', logContent);
     }
 
+    const token = localStorage.getItem('authToken');
     const res = await fetch(`${AI_API_URL}/analyze-panic-log`, {
         method: 'POST',
         body: formData,
-        credentials: 'include'
+        headers: token ? { 'Authorization': `Bearer ${token}` } : {},
     });
 
     if (!res.ok) {
@@ -24,11 +25,14 @@ export async function analyzePanicLog({ logContent, file }) {
 }
 
 export async function assistantChat(messages) {
+    const token = localStorage.getItem('authToken');
     const res = await fetch(`${AI_API_URL}/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+        },
         body: JSON.stringify({ messages }),
-        credentials: 'include'
     });
 
     if (!res.ok) {

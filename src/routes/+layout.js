@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 
-export function load({ cookies, url }) {
+export function load({ url }) {
     if (typeof window === 'undefined') return; // Solo en cliente
 
     const jwt = localStorage.getItem('jwt');
@@ -48,6 +48,7 @@ export function load({ cookies, url }) {
             throw redirect(302, '/auth/unauthorized');
         }
     }
+
 
     return { role, username, name, id, isAuthenticated: true };
 }
