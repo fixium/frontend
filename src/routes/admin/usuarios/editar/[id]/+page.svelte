@@ -1,10 +1,9 @@
 <script>
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
-    import { updateUser } from "$lib/api/main-backend-requests/users.js";
+    import { fetchUserById, updateUser } from "$lib/api/main-backend-requests/users.js";
     import { validateName, validatePhoneNumber } from "$lib/utils/validation";
-
-    export let data;
+    import { page } from '$app/stores';
 
     let user = {
         name: "",
@@ -15,8 +14,17 @@
     let successMessage = "";
     let errorMessage = "";
 
-    onMount(() => {
-        user = { ...data.user }; // Cargar los datos del usuario desde el servidor
+    // Obtener el id de la URL
+    let userId;
+    $: userId = $page.params.id;
+
+    onMount(async () => {
+        try {
+            const fetchedUser = await fetchUserById(userId);
+            user = { ...fetchedUser };
+        } catch (error) {
+            errorMessage = error.message || "Error al obtener los datos del usuario.";
+        }
     });
 
     async function handleUpdate() {
@@ -29,7 +37,7 @@
         }
 
         try {
-            await updateUser(data.user.id, user);
+            await updateUser(userId, user);
             successMessage = "Usuario actualizado exitosamente.";
             setTimeout(() => goto("/admin/usuarios"), 1000);
         } catch (error) {
