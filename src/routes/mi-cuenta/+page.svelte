@@ -125,14 +125,14 @@
 {/if}
 
 <div class="min-h-screen flex flex-col items-center py-10">
-	<div class="w-full max-w-xl bg-white rounded-2xl shadow-2xl p-10 border border-blue-100">
-		<h1 class="text-4xl font-extrabold text-blue-700 mb-8 text-center tracking-tight drop-shadow">
+	<div class="w-full max-w-xl  rounded-2xl shadow-2xl p-10 border border-blue-100">
+		<h1 class="text-4xl font-extrabold text-blue-700 mb-8 text-center tracking-tight drop-shadow dark:text-blue-200">
 			Gestión de mi cuenta
 		</h1>
 		{#if loading}
 			<div class="flex flex-col items-center justify-center py-10">
 				<svg
-					class="animate-spin h-8 w-8 text-blue-500 mb-2"
+					class="animate-spin h-8 w-8 text-blue-500 mb-2 "
 					xmlns="http://www.w3.org/2000/svg"
 					fill="none"
 					viewBox="0 0 24 24"
@@ -141,9 +141,10 @@
 					></circle>
 					<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
 				</svg>
-				<p class="text-gray-500 text-center">Cargando usuario...</p>
+				<p class="text-gray-500 text-center dark:text-gray-400">Cargando usuario...</p>
 			</div>
 		{:else if error}
+			<!-- Mensaje de error -->
 			<div
 				class="fade-in flex items-center justify-center bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-lg mb-4 shadow"
 			>
@@ -163,19 +164,20 @@
 				<span>{error}</span>
 			</div>
 		{:else if user}
+			
 			<div class="flex flex-col items-center mb-8">
 				<img
 					src="https://ui-avatars.com/api/?name={user.name}&background=0D8ABC&color=fff"
 					alt="Avatar"
 					class="w-28 h-28 rounded-full mb-4 shadow-lg border-4 border-blue-200"
 				/>
-				<h2 class="text-2xl font-semibold text-gray-700">{user.name}</h2>
-				<p class="text-gray-500">{user.username}</p>
+				<h2 class="text-2xl font-semibold text-gray-700 dark:text-gray-200">{user.name}</h2>
+				<p class="text-gray-500 dark:text-gray-400">{user.username}</p>
 			</div>
 			<div class="mb-8 space-y-2">
 				<div class="flex justify-between items-center">
-					<span class="font-medium text-gray-600">Teléfono:</span>
-					<span class="text-gray-800">{user.phoneNumber}</span>
+					<span class="font-medium text-gray-600 dark:text-gray-300">Teléfono:</span>
+					<span class="text-gray-800 dark:text-gray-200">{user.phoneNumber}</span>
 				</div>
 			</div>
 
@@ -189,10 +191,10 @@
 			{#if showChangePassword}
 				<form
 					on:submit|preventDefault={handleChangePassword}
-					class="fade-in bg-blue-50 p-6 rounded-xl shadow-inner space-y-5 mb-4 border border-blue-200"
+					class="fade-in bg-blue-50 p-6 rounded-xl shadow-inner space-y-5 mb-4 border border-blue-200 dark:bg-gray-800 dark:border-blue-700"
 				>
 					<div>
-						<label for="current-password" class="block text-gray-700 mb-1 font-medium"
+						<label for="current-password" class="block text-gray-700 mb-1 font-medium dark:text-gray-300"
 							>Contraseña actual:</label
 						>
 						<input
@@ -200,11 +202,11 @@
 							type="password"
 							bind:value={currentPassword}
 							required
-							class="input-focus w-full border border-gray-300 rounded px-3 py-2 focus:outline-none transition"
+							class="input-focus w-full border border-gray-300 rounded px-3 py-2 focus:outline-none transition dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
 						/>
 					</div>
 					<div>
-						<label for="new-password" class="block text-gray-700 mb-1 font-medium"
+						<label for="new-password" class="block text-gray-700 mb-1 font-medium dark:text-gray-300"
 							>Nueva contraseña:</label
 						>
 						<input
@@ -212,11 +214,11 @@
 							type="password"
 							bind:value={newPassword}
 							required
-							class="input-focus w-full border border-gray-300 rounded px-3 py-2 focus:outline-none transition"
+							class="input-focus w-full border border-gray-300 rounded px-3 py-2 focus:outline-none transition dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
 						/>
 					</div>
 					<div>
-						<label for="confirm-password" class="block text-gray-700 mb-1 font-medium"
+						<label for="confirm-password" class="block text-gray-700 mb-1 font-medium dark:text-gray-300"
 							>Confirmar nueva contraseña:</label
 						>
 						<input
@@ -224,7 +226,7 @@
 							type="password"
 							bind:value={confirmPassword}
 							required
-							class="input-focus w-full border border-gray-300 rounded px-3 py-2 focus:outline-none transition"
+							class="input-focus w-full border border-gray-300 rounded px-3 py-2 focus:outline-none transition dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
 						/>
 					</div>
 					{#if passwordError}
