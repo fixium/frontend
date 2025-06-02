@@ -5,19 +5,20 @@
     let show = true;
 
     onMount(() => {
-        setTimeout(() => {
-            show = false;
-            goto('/dashboard');
-        }, 1500);
+        // setTimeout(() => {
+        //     show = false;
+        //     goto('/dashboard');
+        // }, 1000);
+        goto('/dashboard');
     });
 </script>
 
-{#if show}
+<!-- {#if show}
     <div class="welcome-container">
         <h1 class="welcome-title">¡Bienvenido a Fixium!</h1>
         <div class="welcome-bar"></div>
     </div>
-{/if}
+{/if} -->
 
 <style>
     .welcome-container {

@@ -103,6 +103,8 @@ app.on('ready', async () => {
         }
     });
 
+    mainWindow.setMenuBarVisibility(false);
+    
     mainWindow.loadFile('loading.html');
 
     startBackend();
