@@ -52,7 +52,7 @@
 
 <div class="h-screen flex items-center justify-center p-4 overflow-auto">
     <div class="w-full max-w-md flex flex-col items-center">
-        <h1 class="text-3xl font-bold mb-4 text-center">Editar usuario</h1>
+        <h1 class="text-3xl font-bold mb-4 text-center dark:text-gray-200">Editar usuario</h1>
 
         {#if successMessage}
             <div class="bg-green-100 text-green-800 p-3 rounded mb-4 w-full text-center">
@@ -77,7 +77,7 @@
                     placeholder=""
                     class="input-style peer"
                 />
-                <label for="name" class="floating-label">Nombre</label>
+                <label for="name" class="floating-label dark:text-gray-300">Nombre</label>
             </div>
 
             <!-- Teléfono -->
@@ -127,6 +127,21 @@
 </div>
 
 <style>
+
+    :global(.dark) .input-style {
+		background-color: #222;
+		color: #f3f3f3;
+		border-color: #66c188;
+	}
+	:global(.dark) .floating-label {
+		color: #bbb;
+		background: #222;
+	}
+	:global(.dark) .input-style:focus + .floating-label,
+	:global(.dark) .input-style:not(:placeholder-shown) + .floating-label {
+		color: #66c188;
+		background: transparent;
+	}
     .input-style {
         border: 2px solid black;
         border-radius: 2rem;

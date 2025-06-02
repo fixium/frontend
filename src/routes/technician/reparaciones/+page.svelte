@@ -176,7 +176,7 @@
                         id="ticket-select"
                         bind:value={selectedTicketId}
                         on:change={handleTicketChange}
-                        class="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
                     >
                         <option value="">-- Selecciona --</option>
                         {#each tickets as ticket}
@@ -194,7 +194,7 @@
                             type="text"
                             bind:value={imei}
                             placeholder="Ingresa IMEI"
-                            class="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            class="block w-full max-w-xs px-3 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-200 dark:border-gray-600"
                         />
                         <button
                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full shadow font-semibold transition-all duration-150"

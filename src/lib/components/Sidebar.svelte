@@ -3,6 +3,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import { logout } from '$lib/api/main-backend-requests/auth';
 	import { goto } from '$app/navigation';
+	import { fly } from 'svelte/transition';
 
 	export let role, username, name;
 
@@ -160,7 +161,7 @@
 <div class="group flex h-screen">
 	<!-- Sidebar -->
 	<aside
-		class="bg-gray-900 text-white transition-all duration-300 ease-in-out group-hover:w-64 w-18 fixed md:relative h-full z-50 flex flex-col overflow-hidden"
+		class=" text-white transition-all duration-300 ease-in-out group-hover:w-64 w-18 fixed md:relative h-full z-50 flex flex-col overflow-hidden"
 		on:mouseleave={() => (showMenu = false)}
 	>
 		<!-- Header de la sidebar -->
@@ -220,7 +221,11 @@
 			</button>
 
 			{#if showMenu}
-				<div class="absolute bottom-16 left-4 bg-gray-800 text-white rounded-md shadow-lg w-48">
+				<div
+					class="absolute bottom-16 left-4 bg-gray-800 text-white rounded-md shadow-lg w-44"
+					in:fly={{ y: 40, duration: 250 }}
+					out:fly={{ y: 40, duration: 200 }}
+				>
 					<ul class="py-2">
 						<li
 							class="px-4 py-2 cursor-pointer account-management"
@@ -271,7 +276,7 @@
 		left: -100%;
 		width: 100%;
 		height: 100%;
-		background: linear-gradient(90deg, transparent, #669ef8);
+		background: linear-gradient(90deg, rgba(128, 181, 255, 0.1), #4d91ff);
 		z-index: -1;
 		transition: left 0.5s ease;
 	}
@@ -299,7 +304,7 @@
 		width: 100%;
 		height: 100%;
 		z-index: -1;
-		transition: left 0.5s ease;
+		transition: left 0.3s ease;
 	}
 
 	li:hover::after {

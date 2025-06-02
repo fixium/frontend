@@ -53,7 +53,10 @@
 		width: 5rem; /* Ancho inicial de la barra lateral */
 		z-index: 50; /* Asegura que esté por encima del contenido */
 		transition: width 0.3s ease-in-out; /* Transición para el ancho */
+        /* transparencia a la sidebar */
+        background-color: rgba(8, 21, 37, 0.98); /* Color de fondo con transparencia */
 	}
+
 
 	.sidebar:hover {
 		width: 13rem; /* Ancho expandido al pasar el mouse */
