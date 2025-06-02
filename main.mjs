@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url';
 import fs from 'fs';
 import https from 'https';
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url)); // Define __dirname
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 let mainWindow;
 let viteProcess;
@@ -78,7 +78,8 @@ app.on('ready', async () => {
             contextIsolation: true,
             nodeIntegration: false,
             disableHardwareAcceleration: true,
-        }
+        },
+        icon: path.join(__dirname, 'static', 'Fix.png')
     });
 
     // Carga una página local mientras esperas a Vite
@@ -87,9 +88,10 @@ app.on('ready', async () => {
     startVite();
 
     try {
-        await waitOn({ resources: ['http://localhost:5173'], timeout: 60000 });
+        await waitOn({ resources: ['http://localhost:5173'], timeout: 40000 });
         console.log('Vite está listo.');
         mainWindow.loadURL('http://localhost:5173');
+        mainWindow.setTitle('Fixium');
     } catch (err) {
         console.error('Error al esperar a Vite:', err.message);
         app.quit();
