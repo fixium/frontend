@@ -4,7 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cargando - Fixium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --primary-color: #0078d7;
+      --secondary-color: #00c6ff;
+      --accent-color: #00e5ff;
+      --text-color: #ffffff;
+      --shadow-color: rgba(0, 0, 0, 0.2);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       height: 100vh;
@@ -12,83 +29,234 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #0078d7, #00c6ff);
-      background-size: 400% 400%;
-      animation: gradientFlow 15s ease infinite;
-      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      background: radial-gradient(ellipse at center, #0078d7 0%, #004c8c 100%);
+      color: var(--text-color);
       overflow: hidden;
-    }
-
-    @keyframes gradientFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .logo {
-      font-size: 2.8rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      margin-bottom: 25px;
-      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      animation: fadeInUp 1.5s ease forwards;
-    }
-
-    .spinner-container {
       position: relative;
-      width: 80px;
-      height: 80px;
-      margin-bottom: 25px;
     }
 
-    .spinner {
-      width: 80px;
-      height: 80px;
-      border: 6px solid rgba(255, 255, 255, 0.3);
-      border-top: 6px solid #ffffff;
-      border-radius: 50%;
-      animation: spin 1.2s linear infinite;
-    }
-
-    .progress-bar {
+    /* Particles background */
+    .particles {
       position: absolute;
       top: 0;
       left: 0;
-      right: 0;
-      bottom: 0;
-      border-radius: 50%;
-      border: 4px solid transparent;
-      border-left-color: #fff;
-      animation: progressSpin 2.5s linear infinite;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      overflow: hidden;
     }
 
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 50%;
+      }
+      100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+      }
+    }
+
+    /* Main content */
+    .content {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+      padding: 0 20px;
+    }
+
+    /* Logo container with glow effect */
+    .logo-container {
+      position: relative;
+      margin-bottom: 40px;
+      animation: fadeInDown 1.2s ease forwards;
+    }
+
+    .logo {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-shadow: 0 0 15px rgba(0, 198, 255, 0.7);
+      background: linear-gradient(to right, #ffffff, #00e5ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+    }
+
+    .logo::after {
+      content: 'Fixium';
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: transparent;
+      filter: blur(8px);
+      background: linear-gradient(to right, #ffffff, #00e5ff);
+      -webkit-background-clip: text;
+      opacity: 0.7;
+    }
+
+    /* Loader container */
+    .loader-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 40px;
+      animation: fadeInUp 1.2s ease forwards 0.3s;
+      opacity: 0;
+    }
+
+    /* Outer ring */
+    .outer-ring {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-top: 4px solid transparent;
+      animation: spin 2s linear infinite;
+    }
+
+    /* Middle ring */
+    .middle-ring {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.15);
+      border-right: 4px solid transparent;
+      animation: spin 1.5s linear infinite reverse;
+    }
+
+    /* Inner ring */
+    .inner-ring {
+      position: absolute;
+      top: 30px;
+      left: 30px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-bottom: 4px solid transparent;
+      animation: spin 1s linear infinite;
+    }
+
+    /* Pulsating core */
+    .core {
+      position: absolute;
+      top: 45px;
+      left: 45px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-color) 0%, var(--primary-color) 100%);
+      box-shadow: 0 0 20px var(--accent-color);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    /* Progress bar */
+    .progress-container {
+      width: 80%;
+      max-width: 300px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      animation: fadeInUp 1.2s ease forwards 0.6s;
+      opacity: 0;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(to right, var(--primary-color), var(--accent-color));
+      border-radius: 10px;
+      animation: progress 3s ease-in-out infinite;
+      box-shadow: 0 0 10px var(--accent-color);
+    }
+
+    /* Text elements */
+    .loading-text {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px var(--shadow-color);
+      animation: fadeInUp 1.2s ease forwards 0.9s;
+      opacity: 0;
+    }
+
+    .loading-subtext {
+      font-size: 1rem;
+      opacity: 0.8;
+      text-align: center;
+      max-width: 80%;
+      line-height: 1.5;
+      animation: fadeInUp 1.2s ease forwards 1.2s;
+      opacity: 0;
+    }
+
+    /* Status indicator */
+    .status-container {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      animation: fadeInUp 1.2s ease forwards 1.5s;
+      opacity: 0;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--accent-color);
+      margin-right: 10px;
+      animation: blink 1.5s infinite;
+    }
+
+    .status-text {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    /* Animations */
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    @keyframes progressSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .loading-text {
-      font-size: 1.3rem;
-      opacity: 0.9;
-      margin-bottom: 20px;
-      animation: pulse 2s infinite ease-in-out;
-      text-align: center;
-    }
-
     @keyframes pulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
+      0%, 100% { transform: scale(0.8); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 1; }
     }
 
-    .loading-subtext {
-      font-size: 0.95rem;
-      opacity: 0.6;
-      animation: fadeIn 3s ease-in-out infinite alternate;
+    @keyframes progress {
+      0% { width: 5%; }
+      50% { width: 70%; }
+      80% { width: 85%; }
+      95% { width: 95%; }
+      100% { width: 98%; }
     }
 
     @keyframes fadeInUp {
@@ -96,40 +264,144 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0.4; }
-      to { opacity: 0.8; }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Responsive */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* Responsive styles */
     @media (max-width: 480px) {
       .logo {
-        font-size: 2rem;
+        font-size: 2.5rem;
+      }
+      
+      .logo::after {
+        font-size: 2.5rem;
       }
 
-      .spinner-container {
-        width: 60px;
-        height: 60px;
+      .loader-container {
+        width: 100px;
+        height: 100px;
       }
 
-      .spinner,
-      .progress-bar {
-        width: 60px;
-        height: 60px;
-        border-width: 4px;
+      .outer-ring {
+        width: 100px;
+        height: 100px;
+      }
+
+      .middle-ring {
+        top: 12.5px;
+        left: 12.5px;
+        width: 75px;
+        height: 75px;
+      }
+
+      .inner-ring {
+        top: 25px;
+        left: 25px;
+        width: 50px;
+        height: 50px;
+      }
+
+      .core {
+        top: 37.5px;
+        left: 37.5px;
+        width: 25px;
+        height: 25px;
+      }
+
+      .loading-text {
+        font-size: 1.2rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="logo">Fixium</div>
+  <!-- Particles background -->
+  <div class="particles" id="particles"></div>
+  
+  <!-- Main content -->
+  <div class="content">
+    <div class="logo-container">
+      <div class="logo">Fixium</div>
+    </div>
 
-  <div class="spinner-container">
-    <div class="spinner"></div>
-    <div class="progress-bar"></div>
+    <div class="loader-container">
+      <div class="outer-ring"></div>
+      <div class="middle-ring"></div>
+      <div class="inner-ring"></div>
+      <div class="core"></div>
+    </div>
+
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+    </div>
+
+    <div class="loading-text">Cargando recursos</div>
+    <div class="loading-subtext">Estamos preparando todo para ofrecerte la mejor experiencia</div>
+
+    <div class="status-container">
+      <div class="status-dot"></div>
+      <div class="status-text">Conectando con el servidor...</div>
+    </div>
   </div>
 
-  <div class="loading-text">Cargando recursos...</div>
-  <div class="loading-subtext">Por favor espere...</div>
+  <script>
+    // Create particles for background effect
+    document.addEventListener('DOMContentLoaded', function() {
+      const particlesContainer = document.getElementById('particles');
+      const particleCount = 30;
+      
+      for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size between 5px and 20px
+        const size = Math.random() * 15 + 5;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Random opacity
+        particle.style.opacity = Math.random() * 0.5 + 0.1;
+        
+        // Random animation delay
+        particle.style.animationDelay = `${Math.random() * 15}s`;
+        particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+      
+      // Update status messages
+      const statusText = document.querySelector('.status-text');
+      const loadingText = document.querySelector('.loading-text');
+      const messages = [
+        'Conectando con el servidor...',
+        'Verificando datos...',
+        'Cargando componentes...',
+        'Preparando interfaz...',
+        'Casi listo...'
+      ];
+      
+      let messageIndex = 0;
+      
+      setInterval(() => {
+        messageIndex = (messageIndex + 1) % messages.length;
+        statusText.textContent = messages[messageIndex];
+        
+        // Add dots animation to loading text
+        const dots = ['.', '..', '...'];
+        loadingText.textContent = `Cargando recursos${dots[messageIndex % 3]}`;
+      }, 2000);
+    });
+  </script>
 </body>
 </html>
