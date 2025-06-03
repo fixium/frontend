@@ -104,7 +104,7 @@
 			items: [
 				{
 					name: 'Herramientas',
-					icon: 'device-phone-mobile',
+					icon: 'wrench-screwdriver',
 					href: '/technician/herramientas',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				},
