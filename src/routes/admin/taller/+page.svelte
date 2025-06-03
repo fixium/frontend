@@ -88,7 +88,7 @@
       <input id="workshop-email" type="email" bind:value={contactEmail} required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm" />
     </div>
     <div>
-      <label class="block font-semibold mb-1 text-gray-700">Creado el</label>
+      <label for="workshop-created-at" class="block font-semibold mb-1 text-gray-700">Creado el</label>
       <div class="relative">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">
           <!-- Heroicon calendar -->
@@ -97,6 +97,7 @@
           </svg>
         </span>
         <input
+          id="workshop-created-at"
           type="text"
           value={createdAtFormatted}
           disabled

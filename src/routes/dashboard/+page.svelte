@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import Chart from 'chart.js/auto';
     import { getDashboardData, getTicketsCountByStatus, getUsersCountByRole } from '$lib/api/main-backend-requests/dashboard.js';
+    import { getWorkshopDetails } from '$lib/api/main-backend-requests/workshop.js';
 
     export let data;
 
@@ -16,6 +17,10 @@
     let ticketsByStatus = {};
     let usersByRole = {};
     let chartTickets, chartUsers;
+
+    let workshopName = '';
+    let workshopPhone = '';
+    let workshopEmail = '';
 
     async function fetchStats() {
         // Dashboard resumen
@@ -39,6 +44,18 @@
             return acc;
         }, {});
         totalUsers = Object.values(usersByRole).reduce((a, b) => a + b, 0);
+
+        // Datos del taller
+        try {
+            const workshop = await getWorkshopDetails();
+            workshopName = workshop.name;
+            workshopPhone = workshop.phoneNumber;
+            workshopEmail = workshop.contactEmail;
+        } catch (e) {
+            workshopName = 'No disponible';
+            workshopPhone = '';
+            workshopEmail = '';
+        }
     }
 
     function renderCharts() {
@@ -106,8 +123,17 @@
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard Fixium</h1>
             <p class="dashboard-user text-gray-600 dark:text-gray-300">
-                Usuario: <strong>{usuario}</strong> | Rol: <strong>{rol}</strong>
+                Usuario: <strong>{usuario}</strong> | Rol: <strong>{rol.replace('ROLE_', '')}</strong>
             </p>
+        </div>
+        <div class="dashboard-workshop text-gray-500 dark:text-gray-400" style="text-align: right;">
+            <strong>Taller:</strong> {workshopName}
+            {#if workshopPhone}
+                <span> | <strong>Tel:</strong> {workshopPhone}</span>
+            {/if}
+            {#if workshopEmail}
+                <span> | <strong>Email:</strong> {workshopEmail}</span>
+            {/if}
         </div>
     </div>
     <div class="dashboard-cards">
@@ -149,6 +175,9 @@
         --dashboard-card-dark: #23272f;
         --dashboard-text: #222;
         --dashboard-text-dark: #f3f3f3;
+    }
+    .workshop-info span {
+        margin-right: 1.5rem;
     }
     .dashboard-container {
         display: flex;
