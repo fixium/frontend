@@ -47,6 +47,8 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 3a3 3 0 00-3 3v4.5a3 3 0 00.879 2.121l5.25 5.25a3 3 0 004.242 0l5.25-5.25A3 3 0 0021 10.5V6a3 3 0 00-3-3H9.75z" />
     {:else if name === 'cog-6-tooth'}
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15.5a3.5 3.5 0 100-7 3.5 3.5 0 000 7z" />
+    {:else if name === 'building-office'}
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21V7a2 2 0 012-2h2V3h6v2h2a2 2 0 012 2v14M9 21V9h6v12" />
     {:else if name === 'key'}
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
         <!-- Ícono por defecto -->

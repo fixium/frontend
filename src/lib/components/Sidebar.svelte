@@ -83,12 +83,18 @@
 			]
 		},
 		{
-			section: 'Administrar Taller',
+			section: 'Administración',
 			items: [
 				{
-					name: 'Administrar Usuarios',
+					name: 'Usuarios',
 					icon: 'users',
 					href: '/admin/usuarios',
+					roles: ['ROLE_ADMIN']
+				},
+				{
+					name: 'Taller',
+					icon: 'building-office',
+					href: '/admin/taller',
 					roles: ['ROLE_ADMIN']
 				}
 			]
