@@ -123,7 +123,7 @@
         <div>
             <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard Fixium</h1>
             <p class="dashboard-user text-gray-600 dark:text-gray-300">
-                Usuario: <strong>{usuario}</strong> | Rol: <strong>{rol.replace('ROLE_', '')}</strong>
+                Usuario: <strong>{usuario}</strong> | Rol: <strong>{rol ? rol.replace('ROLE_', '') : ''}</strong>
             </p>
         </div>
         <div class="dashboard-workshop text-gray-500 dark:text-gray-400" style="text-align: right;">
