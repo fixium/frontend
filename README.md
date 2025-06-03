@@ -88,4 +88,4 @@ This is the frontend for **Fixium**, a platform for managing electronic device r
 - **[Pedro](https://github.com/PedroxionX)** - Analyst
 - **[David](https://github.com/Deivi171)** - Designer
 - **[Frank](https://github.com/FrankSkep)** - Developer
-- **[Diego](https://github.com/Dekstro999)** - Tester and frontend designer
+- **[Diego](https://github.com/Dekstro999)** - Tester and ux/ui developer.
