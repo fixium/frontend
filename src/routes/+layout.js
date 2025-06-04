@@ -1,71 +1,78 @@
 import { redirect } from '@sveltejs/kit';
 
 export function load({ url }) {
-    if (typeof window === 'undefined') return; // Solo en cliente
+	if (typeof window === 'undefined') return; // Solo cliente
 
-    const jwt = localStorage.getItem('authToken');
-    const path = url.pathname;
+	const jwt = localStorage.getItem('authToken');
+	const path = url.pathname;
 
-    const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized'];
-    const isPublic = publicPaths.some(p => path.startsWith(p));
-    const sharedAuthPaths = ['/dashboard', '/', '/mi-cuenta'];
+	const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized'];
+	const isPublic = publicPaths.some(p => path.startsWith(p));
+	const sharedAuthPaths = ['/dashboard', '/', '/mi-cuenta'];
 
-    if (!jwt) {
-        if (isPublic) return {};
-        throw redirect(302, '/auth/login');
-    }
+	// 🔐 Si no hay token y no es ruta pública → redirige
+	if (!jwt) {
+		if (isPublic) return {};
+		throw redirect(302, '/auth/login');
+	}
 
-    const { role, username, name, id, exp } = parseJwt(jwt) || {};
+	const payload = parseJwt(jwt);
 
-    if (!role || !exp || Date.now() / 1000 > exp) {
-        throw redirect(302, '/auth/login');
-    }
+    console.log("XDxd");
+    console.log(`Payload Expiration: ${payload?.exp}`);
+    console.log('Date Now:', Date.now() / 1000);
 
-    // Definir rutas permitidas y denegadas por rol
-    const accessMatrix = {
-        ROLE_ADMIN: {
-            allowedRoutes: ['/admin', '/receptionist', '/technician'],
-            deniedRoutes: ['/technician/reparaciones/nueva']
-        },
-        ROLE_TECHNICIAN: {
-            allowedRoutes: ['/technician'],
-            deniedRoutes: ['/admin', '/receptionist/tickets/nuevo']
-        },
-        ROLE_RECEPTIONIST: {
-            allowedRoutes: ['/receptionist', '/technician/reparaciones'],
-            deniedRoutes: ['/admin', '/technician/reparaciones/nueva']
-        }
-    };
+	// 🔒 Si token inválido o expirado → borrar y redirigir
+	if (!payload || !payload.exp || Date.now() / 1000 > payload.exp) {
+		localStorage.removeItem('authToken');
+		throw redirect(302, '/auth/login');
+	}
 
-    const access = accessMatrix[role] || { allowedRoutes: [], deniedRoutes: [] };
+	const { role, username, name, id } = payload;
 
-    // Comprobar acceso
-    const isAllowed = access.allowedRoutes.some(route => path.startsWith(route));
-    const isDenied = access.deniedRoutes.some(route => path.startsWith(route));
+	// 🚫 Validar acceso por rol
+	const accessMatrix = {
+		ROLE_ADMIN: {
+			allowedRoutes: ['/admin', '/receptionist', '/technician'],
+			deniedRoutes: ['/technician/reparaciones/nueva']
+		},
+		ROLE_TECHNICIAN: {
+			allowedRoutes: ['/technician'],
+			deniedRoutes: ['/admin', '/receptionist/tickets/nuevo']
+		},
+		ROLE_RECEPTIONIST: {
+			allowedRoutes: ['/receptionist', '/technician/reparaciones'],
+			deniedRoutes: ['/admin', '/technician/reparaciones/nueva']
+		}
+	};
 
-    if (!isPublic && !sharedAuthPaths.includes(path)) {
-        if (!isAllowed || isDenied) {
-            throw redirect(302, '/auth/unauthorized');
-        }
-    }
+	const access = accessMatrix[role] || { allowedRoutes: [], deniedRoutes: [] };
+	const isAllowed = access.allowedRoutes.some(route => path.startsWith(route));
+	const isDenied = access.deniedRoutes.some(route => path.startsWith(route));
 
+	if (!isPublic && !sharedAuthPaths.includes(path)) {
+		if (!isAllowed || isDenied) {
+			throw redirect(302, '/auth/unauthorized');
+		}
+	}
 
-    return { role, username, name, id, isAuthenticated: true };
+	return { role, username, name, id, isAuthenticated: true };
 }
 
+// 🔍 Decodificador JWT seguro
 function parseJwt(token) {
-    try {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(
-            atob(base64)
-                .split('')
-                .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-                .join('')
-        );
-        return JSON.parse(jsonPayload);
-    } catch (e) {
-        console.error('Error al decodificar el JWT:', e);
-        return null;
-    }
+	try {
+		const base64Url = token.split('.')[1];
+		const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+		const jsonPayload = decodeURIComponent(
+			atob(base64)
+				.split('')
+				.map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+				.join('')
+		);
+		return JSON.parse(jsonPayload);
+	} catch (e) {
+		console.warn('Token inválido:', e);
+		return null;
+	}
 }
