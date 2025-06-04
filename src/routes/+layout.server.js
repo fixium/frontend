@@ -29,7 +29,7 @@ export function load({ cookies, url }) {
     }
 
     // Si está autenticado y trata de ir a /auth/login, redirigir al dashboard
-    if (path === '/auth/login') {
+    if (path === '/auth/login' || path === '/auth/register') {
         throw redirect(302, '/dashboard');
     }
 
