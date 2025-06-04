@@ -13,14 +13,24 @@ export function load({ cookies, url }) {
 
     if (!jwt) {
         if (isPublic) return {};
+        // Si ya estamos en /auth/login, no redirigir de nuevo
+        if (path === '/auth/login') return {};
         throw redirect(302, '/auth/login');
     }
 
     // Decodificar el JWT para obtener el rol, username y name
     const { role, username, name, id, exp } = parseJwt(jwt) || {};
 
-    if (!role || !exp || Date.now() / 1000 > exp) {
+    // Si token inválido o expirado: eliminar cookie y redirigir
+	if (!exp || Date.now() / 1000 > exp) {
+        cookies.set('jwt', '', { path: '/', httpOnly: true, maxAge: 0 });
+        if (path === '/auth/login') return {};
         throw redirect(302, '/auth/login');
+    }
+
+    // Si está autenticado y trata de ir a /auth/login, redirigir al dashboard
+    if (path === '/auth/login') {
+        throw redirect(302, '/dashboard');
     }
 
     // Definir rutas permitidas y denegadas por rol
