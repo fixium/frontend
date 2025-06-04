@@ -13,14 +13,11 @@ export function load({ url }) {
 	// 🔐 Si no hay token y no es ruta pública → redirige
 	if (!jwt) {
 		if (isPublic) return {};
-		throw redirect(302, '/auth/login');
+		if (path === '/auth/login') return {};
+        throw redirect(302, '/auth/login');
 	}
 
 	const payload = parseJwt(jwt);
-
-    console.log("XDxd");
-    console.log(`Payload Expiration: ${payload?.exp}`);
-    console.log('Date Now:', Date.now() / 1000);
 
 	// 🔒 Si token inválido o expirado → borrar y redirigir
 	if (!payload || !payload.exp || Date.now() / 1000 > payload.exp) {
@@ -29,6 +26,11 @@ export function load({ url }) {
 	}
 
 	const { role, username, name, id } = payload;
+
+	// Si esta autenticado y accede a login → redirigir a dashboard
+	if (path === '/auth/login' || path === '/auth/register') {
+        throw redirect(302, '/dashboard');
+    }
 
 	// 🚫 Validar acceso por rol
 	const accessMatrix = {
