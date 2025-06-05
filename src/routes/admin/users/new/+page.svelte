@@ -72,7 +72,7 @@
         try {
             await addUser({ name, phoneNumber, username, password, role, images: imageBlobs });
             successMessage = 'Usuario registrado exitosamente.';
-            setTimeout(() => goto('/admin/usuarios'), 500);
+            setTimeout(() => goto('/admin/users'), 500);
         } catch (error) {
             errorMessage = error.message || 'Error al registrar el usuario.';
         } finally {
@@ -81,7 +81,7 @@
     }
 
     function handleCancel() {
-        goto('/admin/usuarios');
+        goto('/admin/users');
     }
 
     function validateName(event) {

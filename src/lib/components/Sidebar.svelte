@@ -62,7 +62,7 @@
 				{
 					name: 'Reparaciones',
 					icon: 'fa-solid fa-clock',
-					href: '/technician/reparaciones',
+					href: '/technician/repairs',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				}
 			]
@@ -73,13 +73,13 @@
 				{
 					name: 'Usuarios',
 					icon: 'fa-solid fa-users',
-					href: '/admin/usuarios',
+					href: '/admin/users',
 					roles: ['ROLE_ADMIN']
 				},
 				{
 					name: 'Taller',
 					icon: 'fa-solid fa-building',
-					href: '/admin/taller',
+					href: '/admin/workshop',
 					roles: ['ROLE_ADMIN']
 				},
 				// {
