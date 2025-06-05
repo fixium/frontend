@@ -237,7 +237,7 @@
         <div class="text-center mt-10 mb-10">
             <p class="text-gray-600 dark:text-gray-300 mb-4 text-lg">
                 <i class="fa fa-info-circle mr-1"></i>
-                Selecciona o crea un ticket para poder registrar una reparación.
+                Selecciona un ticket para poder visualizar sus reparaciones.
             </p>
             <img src="https://cdn-icons-png.flaticon.com/512/1048/1048953.png" alt="Selecciona ticket" class="mx-auto w-24 opacity-60" />
         </div>

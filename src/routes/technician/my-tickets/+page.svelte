@@ -248,7 +248,7 @@
                                         </button>
                                         <button
                                             class="bg-green-600 hover:bg-green-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
-                                            on:click={() => goto(`/technician/reparaciones?ticketId=${ticket.id}`)}
+                                            on:click={() => goto(`/technician/repairs?ticketId=${ticket.id}`)}
                                             type="button"
                                         >
                                             Reparaciones
@@ -267,74 +267,112 @@
 
 {#if showDetailModal && selectedTicket}
     <div class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-        <div class="modal-content bg-white rounded-lg shadow-lg p-6 max-w-3xl w-full relative">
-            <button class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl" on:click={closeDetailModal}>&times;</button>
-            <h2 class="text-xl font-bold mb-4">Detalle del Ticket</h2>
-            
-            <div class="flex flex-col md:flex-row md:gap-6">
-                <div class="flex-1 flex flex-col gap-4">
-                    <!-- Sección Ticket -->
-                    <div>
-                        <h3 class="font-semibold text-blue-700 mb-2">Ticket</h3>
-                        <div class="mb-1"><b># Ticket:</b> {selectedTicket.ticketNumber}</div>
-                        <div class="mb-1"><b>Estado:</b> {selectedTicket.status}</div>
-                        <div class="mb-1"><b>Recibido:</b> {new Date(selectedTicket.receivedAt).toLocaleString()}</div>
-                        <div class="mb-1"><b>Descripción inicial:</b> {selectedTicket.initialStateDescription}</div>
+        <div class="modal-content bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-lg p-6 max-w-3xl w-full relative">
+            <button
+                class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white text-xl"
+                on:click={closeDetailModal}
+                aria-label="Cerrar modal de detalles"
+            >
+                <i class="fa fa-times"></i>
+            </button>
+            <h2 class="text-xl font-bold mb-6 text-blue-700 dark:text-blue-300 text-center flex items-center gap-2">
+                <i class="fa fa-ticket-alt"></i>
+                Detalle del Ticket
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Columna izquierda -->
+                <div class="flex flex-col gap-4">
+                    <!-- Ticket -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
+                        <h3 class="font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
+                            <i class="fa fa-ticket-alt"></i>
+                            Ticket
+                        </h3>
+                        <div class="mb-1"><b># Ticket:</b> <span class="dark:text-white">{selectedTicket.ticketNumber}</span></div>
+                        <div class="mb-1"><b>Estado:</b> <span class="dark:text-white">{selectedTicket.status}</span></div>
+                        <div class="mb-1 flex items-center gap-2"><b>Recibido:</b> <i class="fa fa-calendar-alt text-gray-400"></i> <span class="dark:text-white">{new Date(selectedTicket.receivedAt).toLocaleString()}</span></div>
+                        <div class="mb-1"><b>Descripción inicial:</b> <span class="dark:text-white">{selectedTicket.initialStateDescription}</span></div>
                     </div>
-                    <!-- Sección Cliente -->
-                    <div>
-                        <h3 class="font-semibold text-blue-700 mb-2">Cliente</h3>
-                        <div class="mb-1"><b>Nombre:</b> {selectedTicket.customer.name}</div>
-                        <div class="mb-1"><b>Teléfono:</b> {selectedTicket.customer.phone}</div>
-                        <div class="mb-1"><b>Email:</b> {selectedTicket.customer.email}</div>
-                        <div class="mb-1"><b>Notas:</b> {selectedTicket.customer.notes}</div>
+                    <!-- Cliente -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
+                        <h3 class="font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
+                            <i class="fa fa-user"></i>
+                            Cliente
+                        </h3>
+                        <div class="mb-1"><b>Nombre:</b> <span class="dark:text-white">{selectedTicket.customer.name}</span></div>
+                        <div class="mb-1 flex items-center gap-2"><b>Teléfono:</b> <i class="fa fa-phone text-gray-400"></i> <span class="dark:text-white">{selectedTicket.customer.phone}</span></div>
+                        <div class="mb-1 flex items-center gap-2"><b>Email:</b> <i class="fa fa-envelope text-gray-400"></i> <span class="dark:text-white">{selectedTicket.customer.email}</span></div>
+                        <div class="mb-1"><b>Notas:</b> <span class="dark:text-white">{selectedTicket.customer.notes}</span></div>
                     </div>
-                    <!-- Sección Imágenes -->
-                    <div>
-                        <h3 class="font-semibold text-blue-700 mb-2">Imágenes</h3>
+                    <!-- Imágenes -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
+                        <h3 class="font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
+                            <i class="fa fa-image"></i>
+                            Imágenes
+                        </h3>
                         {#if selectedTicket.images && selectedTicket.images.length > 0}
                             <div class="flex gap-2 mt-1 flex-wrap">
                                 {#each selectedTicket.images as img}
-                                    <img src={img} alt="Imagen ticket" class="w-20 h-20 object-cover rounded border" />
+                                    <img
+                                        src={img}
+                                        alt="Imagen ticket"
+                                        class="w-20 h-20 object-cover rounded border"
+                                    />
                                 {/each}
                             </div>
                         {:else}
-                            <span>No hay imágenes</span>
+                            <span class="dark:text-white">No hay imágenes</span>
                         {/if}
                     </div>
                 </div>
-                <div class="flex-1 flex flex-col gap-4 mt-6 md:mt-0">
-                    <!-- Sección Creador del Ticket -->
-                    <div>
-                        <h3 class="font-semibold text-blue-700 mb-2">Creador del Ticket</h3>
-                        <div class="mb-1"><b>Nombre:</b> {selectedTicket.ticketCreator?.name}</div>
-                        <div class="mb-1"><b>Email:</b> {selectedTicket.ticketCreator?.email}</div>
+                <!-- Columna derecha -->
+                <div class="flex flex-col gap-4 mt-6 md:mt-0">
+                    <!-- Creador del Ticket -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
+                        <h3 class="font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
+                            <i class="fa fa-user-cog"></i>
+                            Creador del Ticket
+                        </h3>
+                        <div class="mb-1"><b>Nombre:</b> <span class="dark:text-white">{selectedTicket.ticketCreator?.name}</span></div>
+                        <div class="mb-1 flex items-center gap-2"><b>Email:</b> <i class="fa fa-envelope text-gray-400"></i> <span class="dark:text-white">{selectedTicket.ticketCreator?.email}</span></div>
                     </div>
-                    <!-- Sección Técnico Asignado -->
-                    <div>
-                        <h3 class="font-semibold text-blue-700 mb-2">Técnico Asignado</h3>
+                    <!-- Técnico Asignado -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
+                        <h3 class="font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
+                            <i class="fa fa-user-wrench"></i>
+                            Técnico Asignado
+                        </h3>
                         {#if selectedTicket.assignedTechnician}
-                            <div class="mb-1"><b>Nombre:</b> {selectedTicket.assignedTechnician.name}</div>
-                            <div class="mb-1"><b>Email:</b> {selectedTicket.assignedTechnician.username}</div>
-                            <div class="mb-1"><b>Teléfono:</b> {selectedTicket.assignedTechnician.phoneNumber}</div>
-                            <div class="mb-1"><b>Asignado el:</b> {new Date(selectedTicket.assignedTechnician.createdAt).toLocaleString()}</div>
+                            <div class="mb-1"><b>Nombre:</b> <span class="dark:text-white">{selectedTicket.assignedTechnician.name}</span></div>
+                            <div class="mb-1 flex items-center gap-2"><b>Email:</b> <i class="fa fa-envelope text-gray-400"></i> <span class="dark:text-white">{selectedTicket.assignedTechnician.username}</span></div>
+                            <div class="mb-1 flex items-center gap-2"><b>Teléfono:</b> <i class="fa fa-phone text-gray-400"></i> <span class="dark:text-white">{selectedTicket.assignedTechnician.phoneNumber}</span></div>
+                            <div class="mb-1 flex items-center gap-2"><b>Asignado el:</b> <i class="fa fa-calendar-alt text-gray-400"></i> <span class="dark:text-white">{new Date(selectedTicket.assignedTechnician.createdAt).toLocaleString()}</span></div>
                         {:else}
-                            <span>No hay técnico asignado</span>
+                            <span class="dark:text-white">No hay técnico asignado</span>
                         {/if}
                     </div>
-                    <!-- Sección Dispositivo -->
-                    <div>
-                        <h3 class="font-semibold text-blue-700 mb-2">Dispositivo</h3>
-                        <div class="mb-1"><b>Modelo:</b> {selectedTicket.device.model}</div>
-                        <div class="mb-1"><b>Color:</b> {selectedTicket.device.color}</div>
-                        <div class="mb-1"><b>IMEI:</b> {selectedTicket.device.imei}</div>
-                        <div class="mb-1"><b>Número de serie:</b> {selectedTicket.device.serialNumber}</div>
-                        <div class="mb-1"><b>Notas:</b> {selectedTicket.device.notes}</div>
+                    <!-- Dispositivo -->
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-100 dark:border-gray-600">
+                        <h3 class="font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
+                            <i class="fa fa-mobile-alt"></i>
+                            Dispositivo
+                        </h3>
+                        <div class="mb-1"><b>Modelo:</b> <span class="dark:text-white">{selectedTicket.device.model}</span></div>
+                        <div class="mb-1"><b>Color:</b> <span class="dark:text-white">{selectedTicket.device.color}</span></div>
+                        <div class="mb-1 flex items-center gap-2"><b>IMEI:</b> <i class="fa fa-mobile-alt text-gray-400"></i> <span class="dark:text-white">{selectedTicket.device.imei}</span></div>
+                        <div class="mb-1"><b>Número de serie:</b> <span class="dark:text-white">{selectedTicket.device.serialNumber}</span></div>
+                        <div class="mb-1"><b>Notas:</b> <span class="dark:text-white">{selectedTicket.device.notes}</span></div>
                     </div>
                 </div>
             </div>
-            <div class="mt-4 flex justify-end">
-                <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded" on:click={closeDetailModal}>Cerrar</button>
+            <div class="mt-6 flex justify-end">
+                <button
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded flex items-center gap-2"
+                    on:click={closeDetailModal}
+                >
+                    <i class="fa fa-times"></i>
+                    Cerrar
+                </button>
             </div>
         </div>
     </div>

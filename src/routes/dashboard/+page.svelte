@@ -190,12 +190,14 @@
             <canvas id="ticketsChart" class="dashboard-chart"></canvas>
         </div>
     </div>
-    <div class="chart-card bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg flex flex-col items-center justify-center border border-slate-200 dark:border-slate-700 transition hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-500">
-        <h3 class="text-xl font-bold text-slate-700 dark:text-slate-200 mb-6 text-center tracking-tight">Usuarios por rol</h3>
-        <div class="relative w-full max-w-[420px] h-[280px] flex items-center justify-center">
-            <canvas id="usersChart" class="dashboard-chart"></canvas>
+    {#if rol === 'ROLE_ADMIN'}
+        <div class="chart-card bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg flex flex-col items-center justify-center border border-slate-200 dark:border-slate-700 transition hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-500">
+            <h3 class="text-xl font-bold text-slate-700 dark:text-slate-200 mb-6 text-center tracking-tight">Usuarios por rol</h3>
+            <div class="relative w-full max-w-[420px] h-[280px] flex items-center justify-center">
+                <canvas id="usersChart" class="dashboard-chart"></canvas>
+            </div>
         </div>
-    </div>
+    {/if}
 </div>
 </div>
 

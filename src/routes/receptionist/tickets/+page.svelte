@@ -356,6 +356,7 @@
         {/if}
     {/if}
 </div>
+
 {#if showDetailModal && selectedTicket}
     <div class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
         <div class="modal-content bg-white dark:bg-gray-800 dark:text-white rounded-lg shadow-lg p-6 max-w-3xl w-full relative">
