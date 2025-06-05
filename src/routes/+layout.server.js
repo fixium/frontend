@@ -9,7 +9,7 @@ export function load({ cookies, url }) {
     const isPublic = publicPaths.some(p => path.startsWith(p));
 
     // Rutas accesibles para cualquier usuario autenticado
-    const sharedAuthPaths = ['/dashboard', '/', '/mi-cuenta'];
+    const sharedAuthPaths = ['/dashboard', '/', '/my-account'];
 
     if (!jwt) {
         if (isPublic) return {};
@@ -37,15 +37,15 @@ export function load({ cookies, url }) {
     const accessMatrix = {
         ROLE_ADMIN: {
             allowedRoutes: ['/admin', '/receptionist', '/technician'],
-            deniedRoutes: ['/technician/reparaciones/nueva']
+            deniedRoutes: ['/technician/repairs/new']
         },
         ROLE_TECHNICIAN: {
             allowedRoutes: ['/technician'],
-            deniedRoutes: ['/admin', '/receptionist/tickets/nuevo']
+            deniedRoutes: ['/admin', '/receptionist/tickets/create']
         },
         ROLE_RECEPTIONIST: {
-            allowedRoutes: ['/receptionist', '/technician/reparaciones'],
-            deniedRoutes: ['/admin', '/technician/reparaciones/nueva']
+            allowedRoutes: ['/receptionist', '/technician/repairs'],
+            deniedRoutes: ['/admin', '/technician/repairs/new']
         }
     };
 
