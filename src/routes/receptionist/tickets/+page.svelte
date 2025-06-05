@@ -254,121 +254,105 @@
         {/if}
         {#if existsTickets}
             <div class="mt-6 bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
-                <div class="overflow-x-auto max-h-[500px]">
-                    <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                        <thead class="bg-blue-600 sticky top-0 z-10">
-                            <tr>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 w-24 text-left text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1"
-                                >
-                                    <i class="fa fa-hashtag"></i>
-                                    # Ticket
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 w-40 text-left text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1"
-                                >
-                                    <i class="fa fa-info-circle"></i>
-                                    Estado
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 w-40 text-left text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1"
-                                >
-                                    <i class="fa fa-calendar-alt"></i>
-                                    Recibido
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 w-32 text-left text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1"
-                                >
-                                    <i class="fa fa-envelope"></i>
-                                    Email cliente
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 w-32 text-center text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1"
-                                >
-                                    <i class="fa fa-cogs"></i>
-                                    Acciones
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-700">
-                            {#each tickets as ticket (ticket.id)}
-                                <tr
-                                    class="hover:bg-blue-50 transition-colors dark:text-white dark:hover:text-black"
-                                >
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold"
-                                        >{ticket.ticketNumber}</td
-                                    >
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span
-                                            class="inline-block px-2 py-1 rounded-full text-xs font-semibold
+				<div class="overflow-x-auto max-h-[500px]">
+					<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+						<thead class="bg-blue-600 sticky top-0 z-10">
+							<tr>
+								<th
+									scope="col"
+									class="px-6 py-3 w-24 text-left text-xs font-bold text-white uppercase tracking-wider"
+									># Ticket</th
+								>
+								<th
+									scope="col"
+									class="px-6 py-3 w-40 text-left text-xs font-bold text-white uppercase tracking-wider"
+									>Estado</th
+								>
+								<th
+									scope="col"
+									class="px-6 py-3 w-40 text-left text-xs font-bold text-white uppercase tracking-wider"
+									>Recibido</th
+								>
+								<th
+									scope="col"
+									class="px-6 py-3 w-32 text-left text-xs font-bold text-white uppercase tracking-wider"
+									>Email cliente</th
+								>
+								<th
+									scope="col"
+									class="px-6 py-3 w-32 text-center text-xs font-bold text-white uppercase tracking-wider"
+									>Acciones</th
+								>
+							</tr>
+						</thead>
+						<tbody class="bg-white divide-y divide-gray-100 dark:bg-gray-800 dark:divide-gray-700">
+							{#each tickets as ticket (ticket.id)}
+								<tr
+									class="hover:bg-blue-50 transition-colors dark:text-white dark:hover:text-black"
+								>
+									<td class="px-6 py-4 whitespace-nowrap text-sm font-semibold"
+										>{ticket.ticketNumber}</td
+									>
+									<td class="px-6 py-4 whitespace-nowrap">
+										<span
+											class="inline-block px-2 py-1 rounded-full text-xs font-semibold
                                 {ticket.ticketStatus === 'RECEIVED'
-                                                ? 'bg-yellow-100 text-yellow-800'
-                                                : ''}
+												? 'bg-yellow-100 text-yellow-800'
+												: ''}
                                 {ticket.ticketStatus === 'DIAGNOSED_AWAITING_CUSTOMER'
-                                                ? 'bg-orange-100 text-orange-800'
-                                                : ''}
+												? 'bg-orange-100 text-orange-800'
+												: ''}
                                 {ticket.ticketStatus === 'IN_REPAIR'
-                                                ? 'bg-blue-100 text-blue-800'
-                                                : ''}
+												? 'bg-blue-100 text-blue-800'
+												: ''}
                                 {ticket.ticketStatus === 'REPAIRED'
-                                                ? 'bg-green-100 text-green-800'
-                                                : ''}
+												? 'bg-green-100 text-green-800'
+												: ''}
                                 {ticket.ticketStatus === 'NOT_REPAIRED'
-                                                ? 'bg-red-100 text-red-800'
-                                                : ''}
+												? 'bg-red-100 text-red-800'
+												: ''}
                                 {ticket.ticketStatus === 'DELIVERED'
-                                                ? 'bg-gray-200 text-gray-800'
-                                                : ''}
+												? 'bg-gray-200 text-gray-800'
+												: ''}
                             "
-                                        >
-                                            {ticket.ticketStatus}
-                                            <button
-                                                class="ml-2 text-blue-600 hover:text-blue-800 focus:outline-none"
-                                                title="Ver información"
-                                                aria-label="Ver información del estado"
-                                                on:click={() => showInfo(ticket.ticketStatus)}
-                                                type="button"
-                                            >
-                                                <i class="fa fa-info-circle"></i>
-                                            </button>
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm flex items-center gap-2">
-                                        <i class="fa fa-calendar-alt text-gray-400"></i>
-                                        {new Date(ticket.receivedAt).toLocaleString()}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm flex items-center gap-2">
-                                        <i class="fa fa-envelope text-gray-400"></i>
-                                        {ticket.customerEmail}
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap flex justify-center gap-2">
-                                        <button
-                                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150 flex items-center gap-2"
-                                            on:click={() => handleTicketDetail(ticket.id)}
-                                            type="button"
-                                        >
-                                            <i class="fa fa-eye"></i>
-                                            Ver Detalles
-                                        </button>
-                                        <button
-                                            class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150 flex items-center gap-2"
-                                            on:click={() => descargarPdf(ticket.id)}
-                                        >
-                                            <i class="fa fa-file-pdf"></i>
-                                            PDF
-                                        </button>
-                                    </td>
-                                </tr>
-                            {/each}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+										>
+											{ticket.ticketStatus}
+											<button
+												class="ml-2 text-blue-100 hover:text-white focus:outline-none"
+												title="Ver información"
+												aria-label="Ver información del estado"
+												on:click={() => showInfo(ticket.ticketStatus)}
+												type="button"
+											>
+												ℹ️
+											</button>
+										</span>
+									</td>
+									<td class="px-6 py-4 whitespace-nowrap text-sm"
+										>{new Date(ticket.receivedAt).toLocaleString()}</td
+									>
+									<td class="px-6 py-4 whitespace-nowrap text-sm">{ticket.customerEmail}</td>
+									<td class="px-6 py-4 whitespace-nowrap flex justify-center gap-2">
+										<button
+											class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
+											on:click={() => handleTicketDetail(ticket.id)}
+											type="button"
+										>
+											Ver Detalles
+										</button>
+										<button
+											class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
+											on:click={() => descargarPdf(ticket.id)}
+										>
+											PDF
+										</button>
+									</td>
+								</tr>
+							{/each}
+						</tbody>
+					</table>
+				</div>
+			</div>
         {/if}
     {/if}
 </div>

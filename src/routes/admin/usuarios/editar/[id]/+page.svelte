@@ -82,7 +82,6 @@
         <div class="flex flex-col gap-3 w-full">
             <!-- Nombre -->
             <div class="relative mb-3">
-                <i class="fa fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <input
                     id="name"
                     type="text"
@@ -96,7 +95,6 @@
 
             <!-- Teléfono -->
             <div class="relative mb-3">
-                <i class="fa fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <input
                     id="phoneNumber"
                     type="text"
@@ -110,7 +108,6 @@
 
             <!-- Rol -->
             <div class="relative mb-3">
-                <i class="fa fa-user-tag absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <select
                     id="role"
                     bind:value={user.role}
