@@ -8,7 +8,7 @@ export function load({ url }) {
 
 	const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized'];
 	const isPublic = publicPaths.some(p => path.startsWith(p));
-	const sharedAuthPaths = ['/dashboard', '/', '/mi-cuenta'];
+	const sharedAuthPaths = ['/dashboard', '/', '/my-account'];
 
 	// 🔐 Si no hay token y no es ruta pública → redirige
 	if (!jwt) {
@@ -36,15 +36,15 @@ export function load({ url }) {
 	const accessMatrix = {
 		ROLE_ADMIN: {
 			allowedRoutes: ['/admin', '/receptionist', '/technician'],
-			deniedRoutes: ['/technician/reparaciones/nueva']
+			deniedRoutes: ['/technician/repairs/new']
 		},
 		ROLE_TECHNICIAN: {
 			allowedRoutes: ['/technician'],
-			deniedRoutes: ['/admin', '/receptionist/tickets/nuevo']
+			deniedRoutes: ['/admin', '/receptionist/tickets/create']
 		},
 		ROLE_RECEPTIONIST: {
-			allowedRoutes: ['/receptionist', '/technician/reparaciones'],
-			deniedRoutes: ['/admin', '/technician/reparaciones/nueva']
+			allowedRoutes: ['/receptionist', '/technician/repairs'],
+			deniedRoutes: ['/admin', '/technician/repairs/new']
 		}
 	};
 
