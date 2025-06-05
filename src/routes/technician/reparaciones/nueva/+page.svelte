@@ -152,72 +152,97 @@
 </style>
 
 <div class="form-container">
-    <h2 class="form-title">Nueva reparación</h2>
+    <h2 class="form-title">
+        <i class="fa fa-tools mr-2"></i>
+        Nueva reparación
+    </h2>
     {#if error}
-        <p class="form-message error">{error}</p>
+        <p class="form-message error">
+            <i class="fa fa-exclamation-circle mr-1"></i>{error}
+        </p>
     {/if}
     {#if success}
-        <p class="form-message success">{success}</p>
+        <p class="form-message success">
+            <i class="fa fa-check mr-1"></i>{success}
+        </p>
     {/if}
 
     <form on:submit|preventDefault={handleSubmit} class="space-y-6">
         {#if loading}
-
         <div>
             <div class="spinner"></div>
-            <p class="form-message">Verificando foto y creando reparación, por favor espera...</p>
+            <p class="form-message">
+                <i class="fa fa-spinner fa-spin mr-1"></i>
+                Verificando foto y creando reparación, por favor espera...
+            </p>
         </div>
         {/if}
-            <div class:opacity-50={loading}>
-                <label for="diagnosis" class="form-label">Diagnóstico:</label>
-                <input
-                    id="diagnosis"
-                    type="text"
-                    bind:value={diagnosis}
-                    minlength="5"
-                    maxlength="100"
-                    required
-                    class="form-input"
-                    placeholder="Describe el diagnóstico del problema"
-                    disabled={loading}
-                />
+        <div class:opacity-50={loading}>
+            <label for="diagnosis" class="form-label">
+                <i class="fa fa-stethoscope mr-1"></i>
+                Diagnóstico:
+            </label>
+            <input
+                id="diagnosis"
+                type="text"
+                bind:value={diagnosis}
+                minlength="5"
+                maxlength="100"
+                required
+                class="form-input"
+                placeholder="Describe el diagnóstico del problema"
+                disabled={loading}
+            />
+        </div>
+        <div class:opacity-50={loading}>
+            <label for="repairActions" class="form-label">
+                <i class="fa fa-tools mr-1"></i>
+                Acciones de reparación:
+            </label>
+            <textarea
+                id="repairActions"
+                bind:value={repairActions}
+                minlength="5"
+                maxlength="1000"
+                required
+                rows="4"
+                class="form-textarea"
+                placeholder="Indica las acciones realizadas para la reparación"
+                disabled={loading}
+            ></textarea>
+        </div>
+        <div class="verification-area mb-4">
+            <label class="form-label" for="verificationImageInput">
+                <i class="fa fa-camera mr-1"></i>
+                Toma una foto tuya para verificar tu identidad
+            </label>
+            <input id="verificationImageInput" type="file" style="display: none;" tabindex="-1" aria-hidden="true" />
+            <div class="flex flex-col items-center">
+                {#if !imagePreview}
+                    <button type="button" class="form-btn" on:click={openCameraModal}>
+                        <i class="fa fa-camera mr-1"></i>
+                        Tomar foto
+                    </button>
+                {/if}
+                {#if imagePreview}
+                    <img src={imagePreview} alt="Foto de verificación" class="max-w-xs max-h-48 rounded mb-2 shadow" style="height:auto; width:auto; display:block;" />
+                    <button type="button" class="form-btn" on:click={() => { imagePreview = null; verificationImage = null; }}>
+                        <i class="fa fa-redo mr-1"></i>
+                        Tomar otra foto
+                    </button>
+                {/if}
             </div>
-            <div class:opacity-50={loading}>
-                <label for="repairActions" class="form-label">Acciones de reparación:</label>
-                <textarea
-                    id="repairActions"
-                    bind:value={repairActions}
-                    minlength="5"
-                    maxlength="1000"
-                    required
-                    rows="4"
-                    class="form-textarea"
-                    placeholder="Indica las acciones realizadas para la reparación"
-                    disabled={loading}
-                ></textarea>
-            </div>
-            <div class="verification-area mb-4">
-                <label class="form-label" for="verificationImageInput">Toma una foto tuya para verificar tu identidad</label>
-                <input id="verificationImageInput" type="file" style="display: none;" tabindex="-1" aria-hidden="true" />
-                <div class="flex flex-col items-center">
-                    {#if !imagePreview}
-                        <button type="button" class="form-btn" on:click={openCameraModal}>Tomar foto</button>
-                    {/if}
-                    {#if imagePreview}
-                        <img src={imagePreview} alt="Foto de verificación" class="max-w-xs max-h-48 rounded mb-2 shadow" style="height:auto; width:auto; display:block;" />
-                        <button type="button" class="form-btn" on:click={() => { imagePreview = null; verificationImage = null; }}>Tomar otra foto</button>
-                    {/if}
-                </div>
-            </div>
-            <div class="flex justify-end">
-                <button
-                    type="submit"
-                    class="form-btn"
-                    disabled={loading}
-                >
-                    Crear reparación
-                </button>
-            </div>
+        </div>
+        <div class="flex justify-end">
+            <button
+                type="submit"
+                class="form-btn flex items-center"
+                disabled={loading}
+            >
+                <i class="fa fa-save mr-1"></i>
+                Crear reparación
+            </button>
+        </div>
     </form>
     <CameraModal bind:show={showCameraModal} on:photo={handlePhoto} on:close={() => showCameraModal = false} />
 </div>
