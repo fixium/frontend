@@ -55,7 +55,7 @@
         try {
             await createRepair({ ticketId: Number(ticketId), diagnosis, repairActions }, verificationImage);
             success = 'Reparación creada con éxito';
-            setTimeout(() => goto('/technician/tickets'), 1000);
+            setTimeout(() => goto('/technician/my-tickets'), 1000);
         } catch (e) {
             error = e.message;
         } finally {

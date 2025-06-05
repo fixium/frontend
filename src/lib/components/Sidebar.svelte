@@ -20,7 +20,7 @@
 	}
 
 	function handleAccountManagement() {
-		goto('/mi-cuenta');
+		goto('/my-account');
 	}
 
 	onMount(() => {
@@ -56,7 +56,7 @@
 				{
 					name: 'Mis tickets',
 					icon: 'fa-solid fa-inbox',
-					href: '/technician/tickets',
+					href: '/technician/my-tickets',
 					roles: ['ROLE_TECHNICIAN']
 				},
 				{
@@ -102,13 +102,13 @@
 				{
 					name: 'Herramientas',
 					icon: 'fa-solid fa-wrench',
-					href: '/technician/herramientas',
+					href: '/technician/tools',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				},
 				{
 					name: 'Asistente inteligente',
 					icon: 'fa-solid fa-comments',
-					href: '/technician/asistente',
+					href: '/technician/ai-assistant',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				},
 				{
@@ -217,7 +217,7 @@
 					<ul class="py-2">
 						<li
 							class="px-4 py-2 cursor-pointer account-management"
-							on:click={() => goto('/mi-cuenta')}
+							on:click={() => goto('/my-acccount')}
 							on:keydown={(e) => e.key === 'Enter' && handleAccountManagement()}
 							role="menuitem"
 							tabindex="0"

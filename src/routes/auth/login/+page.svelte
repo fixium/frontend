@@ -1,44 +1,52 @@
 <script>
     import { goto } from "$app/navigation";
     import { login } from "$lib/api/main-backend-requests/auth";
-	import PasswordFancy from '$lib/components/PasswordFancy.svelte';
+    import PasswordFancy from '$lib/components/PasswordFancy.svelte';
 
-	let username = '';
-	let password = '';
-    let loginError = '';
 
-	async function handleLogin() {
-        loginError = '';
+let username = '';
+let password = '';
+let loginError = '';
+let loading = false;
+
+    async function handleLogin() {
+    loginError = '';
+    loading = true;
+    try {
         const data = await login(username, password);
-        
         if (data && data.success !== false) {
             window.location.href = '/';
         } else {
             loginError = data?.errors?.general || 'Login inválido';
         }
+    } catch (e) {
+        loginError = 'Error de red o inesperado';
+    } finally {
+        loading = false;
+    }
     }
 </script>
 
 <div class="flex items-center justify-center min-h-screen">
-	<div class="w-full max-w-sm flex flex-col items-center">
-		<img src="/Fix.png" alt="Logo" class="h-28 mb-10 drop-shadow-xl" />
+    <div class="w-full max-w-sm flex flex-col items-center">
+        <img src="/Fix.png" alt="Logo" class="h-28 mb-10 drop-shadow-xl" />
 
-		<form class="w-full flex flex-col gap-6" on:submit|preventDefault={handleLogin}>
-			<!-- usuario -->
-			<div class="relative">
-				<input
-					id="username"
-					type="email"
-					bind:value={username}
-					placeholder=" "
-					class="input-style peer w-full"
-					required
-				/>
-				<label for="username" class="floating-label">Correo electrónico</label>
-			</div>
+        <form class="w-full flex flex-col gap-6" on:submit|preventDefault={handleLogin}>
+            <!-- usuario -->
+            <div class="relative">
+                <input
+                    id="username"
+                    type="email"
+                    bind:value={username}
+                    placeholder=" "
+                    class="input-style peer w-full"
+                    required
+                />
+                <label for="username" class="floating-label">Correo electrónico</label>
+            </div>
 
-			<!-- contraseña fancy -->
-			<PasswordFancy bind:value={password} placeholder="Contraseña" required />
+            <!-- contraseña fancy -->
+            <PasswordFancy bind:value={password} placeholder="Contraseña" required />
 
             {#if loginError}
                 <p class="text-red-600 text-sm mb-2 flex items-center gap-2">
@@ -47,23 +55,29 @@
                 </p>
             {/if}
 
-			<button
+            <button
                 type="submit"
                 class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg rounded-full login-button flex items-center justify-center gap-2"
+                disabled={loading}
             >
-                <i class="fa fa-sign-in-alt"></i>
-                Iniciar sesión
+                {#if loading}
+                    <svg class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+                    Iniciando...
+                {:else}
+                    <i class="fa fa-sign-in-alt"></i>
+                    Iniciar sesión
+                {/if}
             </button>
-		</form>
+        </form>
 
-		<button
+        <button
             on:click={() => goto('/auth/register')}
             class="w-full mt-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium text-lg rounded-full register-button flex items-center justify-center gap-2"
         >
             <i class="fa fa-user-plus"></i>
             Registrar taller
         </button>
-	</div>
+    </div>
 </div>
 
 <style>
@@ -108,7 +122,7 @@
         color: #66c188;
         background: transparent;
     }
-	button {
+    button {
         z-index: 0;
         cursor: pointer;
         position: relative;
@@ -126,13 +140,13 @@
         transition: left 0.8s ease;
     }
 
-	.login-button::after {
+    .login-button::after {
         background: linear-gradient(90deg, transparent, #669ef8);
 
-	}
-	.register-button::after {
-		background: linear-gradient(90deg, transparent, #66c188);
-	}
+    }
+    .register-button::after {
+        background: linear-gradient(90deg, transparent, #66c188);
+    }
 
     button:hover::after {
         left: 0;
@@ -140,7 +154,7 @@
 
     button:hover {
         color: #fff;
-		}
-	
-	
+        }
+    
+    
 </style>
