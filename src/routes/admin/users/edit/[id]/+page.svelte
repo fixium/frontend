@@ -39,14 +39,14 @@
         try {
             await updateUser(userId, user);
             successMessage = "Usuario actualizado exitosamente.";
-            setTimeout(() => goto("/admin/usuarios"), 1000);
+            setTimeout(() => goto("/admin/users"), 1000);
         } catch (error) {
             errorMessage = error.message || "Error al actualizar el usuario.";
         }
     }
 
     function handleCancel() {
-        goto("/admin/usuarios");
+        goto("/admin/users");
     }
 
     function onNameInput(event) {

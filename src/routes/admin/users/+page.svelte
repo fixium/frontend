@@ -59,7 +59,7 @@
 
 <div class="flex justify-end mb-4">
 	<a
-		href="/admin/usuarios/nuevo"
+		href="/admin/users/new"
 		class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors font-semibold mb-4"
 	>
 		Registrar Usuario
@@ -122,7 +122,7 @@
 						>
 						<td class="px-6 py-4 whitespace-nowrap flex justify-center gap-2">
 							<a
-								href={`usuarios/editar/${user.id}`}
+								href={`users/edit/${user.id}`}
 								class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150 flex items-center gap-2"
 							>
 								<i class="fa fa-edit"></i>
