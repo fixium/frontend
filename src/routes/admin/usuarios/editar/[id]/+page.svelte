@@ -60,16 +60,21 @@
 
 <div class="h-screen flex items-center justify-center p-4 overflow-auto">
     <div class="w-full max-w-md flex flex-col items-center">
-        <h1 class="text-3xl font-bold mb-4 text-center dark:text-gray-200">Editar usuario</h1>
+        <h1 class="text-3xl font-bold mb-4 text-center dark:text-gray-200">
+            <i class="fa fa-user-edit mr-2 text-blue-600"></i>
+            Editar usuario
+        </h1>
 
         {#if successMessage}
             <div class="bg-green-100 text-green-800 p-3 rounded mb-4 w-full text-center">
+                <i class="fa fa-check-circle mr-2"></i>
                 {successMessage}
             </div>
         {/if}
 
         {#if errorMessage}
             <div class="bg-red-100 text-red-800 p-3 rounded mb-4 w-full text-center">
+                <i class="fa fa-exclamation-circle mr-2"></i>
                 {errorMessage}
             </div>
         {/if}
@@ -77,36 +82,39 @@
         <div class="flex flex-col gap-3 w-full">
             <!-- Nombre -->
             <div class="relative mb-3">
+                <i class="fa fa-user absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <input
                     id="name"
                     type="text"
                     bind:value={user.name}
                     on:input={onNameInput}
                     placeholder=""
-                    class="input-style peer"
+                    class="input-style peer pl-10"
                 />
                 <label for="name" class="floating-label dark:text-gray-300">Nombre</label>
             </div>
 
             <!-- Teléfono -->
             <div class="relative mb-3">
+                <i class="fa fa-phone absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <input
                     id="phoneNumber"
                     type="text"
                     bind:value={user.phoneNumber}
                     on:input={onPhoneNumberInput}
                     placeholder=""
-                    class="input-style peer"
+                    class="input-style peer pl-10"
                 />
                 <label for="phoneNumber" class="floating-label">Teléfono</label>
             </div>
 
             <!-- Rol -->
             <div class="relative mb-3">
+                <i class="fa fa-user-tag absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 <select
                     id="role"
                     bind:value={user.role}
-                    class="input-style peer appearance-none"
+                    class="input-style peer appearance-none pl-10"
                     style="color: #666;"
                 >
                     <option value="" disabled></option>
@@ -120,14 +128,16 @@
         <div class="flex justify-between gap-4 mt-4 w-full">
             <button
                 on:click={handleUpdate}
-                class="w-[48%] bg-green-600 text-white font-semibold py-2 rounded-full hover:bg-green-700"
+                class="w-[48%] bg-green-600 text-white font-semibold py-2 rounded-full hover:bg-green-700 flex items-center justify-center gap-2"
             >
+                <i class="fa fa-save"></i>
                 Guardar
             </button>
             <button
                 on:click={handleCancel}
-                class="w-[48%] bg-red-500 text-white font-semibold py-2 rounded-full hover:bg-red-600"
+                class="w-[48%] bg-red-500 text-white font-semibold py-2 rounded-full hover:bg-red-600 flex items-center justify-center gap-2"
             >
+                <i class="fa fa-times"></i>
                 Cancelar
             </button>
         </div>

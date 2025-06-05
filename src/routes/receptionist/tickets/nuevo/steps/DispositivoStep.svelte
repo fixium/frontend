@@ -3,8 +3,8 @@
   import { step } from '$lib/stores/stepStore';
   import { get } from 'svelte/store';
   import { registerDevice } from '$lib/api/main-backend-requests/devices';
-	import { onMount } from 'svelte';
-	import { validatePhoneNumber } from '$lib/utils/validation';
+    import { onMount } from 'svelte';
+    import { validatePhoneNumber } from '$lib/utils/validation';
   import { fetchDevices } from '$lib/api/main-backend-requests/devices';
 
   let serialNumber = '';
@@ -78,43 +78,73 @@
 </script>
 
 <div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
-  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center tracking-tight dark:text-blue-300">Registrar dispositivo</h2>
+  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center tracking-tight dark:text-blue-300">
+    <i class="fa fa-mobile-alt mr-2"></i>
+    Registrar dispositivo
+  </h2>
 
   {#if error}
-    <p class="text-red-600 mb-4 text-center font-semibold">{error}</p>
+    <p class="text-red-600 mb-4 text-center font-semibold">
+      <i class="fa fa-exclamation-circle mr-1"></i>{error}
+    </p>
   {/if}
 
   <form on:submit|preventDefault={submit} class="space-y-4">
     {#if !isNewClient}
-      <label for="device-select" class="block font-semibold mb-1 dark:text-gray-300">Selecciona un dispositivo existente:</label>
-      <select
-        id="device-select"
-        class="form-select w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-        bind:value={selectedDeviceId}
-        on:change={() => showNewForm = selectedDeviceId === 'nuevo'}
-        required
-        disabled={isNewClient}
-      >
-        <option value="" disabled selected>Selecciona un dispositivo... (IMEI - Modelo)</option>
-        {#each devices as d}
-          <option value={d.id}>{d.imei} - {d.model}</option>
-        {/each}
-        <option value="nuevo">Registrar nuevo dispositivo</option>
-      </select>
+      <label for="device-select" class="block font-semibold mb-1 dark:text-gray-300">
+        <i class="fa fa-list mr-1"></i>
+        Selecciona un dispositivo existente:
+      </label>
+      <div class="relative">
+        <i class="fa fa-mobile-alt absolute left-3 top-3 text-gray-400"></i>
+        <select
+          id="device-select"
+          class="form-select w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
+          bind:value={selectedDeviceId}
+          on:change={() => showNewForm = selectedDeviceId === 'nuevo'}
+          required
+          disabled={isNewClient}
+        >
+          <option value="" disabled selected>Selecciona un dispositivo... (IMEI - Modelo)</option>
+          {#each devices as d}
+            <option value={d.id}>{d.imei} - {d.model}</option>
+          {/each}
+          <option value="nuevo">Registrar nuevo dispositivo</option>
+        </select>
+      </div>
     {/if}
 
     {#if showNewForm || selectedDeviceId === 'nuevo'}
-      <input type="text" bind:value={serialNumber} placeholder="Número de serie" class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-      <input type="text" bind:value={imei} on:input={(e) => imei = validatePhoneNumber(e.target.value)} placeholder="IMEI" class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-      <input type="text" bind:value={model} placeholder="Modelo" class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-      <input type="text" bind:value={color} placeholder="Color" class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
-      <textarea bind:value={notes} placeholder="Notas (opcional)" class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+      <div class="relative">
+        <i class="fa fa-barcode absolute left-3 top-3 text-gray-400"></i>
+        <input type="text" bind:value={serialNumber} placeholder="Número de serie" class="form-input w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
+      <div class="relative">
+        <i class="fa fa-hashtag absolute left-3 top-3 text-gray-400"></i>
+        <input type="text" bind:value={imei} on:input={(e) => imei = validatePhoneNumber(e.target.value)} placeholder="IMEI" class="form-input w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
+      <div class="relative">
+        <i class="fa fa-tablet-alt absolute left-3 top-3 text-gray-400"></i>
+        <input type="text" bind:value={model} placeholder="Modelo" class="form-input w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
+      <div class="relative">
+        <i class="fa fa-palette absolute left-3 top-3 text-gray-400"></i>
+        <input type="text" bind:value={color} placeholder="Color" class="form-input w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" required />
+      </div>
+      <div class="relative">
+        <i class="fa fa-sticky-note absolute left-3 top-3 text-gray-400"></i>
+        <textarea bind:value={notes} placeholder="Notas (opcional)" class="form-textarea w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+      </div>
     {/if}
 
     <div class="flex justify-end">
-      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition-all duration-150 disabled:opacity-60" disabled={loading}>
-        {#if loading}Registrando...{/if}
-        {#if !loading}Siguiente →{/if}
+      <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition-all duration-150 disabled:opacity-60 flex items-center" disabled={loading}>
+        {#if loading}
+          <i class="fa fa-spinner fa-spin mr-2"></i>Registrando...
+        {/if}
+        {#if !loading}
+          <i class="fa fa-arrow-right mr-2"></i>Siguiente →
+        {/if}
       </button>
     </div>
   </form>

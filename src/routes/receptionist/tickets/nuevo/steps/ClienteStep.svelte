@@ -60,31 +60,42 @@
 </script>
 
 <div class="p-8 rounded-2xl shadow-xl bg-white max-w-lg mx-auto mt-8 border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center dark:text-blue-300">Registrar cliente</h2>
+  <h2 class="text-2xl font-extrabold text-blue-700 mb-6 text-center dark:text-blue-300">
+    <i class="fa fa-user-plus mr-2"></i>
+    Registrar cliente
+  </h2>
 
   {#if error}
-    <p class="text-red-600 mb-4 text-center font-semibold">{error}</p>
+    <p class="text-red-600 mb-4 text-center font-semibold">
+      <i class="fa fa-exclamation-circle mr-1"></i>{error}
+    </p>
   {/if}
 
   <!-- Buscar cliente -->
-  <label for="buscar-cliente-email" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Buscar cliente:</label>
-  <input
-    id="buscar-cliente-email"
-    type="email"
-    placeholder="Ej: cliente@email.com"
-    class="form-input w-full mb-2 px-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 focus:outline-none"
-    bind:value={email}
-    on:input={() => {
-      if (email.length === 0) {
-        resetFormulario();
-      } else {
-        const c = customers.find(c => c.email === email);
-        if (c) cargarCliente(c);
-        else selectedCustomerId = '';
-      }
-    }}
-    autocomplete="off"
-  />
+  <label for="buscar-cliente-email" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">
+    <i class="fa fa-search mr-1"></i>
+    Buscar cliente:
+  </label>
+  <div class="relative">
+    <i class="fa fa-envelope absolute left-3 top-3 text-gray-400"></i>
+    <input
+      id="buscar-cliente-email"
+      type="email"
+      placeholder="Ej: cliente@email.com"
+      class="form-input w-full mb-2 pl-10 pr-3 py-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600 focus:outline-none"
+      bind:value={email}
+      on:input={() => {
+        if (email.length === 0) {
+          resetFormulario();
+        } else {
+          const c = customers.find(c => c.email === email);
+          if (c) cargarCliente(c);
+          else selectedCustomerId = '';
+        }
+      }}
+      autocomplete="off"
+    />
+  </div>
 
   {#if email.length > 0 && filteredCustomers.length > 0 && !selectedCustomerId}
     <ul class="border border-blue-200 rounded-lg mt-2 shadow max-h-40 overflow-auto animate-fade-in">
@@ -94,72 +105,104 @@
           class="w-full text-left px-4 py-2 cursor-pointer hover:bg-blue-100 focus:outline-none focus:bg-blue-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:focus:bg-gray-600"
           on:click={() => cargarCliente(c)}
         >
+          <i class="fa fa-user mr-2"></i>
           {c.email} ({c.phone})
         </button>
       {/each}
     </ul>
   {:else if email.length > 0 && filteredCustomers.length === 0}
-    <div class="text-gray-400 text-sm mt-2">No se encontraron clientes.</div>
+    <div class="text-gray-400 text-sm mt-2">
+      <i class="fa fa-info-circle mr-1"></i>
+      No se encontraron clientes.
+    </div>
   {/if}
 
   <div class="mt-4 text-right">
-    <button on:click={resetFormulario} class="text-sm font-semibold text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg shadow transition focus:outline-none focus:ring-2 focus:ring-blue-400">Registrar nuevo cliente</button>
+    <button on:click={resetFormulario} class="text-sm font-semibold text-white bg-blue-500 hover:bg-blue-700 px-4 py-2 rounded-lg shadow transition focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <i class="fa fa-user-plus mr-1"></i>
+      Registrar nuevo cliente
+    </button>
   </div>
 
   <!-- Datos del cliente -->
   {#if selectedCustomerId && selectedCustomerId !== 'new'}
     <div class="bg-blue-50 border border-blue-300 rounded-lg p-4 mt-4 animate-fade-in dark:bg-gray-700 dark:border-gray-600">
-      <p class="text-blue-900 text-sm dark:text-gray-300">Nombre: <strong>{name}</strong></p>
-      <p class="text-blue-900 text-sm dark:text-gray-300">Correo: <strong>{registerEmail}</strong></p>
-      <p class="text-blue-900 text-sm dark:text-gray-300">Teléfono: <strong>{phone}</strong></p>
+      <p class="text-blue-900 text-sm dark:text-gray-300">
+        <i class="fa fa-user mr-1"></i>
+        Nombre: <strong>{name}</strong>
+      </p>
+      <p class="text-blue-900 text-sm dark:text-gray-300">
+        <i class="fa fa-envelope mr-1"></i>
+        Correo: <strong>{registerEmail}</strong>
+      </p>
+      <p class="text-blue-900 text-sm dark:text-gray-300">
+        <i class="fa fa-phone mr-1"></i>
+        Teléfono: <strong>{phone}</strong>
+      </p>
       {#if notes}
-        <p class="text-blue-900 text-sm dark:text-gray-300">Notas: <strong>{notes}</strong></p>
+        <p class="text-blue-900 text-sm dark:text-gray-300">
+          <i class="fa fa-sticky-note mr-1"></i>
+          Notas: <strong>{notes}</strong>
+        </p>
       {/if}
     </div>
   {/if}
 
   {#if !selectedCustomerId || selectedCustomerId === 'new'}
     <form on:submit|preventDefault={submit} class="space-y-4 mt-6 animate-fade-in">
-      <input
-        type="text"
-        bind:value={name}
-        placeholder="Nombre completo"
-        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-        required
-        on:input={(e) => name = validateName(e.target.value)}
-      />
-      <input
-        type="tel"
-        bind:value={phone}
-        placeholder="Teléfono (10 dígitos)"
-        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-        required
-        on:input={(e) => phone = validatePhoneNumber(e.target.value)}
-        maxlength="10"
-      />
-      <input
-        type="email"
-        bind:value={registerEmail}
-        placeholder="Correo electrónico"
-        class="form-input w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-        autocomplete="email"
-        required
-      />
-      <textarea
-        bind:value={notes}
-        placeholder="Notas (opcional)"
-        class="form-textarea w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
-        rows="3"
-      ></textarea>
+      <div class="relative">
+        <i class="fa fa-user absolute left-3 top-3 text-gray-400"></i>
+        <input
+          type="text"
+          bind:value={name}
+          placeholder="Nombre completo"
+          class="form-input w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
+          required
+          on:input={(e) => name = validateName(e.target.value)}
+        />
+      </div>
+      <div class="relative">
+        <i class="fa fa-phone absolute left-3 top-3 text-gray-400"></i>
+        <input
+          type="tel"
+          bind:value={phone}
+          placeholder="Teléfono (10 dígitos)"
+          class="form-input w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
+          required
+          on:input={(e) => phone = validatePhoneNumber(e.target.value)}
+          maxlength="10"
+        />
+      </div>
+      <div class="relative">
+        <i class="fa fa-envelope absolute left-3 top-3 text-gray-400"></i>
+        <input
+          type="email"
+          bind:value={registerEmail}
+          placeholder="Correo electrónico"
+          class="form-input w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
+          autocomplete="email"
+          required
+        />
+      </div>
+      <div class="relative">
+        <i class="fa fa-sticky-note absolute left-3 top-3 text-gray-400"></i>
+        <textarea
+          bind:value={notes}
+          placeholder="Notas (opcional)"
+          class="form-textarea w-full pl-10 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600"
+          rows="3"
+        ></textarea>
+      </div>
     </form>
   {/if}
 
   <div class="flex justify-end mt-6">
     <button
       on:click={submit}
-      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition"
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg shadow transition flex items-center"
       disabled={loading || !name || !phone || !registerEmail}
     >
+      <i class="fa fa-arrow-right mr-2"></i>
       {loading ? 'Cargando...' : 'Siguiente →'}
     </button>
   </div>

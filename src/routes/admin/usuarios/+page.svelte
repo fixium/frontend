@@ -71,26 +71,27 @@
 	<table class="min-w-full divide-y divide-gray-200">
 		<thead class="bg-blue-600 sticky top-0 z-10">
 			<tr>
-				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">ID</th
-				>
-				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
-					>Nombre</th
-				>
-				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
-					>Correo</th
-				>
-				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
-					>Teléfono</th
-				>
-				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
-					>Rol</th
-				>
-				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
-					>Fecha de Creación</th
-				>
-				<th class="px-6 py-3 text-center text-xs font-bold text-white uppercase tracking-wider"
-					>Acciones</th
-				>
+				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+					<i class="fa fa-hashtag mr-1"></i>ID
+				</th>
+				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+					<i class="fa fa-user mr-1"></i>Nombre
+				</th>
+				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+					<i class="fa fa-envelope mr-1"></i>Correo
+				</th>
+				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+					<i class="fa fa-phone mr-1"></i>Teléfono
+				</th>
+				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+					<i class="fa fa-user-shield mr-1"></i>Rol
+				</th>
+				<th class="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+					<i class="fa fa-calendar-alt mr-1"></i>Fecha de Creación
+				</th>
+				<th class="px-6 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">
+					<i class="fa fa-cogs mr-1"></i>Acciones
+				</th>
 			</tr>
 		</thead>
 	</table>
@@ -122,14 +123,16 @@
 						<td class="px-6 py-4 whitespace-nowrap flex justify-center gap-2">
 							<a
 								href={`usuarios/editar/${user.id}`}
-								class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
+								class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150 flex items-center gap-2"
 							>
+								<i class="fa fa-edit"></i>
 								Editar
 							</a>
 							<button
 								on:click={() => confirmDelete(user)}
-								class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
+								class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150 flex items-center gap-2"
 							>
+								<i class="fa fa-trash"></i>
 								Eliminar
 							</button>
 						</td>
@@ -144,11 +147,17 @@
 	<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 		<div class="bg-white rounded-3xl shadow-lg p-8 w-[400px] dark:bg-gray-800 dark:text-white">
 			<div class="flex justify-between items-center mb-4">
-				<h2 class="text-2xl font-bold text-center w-full">Eliminación de usuario</h2>
+				<h2 class="text-2xl font-bold text-center w-full">
+					<i class="fa fa-user-times mr-2 text-red-500"></i>
+					Eliminación de usuario
+				</h2>
 				<button
 					on:click={() => (showModal = false)}
-					class="text-2xl font-bold text-black absolute top-4 right-6">✕</button
+					class="text-2xl font-bold text-black absolute top-4 right-6"
+					aria-label="Cerrar"
 				>
+					<i class="fa fa-times"></i>
+				</button>
 			</div>
 
 			<div class="mt-6">
