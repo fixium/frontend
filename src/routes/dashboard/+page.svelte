@@ -23,21 +23,18 @@
     let workshopEmail = '';
 
     async function fetchStats() {
-        // Dashboard resumen
         const dashboardRes = await getDashboardData();
         const dashboardData = await dashboardRes.json();
         totalTickets = dashboardData.totalTickets;
         totalRepairs = dashboardData.totalRepairs;
         totalCustomers = dashboardData.totalCustomers;
 
-        // Tickets por estado
         const statusCounts = await getTicketsCountByStatus();
         ticketsByStatus = statusCounts.reduce((acc, item) => {
             acc[item.status] = item.count;
             return acc;
         }, {});
 
-        // Usuarios por rol (nuevo endpoint)
         const usersByRoleArr = await getUsersCountByRole();
         usersByRole = usersByRoleArr.reduce((acc, item) => {
             acc[item.role] = item.count;
@@ -45,7 +42,6 @@
         }, {});
         totalUsers = Object.values(usersByRole).reduce((a, b) => a + b, 0);
 
-        // Datos del taller
         try {
             const workshop = await getWorkshopDetails();
             workshopName = workshop.name;
@@ -59,7 +55,6 @@
     }
 
     function renderCharts() {
-        // Tickets por estado
         const ctx1 = document.getElementById('ticketsChart').getContext('2d');
         if (chartTickets) chartTickets.destroy();
         chartTickets = new Chart(ctx1, {
@@ -68,9 +63,7 @@
                 labels: Object.keys(ticketsByStatus),
                 datasets: [{
                     data: Object.values(ticketsByStatus),
-                    backgroundColor: [
-                        '#2563eb', '#22d3ee', '#f59e42', '#22c55e', '#ef4444', '#64748b'
-                    ],
+                    backgroundColor: ['#2563eb', '#22d3ee', '#f59e42', '#22c55e', '#ef4444', '#64748b'],
                 }]
             },
             options: {
@@ -80,7 +73,6 @@
             }
         });
 
-        // Usuarios por rol
         const ctx2 = document.getElementById('usersChart').getContext('2d');
         if (chartUsers) chartUsers.destroy();
         chartUsers = new Chart(ctx2, {
@@ -107,171 +99,198 @@
 
     onMount(async () => {
         await fetchStats();
-        // Espera al DOM para los canvas
         setTimeout(renderCharts, 100);
     });
 
-    // Redibuja los gráficos si cambia el modo oscuro
     if (typeof window !== 'undefined') {
         const observer = new MutationObserver(() => setTimeout(renderCharts, 100));
         observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
     }
 </script>
 
-<div class="dashboard-container bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors">
-    <div class="dashboard-header">
+<div class="flex flex-col gap-10 px-6 py-8 md:px-12 bg-gradient-to-br from-white to-slate-100 dark:from-zinc-900 dark:to-slate-950 min-h-screen">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-300 dark:border-slate-700 pb-4">
         <div>
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Dashboard Fixium</h1>
-            <p class="dashboard-user text-gray-600 dark:text-gray-300">
-                Usuario: <strong>{usuario}</strong> | Rol: <strong>{rol.replace('ROLE_', '')}</strong>
+            <h1 class="text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400 drop-shadow">Dashboard Fixium</h1>
+            <p class="text-slate-600 dark:text-slate-300 mt-1">
+                👤 <strong>{usuario}</strong> <span class="mx-2 text-gray-400">|</span> 🛡️ <strong>{rol.replace('ROLE_', '')}</strong>
             </p>
         </div>
-        <div class="dashboard-workshop text-gray-500 dark:text-gray-400" style="text-align: right;">
-            <strong>Taller:</strong> {workshopName}
-            {#if workshopPhone}
-                <span> | <strong>Tel:</strong> {workshopPhone}</span>
-            {/if}
-            {#if workshopEmail}
-                <span> | <strong>Email:</strong> {workshopEmail}</span>
-            {/if}
-        </div>
-    </div>
-    <div class="dashboard-cards">
-        <div class="dashboard-card">
-            <h2>Total de tickets</h2>
-            <p class="dashboard-value">{totalTickets}</p>
-        </div>
-        <div class="dashboard-card">
-            <h2>Reparaciones hoy</h2>
-            <p class="dashboard-value">{totalRepairs}</p>
-        </div>
-        <div class="dashboard-card">
-            <h2>Clientes registrados</h2>
-            <p class="dashboard-value">{totalCustomers}</p>
-        </div>
-        <div class="dashboard-card">
-            <h2>Usuarios</h2>
-            <p class="dashboard-value">{totalUsers}</p>
+        <div class="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400 text-right leading-relaxed">
+            <div class="bg-blue-100 dark:bg-blue-900 rounded-full p-2">
+                <i class="fa-solid fa-industry text-blue-600 dark:text-blue-400"></i>
+            </div>
+            <div>
+                <strong>🏭 Taller:</strong> {workshopName}
+                {#if workshopPhone}<br><strong>📞 Tel:</strong> {workshopPhone}{/if}
+                {#if workshopEmail}<br><strong>✉️ Email:</strong> {workshopEmail}{/if}
+            </div>
         </div>
     </div>
 
-    <div class="charts-grid">
-        <div class="chart-card">
-            <h3 class="chart-title">Tickets por estado</h3>
-            <canvas id="ticketsChart" width="320" height="220"></canvas>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="dashboard-card flex items-center gap-4 bg-blue-50 dark:bg-blue-900/30">
+        <div class="text-blue-500 text-4xl"><i class="fa-solid fa-ticket"></i></div>
+        <div>
+            <h2 class="dashboard-card-title">Total de tickets</h2>
+            {#if totalTickets === '--'}
+                <div class="flex justify-center items-center h-20">
+                    <span class="loader"></span>
+                </div>
+            {:else}
+                <p class="dashboard-value">{totalTickets}</p>
+            {/if}
         </div>
-        <div class="chart-card">
-            <h3 class="chart-title">Usuarios por rol</h3>
-            <canvas id="usersChart" width="320" height="220"></canvas>
+    </div>
+    <div class="dashboard-card flex items-center gap-4 bg-green-50 dark:bg-green-900/30">
+        <div class="text-green-500 text-4xl"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+        <div>
+            <h2 class="dashboard-card-title">Reparaciones hoy</h2>
+            {#if totalRepairs === '--'}
+                <div class="flex justify-center items-center h-20">
+                    <span class="loader"></span>
+                </div>
+            {:else}
+                <p class="dashboard-value">{totalRepairs}</p>
+            {/if}
+        </div>
+    </div>
+    <div class="dashboard-card flex items-center gap-4 bg-yellow-50 dark:bg-yellow-900/30">
+    <div class="text-yellow-500 text-4xl"><i class="fa-solid fa-users"></i></div>
+    <div>
+        <h2 class="dashboard-card-title">Clientes registrados</h2>
+        {#if totalCustomers === '--'}
+            <div class="flex justify-center items-center h-20">
+                <span class="loader"></span>
+            </div>
+        {:else}
+            <p class="dashboard-value">{totalCustomers}</p>
+        {/if}
+    </div>
+</div>
+    <div class="dashboard-card flex items-center gap-4 bg-purple-50 dark:bg-purple-900/30">
+    <div class="text-purple-500 text-4xl"><i class="fa-solid fa-user-shield"></i></div>
+    <div>
+        <h2 class="dashboard-card-title">Usuarios</h2>
+        {#if totalUsers === '--'}
+            <div class="flex justify-center items-center h-20">
+                <span class="loader"></span>
+            </div>
+        {:else}
+            <p class="dashboard-value">{totalUsers}</p>
+        {/if}
+    </div>
+</div>
+</div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="chart-card bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg flex flex-col items-center justify-center border border-slate-200 dark:border-slate-700 transition hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-500">
+        <h3 class="text-xl font-bold text-slate-700 dark:text-slate-200 mb-6 text-center tracking-tight">Tickets por estado</h3>
+        <div class="relative w-full max-w-[420px] h-[280px] flex items-center justify-center">
+            <canvas id="ticketsChart" class="dashboard-chart"></canvas>
+        </div>
+    </div>
+    <div class="chart-card bg-white dark:bg-slate-800 rounded-3xl p-8 shadow-lg flex flex-col items-center justify-center border border-slate-200 dark:border-slate-700 transition hover:shadow-xl hover:border-blue-300 dark:hover:border-blue-500">
+        <h3 class="text-xl font-bold text-slate-700 dark:text-slate-200 mb-6 text-center tracking-tight">Usuarios por rol</h3>
+        <div class="relative w-full max-w-[420px] h-[280px] flex items-center justify-center">
+            <canvas id="usersChart" class="dashboard-chart"></canvas>
         </div>
     </div>
 </div>
+</div>
+
 
 <style>
+    .loader {
+        border: 4px solid #e5e7eb;
+        border-top: 4px solid #2563eb;
+        border-radius: 50%;
+        width: 2rem;
+        height: 2rem;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
     :root {
-        --dashboard-bg: #f9fafb;
-        /* --dashboard-bg-dark: #18181b; */
-        --dashboard-card: #fff;
-        --dashboard-card-dark: #23272f;
-        --dashboard-text: #222;
-        --dashboard-text-dark: #f3f3f3;
+    --dashboard-bg: linear-gradient(135deg, #f0f4ff 0%, #f9fafb 100%);
+    --dashboard-bg-dark: linear-gradient(135deg, #18181b 0%, #23272f 100%);
+    --dashboard-card: #fff;
+    --dashboard-card-dark: #23272f;
+    --dashboard-text: #222;
+    --dashboard-text-dark: #f3f3f3;
+    --dashboard-accent: #2563eb;
+    --dashboard-accent-light: #60a5fa;
+    --dashboard-separator: #e5e7eb;
+    --dashboard-separator-dark: #334155;
+}
+
+.dashboard-card {
+    background: var(--dashboard-card);
+    border-radius: 1.2rem;
+    box-shadow: 0 4px 24px 0 rgba(37, 99, 235, 0.09);
+    padding: 2.2rem 2.7rem;
+    min-width: 220px;
+    text-align: center;
+    transition: background 0.3s, box-shadow 0.2s, border 0.2s;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.7s forwards;
+}
+.dashboard-card:nth-child(2) { animation-delay: 0.1s; }
+.dashboard-card:nth-child(3) { animation-delay: 0.2s; }
+.dashboard-card:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: none;
     }
-    .workshop-info span {
-        margin-right: 1.5rem;
-    }
-    .dashboard-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        min-height: 100vh;
-        padding: 2rem 1rem;
-        background: var(--dashboard-bg);
-        transition: background 0.3s;
-    }
-    :global(.dark) .dashboard-container {
-        background: var(--dashboard-bg-dark);
-    }
-    .dashboard-header {
+}
+
+.dashboard-card:hover {
+    border: 2px solid var(--dashboard-accent);
+    box-shadow: 0 8px 32px 0 rgba(37, 99, 235, 0.14);
+    z-index: 1;
+}
+:global(.dark) .dashboard-card {
+    background: var(--dashboard-card-dark);
+}
+.dashboard-card h2 {
+    font-size: 1.15rem;
+    color: #334155;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+:global(.dark) .dashboard-card h2 {
+    color: #cbd5e1;
+}
+.dashboard-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--dashboard-accent);
+    letter-spacing: -1px;
+    margin-top: 0.3rem;
+    margin-bottom: 0.2rem;
+    text-shadow: 0 2px 8px rgba(37,99,235,0.08);
+}
+
+canvas {
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #f1f5fd 0%, #fff 100%);
+    box-shadow: 0 2px 8px 0 rgba(37, 99, 235, 0.04);
+}
+:global(.dark) canvas {
+    background: linear-gradient(135deg, #23272f 0%, #18181b 100%);
+}
+@media (max-width: 900px) {
+    .dashboard-card, .chart-card {
+        min-width: unset;
         width: 100%;
-        max-width: 900px;
-        margin-bottom: 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
     }
-    .dashboard-header h1 {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--dashboard-text);
-    }
-    :global(.dark) .dashboard-header h1 {
-        color: var(--dashboard-text-dark);
-    }
-    .dashboard-user {
-        font-size: 1rem;
-        color: #64748b;
-    }
-    :global(.dark) .dashboard-user {
-        color: #cbd5e1;
-    }
-    .dashboard-cards {
-        display: flex;
-        gap: 2rem;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .dashboard-card {
-        background: var(--dashboard-card);
-        border-radius: 1rem;
-        box-shadow: 0 2px 16px 0 rgba(37, 99, 235, 0.07);
-        padding: 2rem 2.5rem;
-        min-width: 220px;
-        text-align: center;
-        transition: background 0.3s;
-    }
-    :global(.dark) .dashboard-card {
-        background: var(--dashboard-card-dark);
-    }
-    .dashboard-card h2 {
-        font-size: 1.2rem;
-        color: #334155;
-        margin-bottom: 1rem;
-        font-weight: 600;
-    }
-    :global(.dark) .dashboard-card h2 {
-        color: #cbd5e1;
-    }
-    .dashboard-value {
-        font-size: 2.2rem;
-        font-weight: 800;
-        color: #2563eb;
-    }
-    .charts-grid {
-        display: flex;
-        gap: 2rem;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .chart-card {
-        background: var(--dashboard-card);
-        border-radius: 1rem;
-        box-shadow: 0 2px 16px 0 rgba(37, 99, 235, 0.07);
-        padding: 1.5rem 2rem;
-        min-width: 340px;
-        transition: background 0.3s;
-    }
-    :global(.dark) .chart-card {
-        background: var(--dashboard-card-dark);
-    }
-    .chart-title {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-bottom: 1rem;
-        color: #334155;
-    }
-    :global(.dark) .chart-title {
-        color: #cbd5e1;
-    }
+}
 </style>

@@ -7,9 +7,6 @@
 
 	export let role, username, name;
 
-	import Icon from '$lib/components/Icon.svelte';
-
-	// let isOpen = false;
 	let currentPath = '/';
 	let showMenu = false;
 
@@ -41,7 +38,7 @@
 			items: [
 				{
 					name: 'Dashboard',
-					icon: 'chart-bar',
+					icon: 'fa-solid fa-chart-bar',
 					href: '/dashboard',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN', 'ROLE_RECEPTIONIST']
 				}
@@ -50,33 +47,21 @@
 		{
 			section: 'Reparaciones',
 			items: [
-				// {
-				// 	name: 'Clientes',
-				// 	icon: 'user',
-				// 	href: '/receptionist/clientes',
-				// 	roles: ['ROLE_ADMIN', 'ROLE_RECEPTIONIST']
-				// },
-				// {
-				// 	name: 'Dispositivos',
-				// 	icon: 'device-phone-mobile',
-				// 	href: '/technician/dispositivos',
-				// 	roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
-				// },
 				{
 					name: 'Recepción',
-					icon: 'inbox',
+					icon: 'fa-solid fa-inbox',
 					href: '/receptionist/tickets',
 					roles: ['ROLE_ADMIN', 'ROLE_RECEPTIONIST']
 				},
 				{
 					name: 'Mis tickets',
-					icon: 'inbox',
+					icon: 'fa-solid fa-inbox',
 					href: '/technician/tickets',
 					roles: ['ROLE_TECHNICIAN']
 				},
 				{
 					name: 'Reparaciones',
-					icon: 'clock',
+					icon: 'fa-solid fa-clock',
 					href: '/technician/reparaciones',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				}
@@ -87,13 +72,13 @@
 			items: [
 				{
 					name: 'Usuarios',
-					icon: 'users',
+					icon: 'fa-solid fa-users',
 					href: '/admin/usuarios',
 					roles: ['ROLE_ADMIN']
 				},
 				{
 					name: 'Taller',
-					icon: 'building-office',
+					icon: 'fa-solid fa-building',
 					href: '/admin/taller',
 					roles: ['ROLE_ADMIN']
 				}
@@ -104,50 +89,24 @@
 			items: [
 				{
 					name: 'Herramientas',
-					icon: 'wrench-screwdriver',
+					icon: 'fa-solid fa-wrench',
 					href: '/technician/herramientas',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				},
 				{
 					name: 'Asistente inteligente',
-					icon: 'chat-bubble-bottom-center-text',
+					icon: 'fa-solid fa-comments',
 					href: '/technician/asistente',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				},
 				{
 					name: 'Análisis de Panic',
-					icon: 'bug-ant',
+					icon: 'fa-solid fa-bug',
 					href: '/technician/analyze-panic',
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				}
 			]
 		}
-		// {
-		//     section: 'Colaboración',
-		//     items: [
-		//         { name: 'Base de soluciones', icon: 'book-open', href: '/colaboracion/soluciones' },
-		//         {
-		//             name: 'Alertas y recomendaciones',
-		//             icon: 'exclamation-triangle',
-		//             href: '/colaboracion/alertas'
-		//         },
-		//         { name: 'Contribuir solución', icon: 'plus-circle', href: '/colaboracion/contribuir' }
-		//     ]
-		// },
-		// {
-		//     section: 'Estadísticas',
-		//     items: [
-		//         { name: 'Reportes', icon: 'chart-pie', href: '/estadisticas/reportes' },
-		//         { name: 'Métricas técnicas', icon: 'cpu-chip', href: '/estadisticas/tecnicas' }
-		//     ]
-		// },
-		// {
-		//     section: 'Configuración',
-		//     items: [
-		//         { name: 'Preferencias', icon: 'cog-6-tooth', href: '/configuracion' }, // Ícono ya definido
-		//         { name: 'Licencia', icon: 'key', href: '/configuracion/licencia' } // Ícono ya definido
-		//     ]
-		// }
 	];
 
 	// Filtrar los enlaces según el rol
@@ -197,7 +156,7 @@
 										: 'text-gray-400'}"
 								>
 									<span class="inline-flex">
-										<Icon name={item.icon} />
+										<i class={item.icon}></i>
 									</span>
 									<span class="hidden group-hover:block ml-3">{item.name}</span>
 								</a>
