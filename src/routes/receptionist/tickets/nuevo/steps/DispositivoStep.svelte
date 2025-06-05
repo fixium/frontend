@@ -143,7 +143,7 @@
           <i class="fa fa-spinner fa-spin mr-2"></i>Registrando...
         {/if}
         {#if !loading}
-          <i class="fa fa-arrow-right mr-2"></i>Siguiente →
+          <i class="fa fa-arrow-right mr-2"></i>Siguiente
         {/if}
       </button>
     </div>

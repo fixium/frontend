@@ -203,7 +203,7 @@
       disabled={loading || !name || !phone || !registerEmail}
     >
       <i class="fa fa-arrow-right mr-2"></i>
-      {loading ? 'Cargando...' : 'Siguiente →'}
+      {loading ? 'Cargando...' : 'Siguiente'}
     </button>
   </div>
 </div>
