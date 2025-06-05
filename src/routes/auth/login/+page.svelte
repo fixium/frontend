@@ -41,23 +41,28 @@
 			<PasswordFancy bind:value={password} placeholder="Contraseña" required />
 
             {#if loginError}
-                <p class="text-red-600 text-sm mb-2">{loginError}</p>
+                <p class="text-red-600 text-sm mb-2 flex items-center gap-2">
+                    <i class="fa fa-exclamation-circle"></i>
+                    {loginError}
+                </p>
             {/if}
 
 			<button
-				type="submit"
-				class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg rounded-full  login-button"
-			>
-				Iniciar sesión
-			</button>
+                type="submit"
+                class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-lg rounded-full login-button flex items-center justify-center gap-2"
+            >
+                <i class="fa fa-sign-in-alt"></i>
+                Iniciar sesión
+            </button>
 		</form>
 
 		<button
-			on:click={() => goto('/auth/register')}
-			class="w-full mt-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium text-lg rounded-full register-button"
-		>
-			Registrar taller
-		</button>
+            on:click={() => goto('/auth/register')}
+            class="w-full mt-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium text-lg rounded-full register-button flex items-center justify-center gap-2"
+        >
+            <i class="fa fa-user-plus"></i>
+            Registrar taller
+        </button>
 	</div>
 </div>
 

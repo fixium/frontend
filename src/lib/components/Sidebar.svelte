@@ -81,7 +81,19 @@
 					icon: 'fa-solid fa-building',
 					href: '/admin/taller',
 					roles: ['ROLE_ADMIN']
-				}
+				},
+				// {
+				// 	name: 'Clientes',
+				// 	icon: 'user',
+				// 	href: '/receptionist/clientes',
+				// 	roles: ['ROLE_ADMIN', 'ROLE_RECEPTIONIST']
+				// },
+				// {
+				// 	name: 'Dispositivos',
+				// 	icon: 'device-phone-mobile',
+				// 	href: '/technician/dispositivos',
+				// 	roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
+				// },
 			]
 		},
 		{
@@ -106,7 +118,18 @@
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				}
 			]
-		}
+		},
+		// {
+		//     section: 'Colaboración',
+		//     items: [
+		//         { name: 'Base de soluciones', icon: 'book-open', href: '/colaboracion/soluciones' },
+		//         {
+		//             name: 'Alertas y recomendaciones',
+		//             icon: 'exclamation-triangle',
+		//             href: '/colaboracion/alertas'
+		//         }
+		//     ]
+		// },
 	];
 
 	// Filtrar los enlaces según el rol

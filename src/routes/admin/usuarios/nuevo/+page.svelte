@@ -97,17 +97,22 @@
 
 <div class="h-screen flex items-center justify-center p-4 overflow-auto">
     <div class="w-full max-w-md flex flex-col items-center">
-        <h1 class="text-3xl font-bold mb-4 text-center dark:text-white">Registro de nuevo usuario</h1>
+        <h1 class="text-3xl font-bold mb-4 text-center dark:text-white">
+            <i class="fa fa-user-plus mr-2 text-blue-600"></i>
+            Registro de nuevo usuario
+        </h1>
         <div class="mb-4"></div>
 
         {#if successMessage}
             <div class="bg-green-100 text-green-800 p-3 rounded mb-4 w-full text-center">
+                <i class="fa fa-check-circle mr-2"></i>
                 {successMessage}
             </div>
         {/if}
 
         {#if errorMessage}
             <div class="bg-red-100 text-red-800 p-3 rounded mb-4 w-full text-center">
+                <i class="fa fa-exclamation-circle mr-2"></i>
                 {errorMessage}
             </div>
         {/if}
@@ -158,7 +163,7 @@
                     type={showPassword ? 'text' : 'password'}
                     bind:value={password}
                     placeholder=""
-                    class="input-style peer"
+                    class="input-style peer pl-10"
                 />
                 <label for="password" class="floating-label">Contraseña</label>
                 <!-- Botón para mostrar/ocultar contraseña -->
@@ -169,13 +174,9 @@
                     aria-label="Mostrar u ocultar contraseña"
                 >
                     {#if showPassword}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10S6.477 0 12 0c1.03 0 2.02.15 2.96.425M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
+                        <i class="fa fa-eye-slash"></i>
                     {:else}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.98 8.223A10.05 10.05 0 0112 5c5.523 0 10 4.477 10 10a10.05 10.05 0 01-1.98 5.777M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
+                        <i class="fa fa-eye"></i>
                     {/if}
                 </button>
             </div>
@@ -187,7 +188,7 @@
                     type={showPassword ? 'text' : 'password'}
                     bind:value={confirmPassword}
                     placeholder=""
-                    class="input-style peer"
+                    class="input-style peer pl-10"
                 />
                 <label for="password" class="floating-label">Confirmar contraseña</label>
                 <!-- Botón para mostrar/ocultar contraseña -->
@@ -198,13 +199,9 @@
                     aria-label="Mostrar u ocultar contraseña"
                 >
                     {#if showPassword}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-5.523 0-10-4.477-10-10S6.477 0 12 0c1.03 0 2.02.15 2.96.425M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
+                        <i class="fa fa-eye-slash"></i>
                     {:else}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.98 8.223A10.05 10.05 0 0112 5c5.523 0 10 4.477 10 10a10.05 10.05 0 01-1.98 5.777M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
+                        <i class="fa fa-eye"></i>
                     {/if}
                 </button>
             </div>
@@ -227,7 +224,8 @@
 
         <!-- Camara -->
         <div class="relative mb-3">
-            <label for="take-photo-btn" class="block mb-1 font-semibold">Fotos del usuario (mínimo 3)
+            <label for="take-photo-btn" class="block mb-1 font-semibold">
+                <i class="fa fa-camera mr-1"></i>Fotos del usuario (mínimo 3)
                 <button
                 type="button"
                 class="ml-1 p-1 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs"
@@ -243,6 +241,7 @@
             {#if imagePreviews.length < 3}
                 <div class="flex justify-center">
                     <button id="take-photo-btn" type="button" class="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded mb-2" on:click={openCameraModal}>
+                        <i class="fa fa-camera"></i>
                         Abrir cámara
                     </button>
                 </div>
@@ -272,21 +271,20 @@
         <div class="flex justify-between gap-4 mt-4 w-full">
             <button
                 on:click={handleRegister}
-                class="w-[48%] bg-green-600 text-white font-semibold py-2 rounded-full hover:bg-green-700"
+                class="w-[48%] bg-green-600 text-white font-semibold py-2 rounded-full hover:bg-green-700 flex items-center justify-center gap-2"
             >
                 {#if isLoading}
-                    <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                    </svg>
+                    <i class="fa fa-spinner fa-spin"></i>
                 {:else}
+                    <i class="fa fa-check"></i>
                     Confirmar
                 {/if}
             </button>
             <button
                 on:click={handleCancel}
-                class="w-[48%] bg-red-500 text-white font-semibold py-2 rounded-full hover:bg-red-600"
+                class="w-[48%] bg-red-500 text-white font-semibold py-2 rounded-full hover:bg-red-600 flex items-center justify-center gap-2"
             >
+                <i class="fa fa-times"></i>
                 Cancelar
             </button>
         </div>

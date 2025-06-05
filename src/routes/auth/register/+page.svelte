@@ -92,19 +92,24 @@
 
 <div class="min-h-screen flex items-center justify-center p-4 overflow-auto">
 	<div class="w-full max-w-md flex flex-col items-center">
-		<h1 class="text-3xl font-bold mb-4 text-center">Registro de taller</h1>
+		<h1 class="text-3xl font-bold mb-4 text-center">
+            <i class="fa fa-tools mr-2 text-blue-600"></i>
+            Registro de taller
+        </h1>
 
 		{#if successMessage}
-			<div class="bg-green-100 text-green-800 p-3 rounded mb-4 w-full text-center">
-				{successMessage}
-			</div>
-		{/if}
+            <div class="bg-green-100 text-green-800 p-3 rounded mb-4 w-full text-center flex items-center justify-center gap-2">
+                <i class="fa fa-check-circle"></i>
+                {successMessage}
+            </div>
+        {/if}
 
 		{#if errorMessage}
-			<div class="bg-red-100 text-red-800 p-3 rounded mb-4 w-full text-center">
-				{errorMessage}
-			</div>
-		{/if}
+            <div class="bg-red-100 text-red-800 p-3 rounded mb-4 w-full text-center flex items-center justify-center gap-2">
+                <i class="fa fa-exclamation-circle"></i>
+                {errorMessage}
+            </div>
+        {/if}
 
 		<div class="flex flex-col gap-3 w-full">
 			<!-- Validación en tiempo real para el nombre del taller -->
@@ -193,55 +198,43 @@
 
 		<div class="relative mb-3">
 			<label class="block mb-1 font-semibold w-full text-center"
-				>Fotos del administrador del taller
+				><i class="fa fa-camera mr-1"></i>Fotos del administrador del taller
 				<button
-					type="button"
-					class="ml-1 p-1 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs"
-					aria-label="¿Por qué pedimos la foto?"
-					on:click={() => (showReasonModal = true)}
-				>
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						class="h-4 w-4"
-						fill="none"
-						viewBox="0 0 24 24"
-						stroke="currentColor"
-					>
-						<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="white" />
-						<path
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							d="M12 8v4m0 4h.01"
-						/>
-					</svg>
-				</button>
+                    type="button"
+                    class="ml-1 p-1 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs"
+                    aria-label="¿Por qué pedimos la foto?"
+                    on:click={() => (showReasonModal = true)}
+                >
+                    <i class="fa fa-question-circle"></i>
+                </button>
 			</label>
 			{#if imagePreviews.length < 3}
-				<div class="flex justify-center">
-					<button
-						type="button"
-						class="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded mb-2"
-						on:click={openCameraModal}
-					>
-						Abrir cámara
-					</button>
-				</div>
-			{/if}
-			<div class="flex gap-2 flex-wrap justify-center">
-				{#each imagePreviews as preview, idx}
-					<div class="relative">
-						<img src={preview} alt="Foto tomada" class="w-24 h-24 object-cover rounded mb-2" />
+                <div class="flex justify-center">
+                    <button
+                        type="button"
+                        class="bg-blue-600 hover:bg-blue-800 text-white px-4 py-2 rounded mb-2 flex items-center gap-2"
+                        on:click={openCameraModal}
+                    >
+                        <i class="fa fa-camera"></i>
+                        Abrir cámara
+                    </button>
+                </div>
+            {/if}
+			 <div class="flex gap-2 flex-wrap justify-center">
+                {#each imagePreviews as preview, idx}
+                    <div class="relative">
+                        <img src={preview} alt="Foto tomada" class="w-24 h-24 object-cover rounded mb-2" />
 						<button
 							type="button"
-							class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs"
+							class="absolute top-0 right-0 bg-red-500 text-white rounded-full px-2 py-1 text-xs flex items-center"
 							on:click={() => removePhoto(idx)}
+							aria-label="Eliminar foto"
 						>
-							×
+							<i class="fa fa-times"></i>
 						</button>
-					</div>
-				{/each}
-			</div>
+                    </div>
+                {/each}
+            </div>
 			{#if imagePreviews.length < 3}
 				<div class="text-sm text-gray-500 text-center">Debes tomar al menos 3 fotos.</div>
 			{/if}
@@ -254,20 +247,22 @@
 		/>
 
 		<div class="flex flex-col items-center gap-3 mt-4 w-full">
-			<button
-				on:click={confirmarRegistro}
-				class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-full w-full max-w-xs"
-			>
-				Confirmar registro
-			</button>
+            <button
+                on:click={confirmarRegistro}
+                class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-full w-full max-w-xs flex items-center justify-center gap-2"
+            >
+                <i class="fa fa-check"></i>
+                Confirmar registro
+            </button>
 
-			<button
-				on:click={cancelar}
-				class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-full w-full max-w-xs"
-			>
-				Cancelar
-			</button>
-		</div>
+            <button
+                on:click={cancelar}
+                class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-full w-full max-w-xs flex items-center justify-center gap-2"
+            >
+                <i class="fa fa-times"></i>
+                Cancelar
+            </button>
+        </div>
 	</div>
 </div>
 
