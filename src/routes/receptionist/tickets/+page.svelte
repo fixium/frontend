@@ -224,7 +224,7 @@
             <div class="ml-auto">
                 <button
                     class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors font-semibold flex items-center gap-2"
-                    on:click={() => goto('/receptionist/tickets/nuevo')}
+                    on:click={() => goto('/receptionist/tickets/create')}
                 >
                     <i class="fa fa-plus"></i>
                     Registrar recepción

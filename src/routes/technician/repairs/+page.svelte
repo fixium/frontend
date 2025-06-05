@@ -225,7 +225,7 @@
                     on:click={() => {
                         // Usar selectedTicketId si existe, si no, usar el ticketId del primer repair
                         const ticketIdToUse = selectedTicketId || (repairs.length > 0 ? repairs[0].ticketId : '');
-                        goto(`/technician/reparaciones/nueva?ticketId=${ticketIdToUse}`);}}
+                        goto(`/technician/repairs/new?ticketId=${ticketIdToUse}`);}}
                 >
                     <i class="fa fa-plus mr-1"></i>Registrar reparación
                 </button>
