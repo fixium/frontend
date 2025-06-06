@@ -12,12 +12,12 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
 let mainWindow;
 let viteProcess;
+let backendProcess;
 
 app.disableHardwareAcceleration();
 
 function startVite() {
     console.log('Iniciando Vite...');
-    
     if (process.platform === 'win32') {
         viteProcess = spawn('npm', ['run', 'dev'], {
             cwd: __dirname,
@@ -69,6 +69,28 @@ function stopVite() {
     }
 }
 
+function startBackend() {
+    const backendPath = path.join(__dirname, 'dist', 'backend', 'backend');
+    backendProcess = spawn(backendPath, [], {
+        detached: true,
+        stdio: 'ignore'
+    });
+    backendProcess.unref();
+    console.log('Backend iniciado asincrónicamente.');
+}
+
+function stopBackend() {
+    if (backendProcess && backendProcess.pid) {
+        try {
+            process.kill(backendProcess.pid);
+            console.log('Backend detenido.');
+        } catch (e) {
+            console.error('Error al detener el backend:', e.message);
+        }
+        backendProcess = null;
+    }
+}
+
 app.on('ready', async () => {
     mainWindow = new BrowserWindow({
         width: 1280,
@@ -82,9 +104,11 @@ app.on('ready', async () => {
         icon: path.join(__dirname, 'static', 'Fix.png')
     });
 
-    // Carga una página local mientras esperas a Vite
+    mainWindow.setMenuBarVisibility(false);
+    
     mainWindow.loadFile('loading.html');
 
+    startBackend();
     startVite();
 
     try {
@@ -98,7 +122,6 @@ app.on('ready', async () => {
     }
 });
 
-// Cierra completamente la aplicación al salir
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
         app.quit();
@@ -107,7 +130,8 @@ app.on('window-all-closed', () => {
 
 app.on('before-quit', () => {
     console.log('Cerrando la aplicación...');
-    stopVite(); // Detén el servidor de Vite al salir
+    stopVite();
+    stopBackend();
 });
 
 // Manejar el evento para abrir el diálogo de selección de archivos
