@@ -2,21 +2,15 @@
 	import { onMount } from 'svelte';
 	import {
 		getAllMyTickets,
-		downloadTicketPdf,
 		updateTicketStatus,
 		getTicketDetail,
-		filterTickets,
 		filterMyTickets
 	} from '$lib/api/main-backend-requests/tickets.js';
-	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
 	let tickets = [];
 	let error = '';
 	let existsTickets = false;
-
-	export let data;
-	let { role } = data;
 
 	const statusDescriptions = {
 		RECEIVED: 'Recibido en el taller',
@@ -92,10 +86,6 @@
 
 	function closeInfo() {
 		showStatusInfo = false;
-	}
-
-	function descargarPdf(id) {
-		downloadTicketPdf(id);
 	}
 
 	async function cambiarEstado(id) {

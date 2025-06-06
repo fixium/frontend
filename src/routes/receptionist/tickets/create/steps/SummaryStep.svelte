@@ -17,6 +17,17 @@
 
   const data = get(wizardData);
 
+  let loadingPdf = false;
+
+  async function handleDownloadPdf(id) {
+    loadingPdf = true;
+    try {
+      await downloadTicketPdf(id);
+    } finally {
+      loadingPdf = false;
+    }
+  }
+
   onMount(async () => {
     loading = true;
     error = null;
@@ -110,10 +121,16 @@
     <div class="flex justify-end gap-4">
       <button
         class="px-6 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white font-semibold shadow transition-colors duration-150 flex items-center"
-        on:click={() => downloadTicketPdf(ticket.id)}
-        >
-        <i class="fa fa-file-pdf mr-2"></i>
-        Descargar PDF
+        on:click={() => handleDownloadPdf(ticket.id)}
+        disabled={loadingPdf}
+      >
+        {#if loadingPdf}
+          <span class="animate-spin mr-2"><i class="fa fa-spinner"></i></span>
+          Descargando...
+        {:else}
+          <i class="fa fa-file-pdf mr-2"></i>
+          Descargar PDF
+        {/if}
       </button>
       <button class="px-6 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold shadow transition-colors duration-150 flex items-center"
         on:click={() => {
