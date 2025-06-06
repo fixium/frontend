@@ -54,6 +54,18 @@
   let successTimeout: any | null = null;
   let errorTimeout: any | null = null;
 
+
+  onMount(() => {
+    document.querySelectorAll('button').forEach(button => {
+      button.addEventListener('mousemove', (e) => {
+        const rect = button.getBoundingClientRect();        
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        button.style.setProperty('--x', `${x}px`);
+        button.style.setProperty('--y', `${y}px`);
+      });
+    });
+  });
   // Funciones generales
   function showSuccessMessage(message: string) {
     successMessage = message;
@@ -243,27 +255,27 @@
         Acciones Básicas
       </h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <button on:click={pairAndFetchInfo} class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={pairAndFetchInfo} class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 emparejar-btn">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
           Emparejar
         </button>
-        <button on:click={() => call(unpairDevice, "Desemparejando dispositivo...")} class="bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(unpairDevice, "Desemparejando dispositivo...")} class="bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 desemparejar-btn">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
           Desemparejar
         </button>
-        <button on:click={() => call(restartDevice, "Reiniciando dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(restartDevice, "Reiniciando dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 reiniciar-btn">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
           Reiniciar
         </button>
-        <button on:click={() => call(shutdownDevice, "Apagando dispositivo...")} class="bg-yellow-600 text-white py-3 px-4 rounded-lg hover:bg-yellow-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(shutdownDevice, "Apagando dispositivo...")} class="bg-yellow-600 text-white py-3 px-4 rounded-lg hover:bg-yellow-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 apagar-btn">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
           Apagar
         </button>
-        <button on:click={() => call(activateDevice, "Intentando activar dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+        <button on:click={() => call(activateDevice, "Intentando activar dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 activar-btn">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
@@ -285,7 +297,7 @@
         <!-- Botones en fila que llenan el contenedor -->
         <div class="flex gap-4">
           <button on:click={() => call(enterRecoveryMode, "Entrando a modo recovery...")} 
-            class="bg-indigo-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+            class="bg-indigo-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 entrar-btn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
@@ -293,7 +305,7 @@
           </button>
 
           <button on:click={() => call(exitRecoveryMode, "Saliendo de modo recovery...")} 
-            class="bg-teal-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2">
+            class="bg-teal-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 salir-btn">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
@@ -313,7 +325,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <!-- Botón para seleccionar carpeta -->
           <button
-            class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+            class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 seleccionar-btn"
             on:click={() => selectFolder()}
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -324,7 +336,7 @@
       
           <!-- Botón para crear backup -->
           <button
-            class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+            class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 crear-btn"
             on:click={createBackup}
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -335,7 +347,7 @@
       
           <!-- Botón para restaurar backup -->
           <button
-            class="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2"
+            class="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 restaurar-btn"
             on:click={restoreBackup}
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -362,7 +374,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <!-- Botón para seleccionar archivo -->
         <button
-          class="bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-1 sm:w-auto"
+          class="bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-1 sm:w-auto select-btn"
           on:click={() => selectFile()}
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -374,7 +386,7 @@
         <!-- Botón "Restaurar con IPSW" -->
         <button
           on:click={() => restoreWithIPSW(ipswPath)}
-          class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2"
+          class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 restaurar-btn"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -385,7 +397,7 @@
         <!-- Botón para consultar firmware -->
         <button
           on:click={openFirmwareModal}
-          class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2"
+          class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 consultar-btn"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
@@ -411,7 +423,7 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <button 
           on:click={downloadLogs} 
-          class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 sm:col-span-2"
+          class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 sm:col-span-2 descargar-btn"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
@@ -544,3 +556,121 @@
     <Message type="error" message={errorMessage} onClose={() => (errorMessage = '')} />
   {/if}
 </div>
+
+<style>
+:global(.dark) button {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  transition: color 0.3s;
+  z-index: 1;
+}
+
+:global(.dark) button::before {
+  content: '';
+  position: absolute;
+  left: var(--x, 50%);
+  top: var(--y, 50%);
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, #00ffc3 10%, transparent 70%);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.4s ease;
+  border-radius: 50%;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+:global(.dark) button:hover::before {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+:global(.dark) button:hover {
+  color: #00ffc3;
+}
+:global(button svg) {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+:global(.dark) .emparejar-btn::before {
+  background: radial-gradient(circle, #00ffc3 10%, transparent 70%);
+}
+:global(.dark) .emparejar-btn:hover {
+  color: #00ffc3;
+}
+:global(.dark) .desemparejar-btn::before {
+  background: radial-gradient(circle, #f24343db 10%, transparent 70%);
+}
+:global(.dark) .desemparejar-btn:hover {
+  color: #ff7f7f;
+}
+:global(.dark) .reiniciar-btn::before {
+  background: radial-gradient(circle, #4caf50 10%, transparent 70%);
+}
+:global(.dark) .reiniciar-btn:hover {
+  color: #4caf50;
+}
+:global(.dark) .apagar-btn::before {
+  background: radial-gradient(circle, #ff9800 10%, transparent 70%);
+}
+:global(.dark) .apagar-btn:hover {
+  color: #ff9800;
+}
+:global(.dark) .activar-btn::before {
+  background: radial-gradient(circle, #2196f3 10%, transparent 70%);
+}
+:global(.dark) .activar-btn:hover {
+  color: #2196f3;
+}
+:global(.dark) .entrar-btn::before {
+  background: radial-gradient(circle, #a876ff 10%, transparent 70%);
+}
+:global(.dark) .entrar-btn:hover {
+  color: #a571ff;
+}
+:global(.dark) .salir-btn::before {
+  background: radial-gradient(circle, #e554ff 10%, transparent 70%);
+}
+:global(.dark) .salir-btn:hover {
+  color: #e761ff;
+}
+:global(.dark) .seleccionar-btn::before {
+  background: radial-gradient(circle, #5972ffcb 10%, transparent 70%);
+}
+:global(.dark) .seleccionar-btn:hover {
+  color: #a9b6ff;
+}
+:global(.dark) .crear-btn::before {
+  background: radial-gradient(circle, #009688 10%, transparent 70%);
+}
+:global(.dark) .crear-btn:hover {
+  color: #009688;
+}
+:global(.dark) .restaurar-btn::before {
+  background: radial-gradient(circle, #ff440bb0 10%, transparent 70%);
+}
+:global(.dark) .restaurar-btn:hover {
+  color: #ffa98f;
+}
+:global(.dark) .consultar-btn::before {
+  background: radial-gradient(circle, #00bcd4 10%, transparent 70%);
+}
+
+:global(.dark) .consultar-btn:hover {
+  color: #00bcd4;
+}
+:global(.dark) .descargar-btn::before {
+  background: radial-gradient(circle, rgba(235, 37, 221, 0.656) 10%, transparent 70%);
+}
+:global(.dark) .descargar-btn:hover {
+  color: #cb5ce1;
+}
+
+
+</style>
