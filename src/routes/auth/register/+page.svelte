@@ -100,7 +100,7 @@ async function confirmarRegistro() {
 
 <div class="min-h-screen flex items-center justify-center p-4 overflow-auto">
 	<div class="w-full max-w-md flex flex-col items-center">
-		<h1 class="text-3xl font-bold mb-4 text-center">
+		<h1 class="text-3xl font-bold mb-4 text-center dark:text-white text-gray-800 flex items-center justify-center gap-2">
 			<i class="fa fa-tools mr-2 text-blue-600"></i>
 			Registro de taller
 		</h1>
@@ -205,7 +205,7 @@ async function confirmarRegistro() {
 		</div>
 
 		<div class="relative mb-3">
-			<label class="block mb-1 font-semibold w-full text-center"
+			<label class="block mb-1 font-semibold w-full text-center dark:text-white text-gray-800"
 				><i class="fa fa-camera mr-1"></i>Fotos del administrador del taller
 				<button
 					type="button"
@@ -283,9 +283,9 @@ async function confirmarRegistro() {
 
 {#if showReasonModal}
 	<div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-		<div class="bg-white rounded-lg shadow-lg p-6 max-w-xs w-full text-center">
-			<h2 class="font-bold mb-2 text-lg">¿Por qué pedimos la foto?</h2>
-			<p class="mb-4 text-sm">
+		<div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 max-w-xs w-full text-center">
+			<h2 class="font-bold mb-2 text-lg dark:text-white">¿Por qué pedimos la foto?</h2>
+			<p class="mb-4 text-sm dark:text-gray-300">
 				Solicitamos la foto del administrador para validar su identidad y proteger la seguridad de
 				tu taller y de tus clientes. <br />Esta verificación nos ayuda a garantizar que solo
 				personas autorizadas puedan realizar acciones importantes dentro del sistema.
