@@ -51,6 +51,8 @@
 	let filtroTicket = '';
 	let filtroImei = '';
 
+    let loadingPdf = {}; // Estado de carga por ticket
+
 	async function aplicarFiltro() {
 		try {
 			tickets = await filterTickets({
@@ -93,9 +95,14 @@
 		showStatusInfo = false;
 	}
 
-	function descargarPdf(id) {
-		downloadTicketPdf(id);
-	}
+	async function descargarPdf(id) {
+        loadingPdf = { ...loadingPdf, [id]: true };
+        try {
+            await downloadTicketPdf(id);
+        } finally {
+            loadingPdf = { ...loadingPdf, [id]: false };
+        }
+    }
 
 	async function cambiarEstado(id) {
 		selectedTicketId = id;
@@ -341,11 +348,18 @@
 											Ver Detalles
 										</button>
 										<button
-											class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150"
-											on:click={() => descargarPdf(ticket.id)}
-										>
-											PDF
-										</button>
+                                            class="bg-red-500 hover:bg-red-700 text-white font-semibold py-1.5 px-4 rounded-full shadow transition-all duration-150 flex items-center justify-center"
+                                            on:click={() => descargarPdf(ticket.id)}
+                                            type="button"
+                                            disabled={loadingPdf[ticket.id]}
+                                        >
+                                            {#if loadingPdf[ticket.id]}
+                                                <span class="animate-spin mr-2"><i class="fa fa-spinner"></i></span>
+                                                Descargando...
+                                            {:else}
+                                                PDF
+                                            {/if}
+                                        </button>
 									</td>
 								</tr>
 							{/each}
