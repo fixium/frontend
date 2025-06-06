@@ -55,46 +55,52 @@
     }
 
     function renderCharts() {
-        const ctx1 = document.getElementById('ticketsChart').getContext('2d');
-        if (chartTickets) chartTickets.destroy();
-        chartTickets = new Chart(ctx1, {
-            type: 'doughnut',
-            data: {
-                labels: Object.keys(ticketsByStatus),
-                datasets: [{
-                    data: Object.values(ticketsByStatus),
-                    backgroundColor: ['#2563eb', '#22d3ee', '#f59e42', '#22c55e', '#ef4444', '#64748b'],
-                }]
-            },
-            options: {
-                plugins: {
-                    legend: { labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--dashboard-text') || '#222' } }
-                }
-            }
-        });
-
-        const ctx2 = document.getElementById('usersChart').getContext('2d');
-        if (chartUsers) chartUsers.destroy();
-        chartUsers = new Chart(ctx2, {
-            type: 'bar',
-            data: {
-                labels: Object.keys(usersByRole),
-                datasets: [{
-                    label: 'Usuarios',
-                    data: Object.values(usersByRole),
-                    backgroundColor: '#2563eb'
-                }]
-            },
-            options: {
-                scales: {
-                    x: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--dashboard-text') || '#222' } },
-                    y: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--dashboard-text') || '#222' } }
+        const ticketsCanvas = document.getElementById('ticketsChart');
+        if (ticketsCanvas) {
+            const ctx1 = ticketsCanvas.getContext('2d');
+            if (chartTickets) chartTickets.destroy();
+            chartTickets = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(ticketsByStatus),
+                    datasets: [{
+                        data: Object.values(ticketsByStatus),
+                        backgroundColor: ['#2563eb', '#22d3ee', '#f59e42', '#22c55e', '#ef4444', '#64748b'],
+                    }]
                 },
-                plugins: {
-                    legend: { labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--dashboard-text') || '#222' } }
+                options: {
+                    plugins: {
+                        legend: { labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--dashboard-text') || '#222' } }
+                    }
                 }
-            }
-        });
+            });
+        }
+
+        const usersCanvas = document.getElementById('usersChart');
+        if (usersCanvas) {
+            const ctx2 = usersCanvas.getContext('2d');
+            if (chartUsers) chartUsers.destroy();
+            chartUsers = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(usersByRole),
+                    datasets: [{
+                        label: 'Usuarios',
+                        data: Object.values(usersByRole),
+                        backgroundColor: '#2563eb'
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--dashboard-text') || '#222' } },
+                        y: { ticks: { color: getComputedStyle(document.documentElement).getPropertyValue('--dashboard-text') || '#222' } }
+                    },
+                    plugins: {
+                        legend: { labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--dashboard-text') || '#222' } }
+                    }
+                }
+            });
+        }
     }
 
     onMount(async () => {

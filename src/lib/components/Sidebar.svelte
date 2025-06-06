@@ -217,7 +217,7 @@
 					<ul class="py-2">
 						<li
 							class="px-4 py-2 cursor-pointer account-management"
-							on:click={() => goto('/my-acccount')}
+							on:click={() => goto('/my-account')}
 							on:keydown={(e) => e.key === 'Enter' && handleAccountManagement()}
 							role="menuitem"
 							tabindex="0"
