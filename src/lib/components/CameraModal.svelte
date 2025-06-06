@@ -1,6 +1,7 @@
 <script>
 	import { createEventDispatcher, onDestroy, tick } from 'svelte';
 	export let show = false;
+	export let faltantes = 1;
 	const dispatch = createEventDispatcher();
 
 	let videoRef;
@@ -74,20 +75,44 @@
 		await startCamera();
 	}
 
+	let fotosTomadas = 0;
+	let totalAFotografiar = 1; // nuevo
+
 	function startScanAndCountdown() {
-		countdown = 3;
+		fotosTomadas = 0;
+		totalAFotografiar = faltantes; // captura el valor al momento de iniciar
+		tomarFotoRecursiva();
+	}
+
+	let flashVisible = false;
+	async function tomarFotoRecursiva() {
+		if (fotosTomadas >= totalAFotografiar) {
+			stopCamera();
+			dispatch('close');
+			return;
+		}
+		countdown = 2;
 		scanning = true;
 		scanAnimation = true;
 		clearInterval(countdownInterval);
 		countdownInterval = setInterval(() => {
 			countdown--;
-			if (countdown <= 0) {
+			if (countdown < 0) {
 				clearInterval(countdownInterval);
+
+				// Efecto flash
+				flashVisible = true;
+				setTimeout(() => {
+					flashVisible = false;
+				}, 150);
+
 				setTimeout(() => {
 					takePhoto();
-					stopCamera();
-					dispatch('close');
-				}, 400); // Pequeño delay para que la animación termine
+					fotosTomadas++;
+					setTimeout(() => {
+						tomarFotoRecursiva();
+					}, 300);
+				}, 200);
 			}
 		}, 1000);
 	}
@@ -114,6 +139,11 @@
 				>
 					<track kind="captions" label="Sin subtítulos" />
 				</video>
+
+				{#if flashVisible}
+					<!-- ⚡ Efecto flash -->
+					<div class="absolute inset-0 bg-white opacity-80 animate-flash z-40 rounded-3xl"></div>
+				{/if}
 				<!-- Animación de escaneo -->
 				{#if scanning}
 					<div
@@ -122,11 +152,11 @@
 					></div>
 				{/if}
 				<!-- Conteo regresivo -->
-				{#if scanning}
+				{#if scanning && countdown > 0}
 					<div class="absolute inset-0 flex items-center justify-center">
 						<span
 							class="text-6xl font-bold text-white drop-shadow-lg bg-black bg-opacity-40 px-6 py-2 rounded-full"
-							>{countdown}</span
+							>{countdown + 1}</span
 						>
 					</div>
 				{/if}
@@ -192,5 +222,18 @@
 		100% {
 			top: 95%;
 		}
+	}
+
+	@keyframes flash-effect {
+		from {
+			opacity: 0.9;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
+	.animate-flash {
+		animation: flash-effect 0.15s ease-out;
 	}
 </style>
