@@ -246,201 +246,148 @@
   <!-- Contenido principal -->
   <div class="w-full space-y-8">
 
-    <!-- Acciones Básicas -->
     <section class=" shadow-lg rounded-lg p-6">
-      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-        </svg>
-        Acciones Básicas
-      </h2>
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <button on:click={pairAndFetchInfo} class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 emparejar-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          Emparejar
-        </button>
-        <button on:click={() => call(unpairDevice, "Desemparejando dispositivo...")} class="bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 desemparejar-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          Desemparejar
-        </button>
-        <button on:click={() => call(restartDevice, "Reiniciando dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 reiniciar-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-          Reiniciar
-        </button>
-        <button on:click={() => call(shutdownDevice, "Apagando dispositivo...")} class="bg-yellow-600 text-white py-3 px-4 rounded-lg hover:bg-yellow-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 apagar-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" /></svg>
-          Apagar
-        </button>
-        <button on:click={() => call(activateDevice, "Intentando activar dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 activar-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          Activar dispositivo
-        </button>
-      </div>
-    </section>
+  <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
+    <i class="fas fa-tools"></i>
+    Acciones Básicas
+  </h2>
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+    <button on:click={pairAndFetchInfo} class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 emparejar-btn">
+      <i class="fas fa-link"></i>
+      Emparejar
+    </button>
+    <button on:click={() => call(unpairDevice, "Desemparejando dispositivo...")} class="bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 desemparejar-btn">
+      <i class="fas fa-unlink"></i>
+      Desemparejar
+    </button>
+    <button on:click={() => call(restartDevice, "Reiniciando dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 reiniciar-btn">
+      <i class="fas fa-sync-alt"></i>
+      Reiniciar
+    </button>
+    <button on:click={() => call(shutdownDevice, "Apagando dispositivo...")} class="bg-yellow-600 text-white py-3 px-4 rounded-lg hover:bg-yellow-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 apagar-btn">
+      <i class="fas fa-power-off"></i>
+      Apagar
+    </button>
+    <button on:click={() => call(activateDevice, "Intentando activar dispositivo...")} class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 activar-btn">
+      <i class="fas fa-check-circle"></i>
+      Activar dispositivo
+    </button>
+  </div>
+</section>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <!-- Modo Recovery -->
-      <section class=" shadow-lg rounded-lg p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          Modo Recovery
-        </h2>
-
-        <!-- Botones en fila que llenan el contenedor -->
-        <div class="flex gap-4">
-          <button on:click={() => call(enterRecoveryMode, "Entrando a modo recovery...")} 
-            class="bg-indigo-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 entrar-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            Entrar Recovery
-          </button>
-
-          <button on:click={() => call(exitRecoveryMode, "Saliendo de modo recovery...")} 
-            class="bg-teal-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 salir-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
-            Salir Recovery
-          </button>
-        </div>
-      </section>
-      
-      <!-- Gestión de Respaldo -->
-      <section class=" shadow-lg rounded-lg p-6">
-        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-          </svg>
-            Gestión de Respaldo <span class="text-red-600 dark:text-red-400 text-sm">(Compatible únicamente con iOS 13 o versiones anteriores)</span>
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <!-- Botón para seleccionar carpeta -->
-          <button
-            class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 seleccionar-btn"
-            on:click={() => selectFolder()}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6m-6 0H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4m-6 0v6" />
-            </svg>
-            Seleccionar Carpeta
-          </button>
-      
-          <!-- Botón para crear backup -->
-          <button
-            class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 crear-btn"
-            on:click={createBackup}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-            </svg>
-            Crear Backup
-          </button>
-      
-          <!-- Botón para restaurar backup -->
-          <button
-            class="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 restaurar-btn"
-            on:click={restoreBackup}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
-            </svg>
-            Restaurar Backup
-          </button>
-        </div>
-        <!-- Mostrar la carpeta seleccionada -->
-        {#if selectedFolder}
-          <p class="mt-4 text-sm text-gray-700">{selectedFolder}</p>
-        {/if}
-      </section>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <!-- Modo Recovery -->
+  <section class=" shadow-lg rounded-lg p-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
+      <i class="fas fa-life-ring"></i>
+      Modo Recovery
+    </h2>
+    <div class="flex gap-4">
+      <button on:click={() => call(enterRecoveryMode, "Entrando a modo recovery...")} 
+        class="bg-indigo-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-indigo-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 entrar-btn">
+        <i class="fas fa-sign-in-alt"></i>
+        Entrar Recovery
+      </button>
+      <button on:click={() => call(exitRecoveryMode, "Saliendo de modo recovery...")} 
+        class="bg-teal-600 text-white py-3 px-4 rounded-lg flex-1 hover:bg-teal-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 salir-btn">
+        <i class="fas fa-sign-out-alt"></i>
+        Salir Recovery
+      </button>
     </div>
+  </section>
+  
+  <!-- Gestión de Respaldo -->
+  <section class=" shadow-lg rounded-lg p-6">
+    <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
+      <i class="fas fa-database"></i>
+      Gestión de Respaldo <span class="text-red-600 dark:text-red-400 text-sm">(Compatible únicamente con iOS 13 o versiones anteriores)</span>
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <button
+        class="bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 seleccionar-btn"
+        on:click={() => selectFolder()}
+      >
+        <i class="fas fa-folder-open"></i>
+        Seleccionar Carpeta
+      </button>
+      <button
+        class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 crear-btn"
+        on:click={createBackup}
+      >
+        <i class="fas fa-save"></i>
+        Crear Backup
+      </button>
+      <button
+        class="bg-orange-600 text-white py-3 px-4 rounded-lg hover:bg-orange-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-2 restaurar-btn"
+        on:click={restoreBackup}
+      >
+        <i class="fas fa-upload"></i>
+        Restaurar Backup
+      </button>
+    </div>
+    {#if selectedFolder}
+      <p class="mt-4 text-sm text-gray-700">{selectedFolder}</p>
+    {/if}
+  </section>
+</div>
 
-    <!-- Gestión de Firmware -->
-    <section class="shadow-lg rounded-lg p-6">
-      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
-        </svg>
-        Gestión de Firmwares
-      </h2>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <!-- Botón para seleccionar archivo -->
-        <button
-          class="bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-1 sm:w-auto select-btn"
-          on:click={() => selectFile()}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-6h6v6m-6 0H5a2 2 0 01-2-2V7a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-4m-6 0v6" />
-          </svg>
-          Seleccionar .ipsw
-        </button>
+<!-- Gestión de Firmware -->
+<section class="shadow-lg rounded-lg p-6">
+  <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
+    <i class="fas fa-microchip"></i>
+    Gestión de Firmwares
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+    <button
+      class="bg-blue-600 text-white py-2 px-3 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold shadow-md flex items-center justify-center gap-1 sm:w-auto select-btn"
+      on:click={() => selectFile()}
+    >
+      <i class="fas fa-file-import"></i>
+      Seleccionar .ipsw
+    </button>
+    <button
+      on:click={() => restoreWithIPSW(ipswPath)}
+      class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 restaurar-btn"
+    >
+      <i class="fas fa-history"></i>
+      Restaurar
+    </button>
+    <button
+      on:click={openFirmwareModal}
+      class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 consultar-btn"
+    >
+      <i class="fas fa-search"></i>
+      Consultar Firmwares
+    </button>
+    {#if selectedIpsw}
+      <p class="mt-4 text-sm text-gray-700">{selectedIpsw}</p>
+    {/if}
+  </div>
+</section>
 
-        <!-- Botón "Restaurar con IPSW" -->
-        <button
-          on:click={() => restoreWithIPSW(ipswPath)}
-          class="bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 restaurar-btn"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-          </svg>
-          Restaurar
-        </button>
-
-        <!-- Botón para consultar firmware -->
-        <button
-          on:click={openFirmwareModal}
-          class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 consultar-btn"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
-          </svg>
-          Consultar Firmwares
-        </button>
-        <!-- Mostrar la carpeta seleccionada -->
-        {#if selectedIpsw}
-          <p class="mt-4 text-sm text-gray-700">{selectedIpsw}</p>
-        {/if}
-      </div>
-    </section>
-
-    <!-- Logs -->
-    <section class="shadow-lg rounded-lg p-6">
-      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
-        </svg>
-        Logs
-      </h2>
-      <!-- Ajuste: Se usa col-span-2 para que el botón ocupe las dos columnas -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <button 
-          on:click={downloadLogs} 
-          class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 sm:col-span-2 descargar-btn"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
-          </svg>
-          Extraer logs
-        </button>
-      </div>
-    </section>
+<!-- Logs -->
+<section class="shadow-lg rounded-lg p-6">
+  <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
+    <i class="fas fa-file-alt"></i>
+    Logs
+  </h2>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <button 
+      on:click={downloadLogs} 
+      class="bg-purple-600 text-white py-3 px-4 rounded-lg hover:bg-purple-700 transition-all text-sm font-semibold w-full shadow-md flex items-center justify-center gap-2 sm:col-span-2 descargar-btn"
+    >
+      <i class="fas fa-download"></i>
+      Extraer logs
+    </button>
+  </div>
+</section>
   </div>
 
     <!-- Panel lateral -->
   <div class="hidden md:block ml-7 w-72  shadow-lg rounded-lg p-6 sticky top-6 max-h-[670px] overflow-y-auto overflow-x-hidden">
     <h2 class="text-l font-bold text-gray-800 mb-4 flex items-center gap-2 text-black dark:text-white">
       <!-- Ícono móvil -->
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 2H8a2 2 0 00-2 2v16a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2zM12 18h.01" />
-      </svg>
+       <i class="fas fa-mobile-alt text-blue-500 text-2xl"></i>
       Información del Dispositivo
     </h2>
 
@@ -486,67 +433,55 @@
   </div>
 
   <!-- Carga -->
-  {#if loading}
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
-        <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v4m0 8v4m4-4h4m-8 0H4m16-4a8 8 0 11-16 0 8 8 0 0116 0z" />
-        </svg>
-        <p class="text-gray-800 font-semibold">{loadingMessage}</p>
-        <button
-          on:click={() => (loading = false, loadingMessage = '')}
-          class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          Cerrar
-        </button>
-      </div>
+{#if loading}
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
+      <i class="fas fa-spinner fa-spin text-blue-600 text-3xl mb-4"></i>
+      <p class="text-gray-800 font-semibold">{loadingMessage}</p>
+      <button
+        on:click={() => (loading = false, loadingMessage = '')}
+        class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2"
+      >
+        <i class="fas fa-times"></i>
+        Cerrar
+      </button>
     </div>
-  {/if}
+  </div>
+{/if}
 
-  <!-- Modal de Firmware -->
-  {#if showFirmwareModal}
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-        <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 013-3h6a3 3 0 013 3v2a3 3 0 01-3 3z" />
-          </svg>
-          Último Firmware
-        </h2>
-        {#if loading}
-          <div class="flex flex-col items-center">
-            <svg class="animate-spin h-8 w-8 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v4m0 8v4m4-4h4m-8 0H4m16-4a8 8 0 11-16 0 8 8 0 0116 0z" />
-            </svg>
-            <p class="text-gray-800 font-semibold">{loadingMessage}</p>
+<!-- Modal de Firmware -->
+{#if showFirmwareModal}
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+      <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+        <i class="fas fa-microchip"></i>
+        Último Firmware
+      </h2>
+      {#if loading}
+        <div class="flex flex-col items-center">
+          <i class="fas fa-spinner fa-spin text-blue-600 text-3xl mb-4"></i>
+          <p class="text-gray-800 font-semibold">{loadingMessage}</p>
+        </div>
+      {:else if firmwareList}
+        {#each firmwareList as firmware}
+          <div class="grid grid-cols-1 gap-2 text-sm text-gray-700">
+            <div><strong>Versión:</strong> {firmware?.version}</div>
+            <div><strong>Build ID:</strong> {firmware?.buildid}</div>
+            <div><strong>Fecha de lanzamiento:</strong> {new Date(firmware.releasedate).toLocaleString()}</div>
           </div>
-        {:else if firmwareList}
-          {#each firmwareList as firmware}
-            <div class="grid grid-cols-1 gap-2 text-sm text-gray-700">
-              <div><strong>Versión:</strong> {firmware?.version}</div>
-              <div><strong>Build ID:</strong> {firmware?.buildid}</div>
-              <div><strong>Fecha de lanzamiento:</strong> {new Date(firmware.releasedate).toLocaleString()}</div>
-            </div>
-            <button on:click={() => startDownload(firmware.url)} class="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4-4m0 0L8 8m4-4v12" />
-              </svg>
-              Descargar Firmware
-            </button>
-          {/each}
-        {/if}
-        <button on:click={() => (showFirmwareModal = false)} class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-          Cerrar
-        </button>
-      </div>
+          <button on:click={() => startDownload(firmware.url)} class="mt-4 bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
+            <i class="fas fa-download"></i>
+            Descargar Firmware
+          </button>
+        {/each}
+      {/if}
+      <button on:click={() => (showFirmwareModal = false)} class="mt-4 bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-all text-sm font-semibold w-full flex items-center justify-center gap-2">
+        <i class="fas fa-times"></i>
+        Cerrar
+      </button>
     </div>
-  {/if}
+  </div>
+{/if}
 
   <!-- Mensajes -->
   {#if successMessage}
