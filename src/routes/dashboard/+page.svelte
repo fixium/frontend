@@ -114,7 +114,7 @@
     }
 </script>
 
-<div class="flex flex-col gap-10 px-6 py-8 md:px-12 bg-gradient-to-br from-white to-slate-100 dark:from-zinc-900 dark:to-slate-950 min-h-screen">
+<div class="flex flex-col gap-10 px-6 py-8 md:px-12 bg-gradient-to-br from-white to-slate-100 dark:from-zinc-900 dark:to-slate-950 min-h-screen rounded-3xl">
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-300 dark:border-slate-700 pb-4">
         <div>
             <h1 class="text-3xl md:text-4xl font-bold text-blue-600 dark:text-blue-400 drop-shadow">Dashboard Fixium</h1>
