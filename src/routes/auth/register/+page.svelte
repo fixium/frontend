@@ -13,10 +13,9 @@
 	let password = '';
 	let showPassword = false;
 
-
-let successMessage = '';
-let errorMessage = '';
-let loading = false;
+	let successMessage = '';
+	let errorMessage = '';
+	let loading = false;
 
 	let showCameraModal = false;
 	let imageBlobs = [];
@@ -41,79 +40,87 @@ let loading = false;
 		imagePreviews = imagePreviews.filter((_, i) => i !== index);
 	}
 
-async function confirmarRegistro() {
-	successMessage = '';
-	errorMessage = '';
-	loading = true;
-	try {
-		if (
-			!workshopName ||
-			!workshopPhoneNumber ||
-			!workshopContactEmail ||
-			!name ||
-			!phoneNumber ||
-			!username ||
-			!password
-		) {
-			errorMessage = 'Por favor, completa todos los campos.';
-			return;
-		}
+	async function confirmarRegistro() {
+		successMessage = '';
+		errorMessage = '';
+		loading = true;
+		try {
+			if (
+				!workshopName ||
+				!workshopPhoneNumber ||
+				!workshopContactEmail ||
+				!name ||
+				!phoneNumber ||
+				!username ||
+				!password
+			) {
+				errorMessage = 'Por favor, completa todos los campos.';
+				return;
+			}
 
-		if (imageBlobs.length < 3) {
-			errorMessage = 'Debes tomar al menos 3 fotos del administrador.';
-			return;
-		}
+			if (imageBlobs.length < 3) {
+				errorMessage = 'Debes tomar al menos 3 fotos del administrador.';
+				return;
+			}
 
-		const response = await register(
-			{
-				workshopName,
-				workshopPhoneNumber,
-				workshopContactEmail,
-				name,
-				phoneNumber,
-				username,
-				password
-			},
-			imageBlobs
-		);
+			const response = await register(
+				{
+					workshopName,
+					workshopPhoneNumber,
+					workshopContactEmail,
+					name,
+					phoneNumber,
+					username,
+					password
+				},
+				imageBlobs
+			);
 
-		if (response.success) {
-			successMessage = 'Registro exitoso. Redirigiendo...';
-			setTimeout(() => {
-				window.location.href = '/auth/login';
-			}, 2000);
-		} else {
-			const errores = Object.values(response.errors).join(' ');
-			errorMessage = errores || 'Error al registrar el taller. Por favor, intenta de nuevo.';
+			if (response.success) {
+				successMessage = 'Registro exitoso. Redirigiendo...';
+				setTimeout(() => {
+					window.location.href = '/auth/login';
+				}, 2000);
+			} else {
+				const errores = Object.values(response.errors).join(' ');
+				errorMessage = errores || 'Error al registrar el taller. Por favor, intenta de nuevo.';
+			}
+		} catch (e) {
+			errorMessage = 'Error de red o inesperado.';
+		} finally {
+			loading = false;
 		}
-	} catch (e) {
-		errorMessage = 'Error de red o inesperado.';
-	} finally {
-		loading = false;
 	}
-}
 
 	function cancelar() {
 		window.history.back();
 	}
+
+	$: faltantes = 3 - imageBlobs.length;
 </script>
 
 <div class="min-h-screen flex items-center justify-center p-4 overflow-auto">
 	<div class="w-full max-w-md flex flex-col items-center">
-		<h1 class="text-3xl font-bold mb-4 text-center dark:text-white text-gray-800 flex items-center justify-center gap-2">
+		<h1
+			class="text-3xl font-bold mb-4 text-center dark:text-white text-gray-800 flex items-center justify-center gap-2"
+		>
 			<i class="fa fa-tools mr-2 text-blue-600"></i>
 			Registro de taller
 		</h1>
 
 		{#if successMessage}
-			<div class="bg-green-100 text-green-800 p-3 rounded mb-4 w-full text-center flex items-center justify-center gap-2">
+			<div
+				class="bg-green-100 text-green-800 p-3 rounded mb-4 w-full text-center flex items-center justify-center gap-2"
+			>
 				<i class="fa fa-check-circle"></i>
 				{successMessage}
 			</div>
 		{/if}
 
 		{#if errorMessage}
-			<div class="bg-red-100 text-red-800 p-3 rounded mb-4 w-full text-center flex items-center justify-center gap-2">
+			<div
+				class="bg-red-100 text-red-800 p-3 rounded mb-4 w-full text-center flex items-center justify-center gap-2"
+			>
 				<i class="fa fa-exclamation-circle"></i>
 				{errorMessage}
 			</div>
@@ -199,9 +206,7 @@ async function confirmarRegistro() {
 
 			<div class="relative mb-3">
 				<PasswordFancy bind:value={password} placeholder="Contraseña del administrador" required />
-
 			</div>
-
 		</div>
 
 		<div class="relative mb-3">
@@ -228,7 +233,7 @@ async function confirmarRegistro() {
 					</button>
 				</div>
 			{/if}
-			 <div class="flex gap-2 flex-wrap justify-center">
+			<div class="flex gap-2 flex-wrap justify-center">
 				{#each imagePreviews as preview, idx}
 					<div class="relative">
 						<img src={preview} alt="Foto tomada" class="w-24 h-24 object-cover rounded mb-2" />
@@ -252,17 +257,34 @@ async function confirmarRegistro() {
 			bind:show={showCameraModal}
 			on:photo={handlePhoto}
 			on:close={() => (showCameraModal = false)}
+			{faltantes}
 		/>
 
 		<div class="flex flex-col items-center gap-3 mt-4 w-full">
-
 			<button
 				on:click={confirmarRegistro}
 				class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-full w-full max-w-xs flex items-center justify-center gap-2"
 				disabled={loading}
 			>
 				{#if loading}
-					<svg class="animate-spin h-5 w-5 mr-2 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path></svg>
+					<svg
+						class="animate-spin h-5 w-5 mr-2 text-white"
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						><circle
+							class="opacity-25"
+							cx="12"
+							cy="12"
+							r="10"
+							stroke="currentColor"
+							stroke-width="4"
+						></circle><path
+							class="opacity-75"
+							fill="currentColor"
+							d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+						></path></svg
+					>
 					Registrando...
 				{:else}
 					<i class="fa fa-check"></i>
