@@ -93,6 +93,9 @@
         event.target.value = event.target.value.replace(/[^0-9]/g, '');
         phoneNumber = event.target.value;
     }
+
+    const REQUIRED_IMAGES = 3;
+    $: faltantes = REQUIRED_IMAGES - imageBlobs.length;
 </script>
 
 <div class="h-screen flex items-center justify-center p-4 overflow-auto">
@@ -266,6 +269,7 @@
             bind:show={showCameraModal}
             on:photo={handlePhoto}
             on:close={closeCameraModal}
+            {faltantes}
         />
 
         <div class="flex justify-between gap-4 mt-4 w-full">
