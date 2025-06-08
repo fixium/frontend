@@ -124,3 +124,31 @@ export async function register(userRegistrationData, images = []) {
         return { success: false, errors: { general: error.message } };
     }
 }
+
+export async function forgotPassword(email) {
+    try {
+        const response = await fetch(`${API_AUTH_BASE_URL}/forgot-password`, {
+            method: 'POST',
+            headers: JSON_HEADERS,
+            body: JSON.stringify({ email })
+        });
+
+        let message;
+        let data;
+        const contentType = response.headers.get('Content-Type');
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+            message = buildErrorMessage(data, 'Error al solicitar restablecimiento');
+        } else {
+            message = await response.text();
+        }
+
+        if (!response.ok) {
+            return { success: false, message };
+        }
+        return { success: true, message };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Ocurrió un error. Intenta de nuevo.' };
+    }
+}
