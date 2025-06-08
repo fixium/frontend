@@ -5,7 +5,7 @@ export function load({ cookies, url }) {
     const path = url.pathname;
 
     // Rutas públicas (sin login)
-    const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized'];
+    const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized', '/auth/forgot-password'];
     const isPublic = publicPaths.some(p => path.startsWith(p));
 
     // Rutas accesibles para cualquier usuario autenticado
