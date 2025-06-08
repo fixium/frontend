@@ -6,7 +6,7 @@ export function load({ url }) {
 	const jwt = localStorage.getItem('authToken');
 	const path = url.pathname;
 
-	const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized'];
+	const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized', '/auth/forgot-password'];
 	const isPublic = publicPaths.some(p => path.startsWith(p));
 	const sharedAuthPaths = ['/dashboard', '/', '/my-account'];
 

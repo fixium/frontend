@@ -34,10 +34,7 @@ export async function login(username, password) {
 
 export async function logout() {
     try {
-        // Eliminar token de localStorage
         localStorage.removeItem('authToken');
-        // Si tienes un endpoint de logout, puedes llamarlo aquí sin credentials
-        // await fetch(`${API_AUTH_BASE_URL}/logout`, { method: 'POST' });
         return { success: true };
     } catch (error) {
         console.error(error);
@@ -88,5 +85,33 @@ export async function register(userRegistrationData, images = []) {
     } catch (error) {
         console.error(error);
         return { success: false, errors: { general: error.message } };
+    }
+}
+
+export async function forgotPassword(email) {
+    try {
+        const response = await fetch(`${API_AUTH_BASE_URL}/forgot-password`, {
+            method: 'POST',
+            headers: JSON_HEADERS,
+            body: JSON.stringify({ email })
+        });
+
+        let message;
+        let data;
+        const contentType = response.headers.get('Content-Type');
+        if (contentType && contentType.includes('application/json')) {
+            data = await response.json();
+            message = buildErrorMessage(data, 'Error al solicitar restablecimiento');
+        } else {
+            message = await response.text();
+        }
+
+        if (!response.ok) {
+            return { success: false, message };
+        }
+        return { success: true, message };
+    } catch (error) {
+        console.error(error);
+        return { success: false, message: 'Ocurrió un error. Intenta de nuevo.' };
     }
 }

@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { login } from '$lib/api/main-backend-requests/auth';
 	import PasswordFancy from '$lib/components/PasswordFancy.svelte';
-        import { onMount } from 'svelte';
+		import { onMount } from 'svelte';
 
 
 	let username = '';
@@ -46,9 +46,9 @@
 <div class="flex items-center justify-center min-h-screen">
 	<div class="w-full max-w-sm flex flex-col items-center">
 		<img src={logoSrc} 
-        alt="Logo" 
-        class="h-28 mb-10 drop-shadow-xl" 
-        />
+		alt="Logo" 
+		class="h-28 mb-10 drop-shadow-xl" 
+		/>
 
 		<form class="w-full flex flex-col gap-6" on:submit|preventDefault={handleLogin}>
 			<!-- usuario -->
@@ -113,6 +113,15 @@
 			<i class="fa fa-user-plus"></i>
 			Registrar taller
 		</button>
+
+		<a
+			href="/auth/forgot-password"
+			class="mt-3 text-sky-700 hover:underline hover:text-sky-900 text-center w-full block transition-colors duration-200"
+			style="font-size: 1rem; font-weight: 500;"
+		>
+			<i class="fa fa-key mr-1"></i>
+			¿Olvidaste tu contraseña?
+		</a>
 	</div>
 </div>
 
