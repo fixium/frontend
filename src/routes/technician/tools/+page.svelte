@@ -25,6 +25,8 @@
   let errorMessage = '';
   let error: string = '';
 
+  const reload = () => location.reload();
+
   // Estados del dispositivo
   let deviceInfo: any = null;
   let isPaired = false;
@@ -107,6 +109,7 @@
       isPaired = true;
       fetchDeviceInformation();
     }
+    setTimeout(reload, 5000);
   }
 
   async function fetchDeviceInformation() {
