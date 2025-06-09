@@ -316,9 +316,9 @@
 		{/if}
 
 		{#if selectedRepair}
-			<div class="fixed inset-0 flex items-center justify-center modal-bg">
+			<div class="fixed inset-0 flex items-center justify-center modal-bg dark:bg-gray-900 bg-opacity-75">
 				<div
-					class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full relative border border-blue-100"
+					class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full relative border border-blue-100 dark:border-blue-700 dark:bg-gray-800"
 				>
 					<button
 						class="absolute top-2 right-4 text-2xl text-gray-400 hover:text-gray-700"
@@ -327,7 +327,7 @@
 					>
 						<i class="fa fa-times"></i>
 					</button>
-					<h3 class="text-xl font-bold mb-4 text-blue-700 text-center">
+					<h3 class="text-xl font-bold mb-4 text-blue-700 text-center dark:text-blue-300">
 						<i class="fa fa-tools mr-2"></i>
 						Detalles de la reparación #{selectedRepair.id}
 					</h3>
@@ -378,20 +378,20 @@
 						</div>
 					{:else}
 						<div class="mb-4">
-							<strong class="block text-gray-700">
+							<strong class="block text-gray-700 dark:text-gray-300">
 								<i class="fa fa-stethoscope mr-1"></i>
 								Diagnóstico:
 							</strong>
-							<div class="whitespace-pre-line text-gray-800 bg-gray-100 rounded p-2">
+							<div class="whitespace-pre-line text-gray-800 bg-gray-100 rounded p-2 dark:bg-gray-700 dark:text-gray-300">
 								{selectedRepair.diagnosis}
 							</div>
 						</div>
 						<div>
-							<strong class="block text-gray-700">
+							<strong class="block text-gray-700 dark:text-gray-300">
 								<i class="fa fa-tools mr-1"></i>
 								Acciones de Reparación:
 							</strong>
-							<div class="whitespace-pre-line text-gray-800 bg-gray-100 rounded p-2">
+							<div class="whitespace-pre-line text-gray-800 bg-gray-100 rounded p-2 dark:bg-gray-700 dark:text-gray-300">
 								{selectedRepair.repairActions}
 							</div>
 						</div>

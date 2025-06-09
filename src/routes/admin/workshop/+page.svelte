@@ -67,8 +67,8 @@
 {#if loading}
   <p class="text-center text-gray-500 mt-8">Cargando...</p>
 {:else}
-  <form on:submit|preventDefault={handleSubmit} class="max-w-md mx-auto mt-8 bg-white shadow-xl rounded-2xl p-8 flex flex-col gap-6 border border-gray-100">
-    <h2 class="text-2xl font-bold mb-2 text-center text-blue-700">Actualizar detalles del taller</h2>
+  <form on:submit|preventDefault={handleSubmit} class="max-w-md mx-auto mt-8 bg-white shadow-xl rounded-2xl p-8 flex flex-col gap-6 border border-gray-100 dark:border-gray-700 dark:bg-gray-800">
+    <h2 class="text-2xl font-bold mb-2 text-center text-blue-700 dark:text-blue-400">Actualizar detalles del taller</h2>
     {#if error}
       <p class="text-red-600 text-center">{error}</p>
     {/if}
@@ -76,28 +76,28 @@
       <p class="text-green-600 text-center">¡Datos actualizados correctamente!</p>
     {/if}
     <div>
-  <label for="workshop-name" class="block font-semibold mb-1 text-gray-700">
+  <label for="workshop-name" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
     <i class="fa fa-user mr-2 text-gray-400"></i>
     Nombre
   </label>
-  <input id="workshop-name" type="text" bind:value={name} required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm" />
+  <input id="workshop-name" type="text" bind:value={name} required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" />
 </div>
 <div>
-  <label for="workshop-phone" class="block font-semibold mb-1 text-gray-700">
+  <label for="workshop-phone" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
     <i class="fa fa-phone mr-2 text-gray-400"></i>
     Teléfono
   </label>
-  <input id="workshop-phone" type="text" bind:value={phoneNumber} required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm" />
+  <input id="workshop-phone" type="text" bind:value={phoneNumber} required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" />
 </div>
 <div>
-  <label for="workshop-email" class="block font-semibold mb-1 text-gray-700">
+  <label for="workshop-email" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
     <i class="fa fa-envelope mr-2 text-gray-400"></i>
     Email de contacto
   </label>
-  <input id="workshop-email" type="email" bind:value={contactEmail} required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm" />
+  <input id="workshop-email" type="email" bind:value={contactEmail} required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300" />
 </div>
 <div>
-  <label for="workshop-created-at" class="block font-semibold mb-1 text-gray-700">
+  <label for="workshop-created-at" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
     <i class="fa fa-calendar mr-2 text-gray-400"></i>
     Creado el
   </label>
@@ -110,7 +110,7 @@
       type="text"
       value={createdAtFormatted}
       disabled
-      class="w-full border border-gray-200 bg-gray-100 rounded-lg px-10 py-2 text-gray-500 shadow-sm cursor-not-allowed"
+      class="w-full border border-gray-200 bg-gray-100 rounded-lg px-10 py-2 text-gray-500 shadow-sm cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-400"
     />
   </div>
 </div>
