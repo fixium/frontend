@@ -232,6 +232,10 @@
     --dashboard-separator: #e5e7eb;
     --dashboard-separator-dark: #334155;
 }
+:global(.dark) {
+    --dashboard-text: #f3f3f3;
+    
+}
 
 .dashboard-card {
     background: var(--dashboard-card);
