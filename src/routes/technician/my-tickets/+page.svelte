@@ -42,6 +42,8 @@
 	let showDetailModal = false;
 	let selectedTicket = null;
 
+	let loadingTickets = false;
+
 	let filtroNombre = '';
 	let filtroTicket = '';
 	let filtroImei = '';
@@ -67,12 +69,15 @@
 	}
 
 	async function onMountCallback() {
+		loadingTickets = true;
 		try {
 			tickets = await getAllMyTickets();
 			existsTickets = tickets.length > 0;
 			error = '';
 		} catch (e) {
 			error = e.message;
+		} finally {
+			loadingTickets = false;
 		}
 	}
 
@@ -218,6 +223,14 @@
 			</div>
 		</div>
 	{/if}
+
+	{#if loadingTickets}
+        <div class="flex flex-col items-center justify-center mt-10">
+            <span class="animate-spin text-4xl text-blue-600 mb-2"><i class="fa fa-spinner"></i></span>
+            <span class="text-blue-700 font-semibold">Cargando tickets...</span>
+        </div>
+    {:else}
+
 	{#if error}
 		<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md mb-6">
 			<p class="font-semibold">{error}</p>
@@ -342,6 +355,7 @@
 				</div>
 			</div>
 		{/if}
+	{/if}
 	{/if}
 </div>
 
