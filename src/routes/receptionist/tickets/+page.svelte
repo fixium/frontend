@@ -51,6 +51,8 @@
 	let filtroTicket = '';
 	let filtroImei = '';
 
+    let loadingTickets = false;
+
     let loadingPdf = {}; // Estado de carga por ticket
 
 	async function aplicarFiltro() {
@@ -74,13 +76,16 @@
 	}
 
 	async function onMountCallback() {
+        loadingTickets = true;
 		try {
 			tickets = await getAllTickets();
 			existsTickets = tickets.length > 0;
 			error = '';
 		} catch (e) {
 			error = e.message;
-		}
+		} finally {
+            loadingTickets = false;
+        }
 	}
 
 	onMount(onMountCallback);
@@ -240,6 +245,13 @@
         {/if}
     </div>
 
+    {#if loadingTickets}
+        <div class="flex flex-col items-center justify-center mt-10">
+            <span class="animate-spin text-4xl text-blue-600 mb-2"><i class="fa fa-spinner"></i></span>
+            <span class="text-blue-700 font-semibold">Cargando tickets...</span>
+        </div>
+    {:else}
+
     {#if error}
         <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded shadow-md mb-6 flex items-center gap-2">
             <i class="fa fa-exclamation-circle"></i>
@@ -368,6 +380,7 @@
 				</div>
 			</div>
         {/if}
+    {/if}
     {/if}
 </div>
 
