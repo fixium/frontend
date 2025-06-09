@@ -30,8 +30,8 @@
 	let loadingRepairs = false;
 
 	onMount(async () => {
-        loadingRepairs = true;
 		if (urlTicketId) {
+			loadingRepairs = true;
 			showActions = false;
 		} else {
 			showActions = true;
