@@ -333,26 +333,26 @@
 					</h3>
 					{#if editMode}
 						<div class="mb-4">
-							<label for="diagnosis-textarea" class="block font-semibold mb-1 text-gray-700">
+							<label for="diagnosis-textarea" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
 								<i class="fa fa-stethoscope mr-1"></i>
 								Diagnóstico:
 							</label>
 							<textarea
 								id="diagnosis-textarea"
-								class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+								class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
 								rows="3"
 								bind:value={editDiagnosis}
 								required
 							></textarea>
 						</div>
 						<div class="mb-6">
-							<label for="repair-actions-textarea" class="block font-semibold mb-1 text-gray-700">
+							<label for="repair-actions-textarea" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
 								<i class="fa fa-tools mr-1"></i>
 								Acciones de Reparación:
 							</label>
 							<textarea
 								id="repair-actions-textarea"
-								class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+								class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
 								rows="3"
 								bind:value={editRepairActions}
 								required
