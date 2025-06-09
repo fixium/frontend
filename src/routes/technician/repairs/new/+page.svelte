@@ -40,6 +40,7 @@
     function handlePhoto(event) {
         verificationImage = event.detail.blob;
         imagePreview = event.detail.url;
+        handleSubmit();
     }
 
     async function handleSubmit() {
