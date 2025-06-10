@@ -97,7 +97,7 @@
 	}
 
 	const REQUIRED_IMAGES = 3;
-    $: faltantes = REQUIRED_IMAGES - imageBlobs.length;
+	$: faltantes = REQUIRED_IMAGES - imageBlobs.length;
 </script>
 
 <div class="min-h-screen flex items-center justify-center p-4 overflow-auto">

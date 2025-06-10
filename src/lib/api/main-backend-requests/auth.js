@@ -1,117 +1,136 @@
-import { API_BASE_URL } from "$lib/utils/apiConfig";
-import { buildErrorMessage } from "$lib/utils/errorUtils";
+import { API_BASE_URL } from '$lib/utils/apiConfig';
+import { buildErrorMessage } from '$lib/utils/errorUtils';
 
 const API_AUTH_BASE_URL = `${API_BASE_URL}/auth`;
 const JSON_HEADERS = {
-    'Content-Type': 'application/json'
+	'Content-Type': 'application/json'
 };
 
 export async function login(username, password) {
-    try {
-        const response = await fetch(`${API_AUTH_BASE_URL}/signin`, {
-            method: 'POST',
-            headers: JSON_HEADERS,
-            body: JSON.stringify({ username, password }),
-        });
+	try {
+		const response = await fetch(`${API_AUTH_BASE_URL}/signin`, {
+			method: 'POST',
+			headers: JSON_HEADERS,
+			body: JSON.stringify({ username, password })
+		});
 
-        if (!response.ok) {
-            const errorBody = await response.json();
-            throw new Error(buildErrorMessage(errorBody, 'Error al iniciar sesión'));
-        }
+		if (!response.ok) {
+			const errorBody = await response.json();
+			throw new Error(buildErrorMessage(errorBody, 'Error al iniciar sesión'));
+		}
 
-        const data = await response.json();
+		const data = await response.json();
 
-        // Guardar token en localStorage si existe
-        if (data.token) {
-            localStorage.setItem('authToken', data.token);
-        }
-        return data;
-    } catch (error) {
-        console.error(error);
-        return { success: false, errors: { general: error.message } };
-    }
+		// Guardar token en localStorage si existe
+		if (data.token) {
+			localStorage.setItem('authToken', data.token);
+		}
+		return data;
+	} catch (error) {
+		console.error(error);
+		return { success: false, errors: { general: error.message } };
+	}
 }
 
 export async function logout() {
-    try {
-        localStorage.removeItem('authToken');
-        return { success: true };
-    } catch (error) {
-        console.error(error);
-        return { success: false, errors: { general: error.message } };
-    }
+	try {
+		localStorage.removeItem('authToken');
+		return { success: true };
+	} catch (error) {
+		console.error(error);
+		return { success: false, errors: { general: error.message } };
+	}
 }
 
 export async function register(userRegistrationData, images = []) {
-    const { workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password } = userRegistrationData;
+	const {
+		workshopName,
+		workshopPhoneNumber,
+		workshopContactEmail,
+		name,
+		phoneNumber,
+		username,
+		password
+	} = userRegistrationData;
 
-    try {
-        const formData = new FormData();
+	try {
+		const formData = new FormData();
 
-        const jsonBlob = new Blob(
-            [JSON.stringify({ workshopName, workshopPhoneNumber, workshopContactEmail, name, phoneNumber, username, password })],
-            { type: "application/json" }
-        );
-        formData.append("data", jsonBlob);
+		const jsonBlob = new Blob(
+			[
+				JSON.stringify({
+					workshopName,
+					workshopPhoneNumber,
+					workshopContactEmail,
+					name,
+					phoneNumber,
+					username,
+					password
+				})
+			],
+			{ type: 'application/json' }
+		);
+		formData.append('data', jsonBlob);
 
-        if (images && images.length > 0) {
-            images.forEach((img) => formData.append('images', img));
-        } else {
-            // Enviar parte vacía si no hay imágenes
-            formData.append('images', new Blob([], { type: 'application/octet-stream' }));
-        }
+		if (images && images.length > 0) {
+			images.forEach((img) => formData.append('images', img));
+		} else {
+			// Enviar parte vacía si no hay imágenes
+			formData.append('images', new Blob([], { type: 'application/octet-stream' }));
+		}
 
-        const response = await fetch(`${API_AUTH_BASE_URL}/signup`, {
-            method: 'POST',
-            body: formData,
-        });
+		const response = await fetch(`${API_AUTH_BASE_URL}/signup`, {
+			method: 'POST',
+			body: formData
+		});
 
-        let data;
-        const contentType = response.headers.get('Content-Type');
-        if (contentType && contentType.includes('application/json')) {
-            data = await response.json();
-        } else {
-            data = await response.text();
-        }
+		let data;
+		const contentType = response.headers.get('Content-Type');
+		if (contentType && contentType.includes('application/json')) {
+			data = await response.json();
+		} else {
+			data = await response.text();
+		}
 
-        if (!response.ok) {
-            const errorMsg = typeof data === 'string'
-                ? buildErrorMessage({ message: data }, 'Error al registrar')
-                : buildErrorMessage(data, 'Error al registrar');
-            return { success: false, errors: { general: errorMsg } };
-        }
+		if (!response.ok) {
+			const errorMsg =
+				typeof data === 'string'
+					? buildErrorMessage({ message: data }, 'Error al registrar')
+					: buildErrorMessage(data, 'Error al registrar');
+			return { success: false, errors: { general: errorMsg } };
+		}
 
-        return { success: true, data };
-    } catch (error) {
-        console.error(error);
-        return { success: false, errors: { general: error.message } };
-    }
+		return { success: true, data };
+	} catch (error) {
+		console.error(error);
+		return { success: false, errors: { general: error.message } };
+	}
 }
 
 export async function forgotPassword(email) {
-    try {
-        const response = await fetch(`${API_AUTH_BASE_URL}/forgot-password`, {
-            method: 'POST',
-            headers: JSON_HEADERS,
-            body: JSON.stringify({ email })
-        });
+	try {
+		const response = await fetch(`${API_AUTH_BASE_URL}/forgot-password`, {
+			method: 'POST',
+			headers: JSON_HEADERS,
+			body: JSON.stringify({ email })
+		});
 
-        let message;
-        let data;
-        const contentType = response.headers.get('Content-Type');
-        if (contentType && contentType.includes('application/json')) {
-            data = await response.json();
-            message = buildErrorMessage(data, 'Error al solicitar restablecimiento');
-        } else {
-            message = await response.text();
-        }
+		let message;
+		let data;
+		const contentType = response.headers.get('Content-Type');
+		if (contentType && contentType.includes('application/json')) {
+			data = await response.json();
+			message = buildErrorMessage(data, 'Error al solicitar restablecimiento');
+		} else {
+			message = await response.text();
+		}
 
-        if (!response.ok) {
-            return { success: false, message };
-        }
-        return { success: true, message };
-    } catch (error) {
-        console.error(error);
-        return { success: false, message: 'Ocurrió un error. Intenta de nuevo.' };
-    }
+		if (!response.ok) {
+			return { success: false, message };
+		}
+		return { success: true, message };
+	} catch (error) {
+		console.error(error);
+		return { success: false, message: 'Ocurrió un error. Intenta de nuevo.' };
+	}
 }

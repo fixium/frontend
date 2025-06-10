@@ -316,7 +316,9 @@
 		{/if}
 
 		{#if selectedRepair}
-			<div class="fixed inset-0 flex items-center justify-center modal-bg dark:bg-gray-900 bg-opacity-75">
+			<div
+				class="fixed inset-0 flex items-center justify-center modal-bg dark:bg-gray-900 bg-opacity-75"
+			>
 				<div
 					class="modal-content bg-white rounded-xl shadow-2xl p-8 max-w-lg w-full relative border border-blue-100 dark:border-blue-700 dark:bg-gray-800"
 				>
@@ -333,7 +335,10 @@
 					</h3>
 					{#if editMode}
 						<div class="mb-4">
-							<label for="diagnosis-textarea" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
+							<label
+								for="diagnosis-textarea"
+								class="block font-semibold mb-1 text-gray-700 dark:text-gray-300"
+							>
 								<i class="fa fa-stethoscope mr-1"></i>
 								Diagnóstico:
 							</label>
@@ -346,7 +351,10 @@
 							></textarea>
 						</div>
 						<div class="mb-6">
-							<label for="repair-actions-textarea" class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">
+							<label
+								for="repair-actions-textarea"
+								class="block font-semibold mb-1 text-gray-700 dark:text-gray-300"
+							>
 								<i class="fa fa-tools mr-1"></i>
 								Acciones de Reparación:
 							</label>
@@ -382,7 +390,9 @@
 								<i class="fa fa-stethoscope mr-1"></i>
 								Diagnóstico:
 							</strong>
-							<div class="whitespace-pre-line text-gray-800 bg-gray-100 rounded p-2 dark:bg-gray-700 dark:text-gray-300">
+							<div
+								class="whitespace-pre-line text-gray-800 bg-gray-100 rounded p-2 dark:bg-gray-700 dark:text-gray-300"
+							>
 								{selectedRepair.diagnosis}
 							</div>
 						</div>
@@ -391,7 +401,9 @@
 								<i class="fa fa-tools mr-1"></i>
 								Acciones de Reparación:
 							</strong>
-							<div class="whitespace-pre-line text-gray-800 bg-gray-100 rounded p-2 dark:bg-gray-700 dark:text-gray-300">
+							<div
+								class="whitespace-pre-line text-gray-800 bg-gray-100 rounded p-2 dark:bg-gray-700 dark:text-gray-300"
+							>
 								{selectedRepair.repairActions}
 							</div>
 						</div>

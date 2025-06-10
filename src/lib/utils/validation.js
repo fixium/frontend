@@ -4,7 +4,7 @@
  * @returns {string} - El valor sin números.
  */
 export function validateName(value) {
-    return value.replace(/\d/g, ""); // Eliminar números
+	return value.replace(/\d/g, ''); // Eliminar números
 }
 
 /**
@@ -13,5 +13,5 @@ export function validateName(value) {
  * @returns {string} - El valor solo con números.
  */
 export function validatePhoneNumber(value) {
-    return value.replace(/\D/g, ""); // Eliminar letras
+	return value.replace(/\D/g, ''); // Eliminar letras
 }

@@ -6,15 +6,20 @@ export function load({ url }) {
 	const jwt = localStorage.getItem('authToken');
 	const path = url.pathname;
 
-	const publicPaths = ['/auth/login', '/auth/register', '/auth/unauthorized', '/auth/forgot-password'];
-	const isPublic = publicPaths.some(p => path.startsWith(p));
+	const publicPaths = [
+		'/auth/login',
+		'/auth/register',
+		'/auth/unauthorized',
+		'/auth/forgot-password'
+	];
+	const isPublic = publicPaths.some((p) => path.startsWith(p));
 	const sharedAuthPaths = ['/dashboard', '/', '/my-account'];
 
 	// 🔐 Si no hay token y no es ruta pública → redirige
 	if (!jwt) {
 		if (isPublic) return {};
 		if (path === '/auth/login') return {};
-        throw redirect(302, '/auth/login');
+		throw redirect(302, '/auth/login');
 	}
 
 	const payload = parseJwt(jwt);
@@ -29,8 +34,8 @@ export function load({ url }) {
 
 	// Si esta autenticado y accede a login → redirigir a dashboard
 	if (path === '/auth/login' || path === '/auth/register') {
-        throw redirect(302, '/dashboard');
-    }
+		throw redirect(302, '/dashboard');
+	}
 
 	// 🚫 Validar acceso por rol
 	const accessMatrix = {
@@ -49,8 +54,8 @@ export function load({ url }) {
 	};
 
 	const access = accessMatrix[role] || { allowedRoutes: [], deniedRoutes: [] };
-	const isAllowed = access.allowedRoutes.some(route => path.startsWith(route));
-	const isDenied = access.deniedRoutes.some(route => path.startsWith(route));
+	const isAllowed = access.allowedRoutes.some((route) => path.startsWith(route));
+	const isDenied = access.deniedRoutes.some((route) => path.startsWith(route));
 
 	if (!isPublic && !sharedAuthPaths.includes(path)) {
 		if (!isAllowed || isDenied) {
@@ -69,7 +74,7 @@ function parseJwt(token) {
 		const jsonPayload = decodeURIComponent(
 			atob(base64)
 				.split('')
-				.map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+				.map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
 				.join('')
 		);
 		return JSON.parse(jsonPayload);

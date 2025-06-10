@@ -1,112 +1,113 @@
 <script>
-    import { onMount } from 'svelte';
+	import { onMount } from 'svelte';
 
-    export let value = '';
-    export let placeholder = '';
-    export let required = false;
+	export let value = '';
+	export let placeholder = '';
+	export let required = false;
 
-    let input;
-    let toggleBtn;
+	let input;
+	let toggleBtn;
 
-    const chars =
-        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~,.<>?/;":][}{+_)(*&^%$#@!±=-§';
+	const chars =
+		'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789`~,.<>?/;":][}{+_)(*&^%$#@!±=-§';
 
-    onMount(async () => {
-        // Importa GSAP y plugins solo en el cliente
-        const { default: gsap } = await import('gsap');
-        const { default: ScrambleTextPlugin } = await import('gsap/ScrambleTextPlugin');
-        const { default: MorphSVGPlugin } = await import('gsap/MorphSVGPlugin');
-        gsap.registerPlugin(ScrambleTextPlugin, MorphSVGPlugin);
+	onMount(async () => {
+		// Importa GSAP y plugins solo en el cliente
+		const { default: gsap } = await import('gsap');
+		const { default: ScrambleTextPlugin } = await import('gsap/ScrambleTextPlugin');
+		const { default: MorphSVGPlugin } = await import('gsap/MorphSVGPlugin');
+		gsap.registerPlugin(ScrambleTextPlugin, MorphSVGPlugin);
 
-        const EYE = toggleBtn.querySelector('.eye');
-        const PROXY = document.createElement('div');
+		const EYE = toggleBtn.querySelector('.eye');
+		const PROXY = document.createElement('div');
 
-        let busy = false;
-        let blinkTl;
+		let busy = false;
+		let blinkTl;
 
-        const BLINK_SPEED = 0.075;
-        const TOGGLE_SPEED = 0.1;
-        const ENCRYPT_SPEED = 1;
+		const BLINK_SPEED = 0.075;
+		const TOGGLE_SPEED = 0.1;
+		const ENCRYPT_SPEED = 1;
 
-        function blink() {
-            const delay = gsap.utils.random(2, 8);
-            const duration = BLINK_SPEED;
-            const repeat = Math.random() > 0.5 ? 3 : 1;
-            blinkTl = gsap
-                .timeline({ delay, onComplete: blink, repeat, yoyo: true })
-                .to('.lid--upper', { morphSVG: '.lid--lower', duration })
-                .to('#eye-open path', { morphSVG: '#eye-closed path', duration }, 0);
-        }
-        blink();
+		function blink() {
+			const delay = gsap.utils.random(2, 8);
+			const duration = BLINK_SPEED;
+			const repeat = Math.random() > 0.5 ? 3 : 1;
+			blinkTl = gsap
+				.timeline({ delay, onComplete: blink, repeat, yoyo: true })
+				.to('.lid--upper', { morphSVG: '.lid--lower', duration })
+				.to('#eye-open path', { morphSVG: '#eye-closed path', duration }, 0);
+		}
+		blink();
 
-        window.addEventListener('pointermove', ({ x, y }) => {
-            const BOUNDS = EYE.getBoundingClientRect();
-            const map = gsap.utils.mapRange(-100, 100, 30, -30);
-            gsap.set('.eye', {
-                xPercent: gsap.utils.clamp(-30, 30, map(BOUNDS.x - x)),
-                yPercent: gsap.utils.clamp(-30, 30, map(BOUNDS.y - y))
-            });
-        });
+		window.addEventListener('pointermove', ({ x, y }) => {
+			const BOUNDS = EYE.getBoundingClientRect();
+			const map = gsap.utils.mapRange(-100, 100, 30, -30);
+			gsap.set('.eye', {
+				xPercent: gsap.utils.clamp(-30, 30, map(BOUNDS.x - x)),
+				yPercent: gsap.utils.clamp(-30, 30, map(BOUNDS.y - y))
+			});
+		});
 
-        toggleBtn.addEventListener('click', () => {
-            if (busy) return;
-            const isPassword = input.type === 'password';
-            const original = input.value;
-            busy = true;
-            toggleBtn.setAttribute('aria-pressed', String(isPassword));
+		toggleBtn.addEventListener('click', () => {
+			if (busy) return;
+			const isPassword = input.type === 'password';
+			const original = input.value;
+			busy = true;
+			toggleBtn.setAttribute('aria-pressed', String(isPassword));
 
-            const tl = gsap.timeline({
-                onComplete() {
-                    if (!isPassword) blink();
-                    busy = false;
-                }
-            });
+			const tl = gsap.timeline({
+				onComplete() {
+					if (!isPassword) blink();
+					busy = false;
+				}
+			});
 
-            tl.to('.lid--upper', {
-                morphSVG: isPassword ? '.lid--lower' : '.lid--upper',
-                duration: TOGGLE_SPEED
-            })
-                .to(
-                    '#eye-open path',
-                    {
-                        morphSVG: isPassword ? '#eye-closed path' : '#eye-open path',
-                        duration: TOGGLE_SPEED
-                    },
-                    0
-                )
-                .to(
-                    PROXY,
-                    {
-                        duration: ENCRYPT_SPEED,
-                        onStart() {
-                            input.type = isPassword ? 'text' : 'password';
-                        },
-                        onComplete() {
-                            PROXY.innerHTML = '';
-                            input.value = original;
-                        },
-                        scrambleText: {
-                            chars,
-                            text: isPassword
-                                ? original.charAt(original.length - 1) === ' '
-                                    ? `${original.slice(0, -1)}${chars[Math.floor(Math.random() * chars.length)]}`
-                                    : original
-                                : new Array(original.length).fill('•').join('')
-                        },
-                        onUpdate() {
-                            if (isPassword)
-                                input.value = `${PROXY.textContent}${new Array(
-                                    original.length - (PROXY.textContent ?? '').length
-                                )
-                                    .fill('•')
-                                    .join('')}`;
-                            else input.value = `${PROXY.textContent}${original.slice((PROXY.textContent ?? '').length)}`;
-                        }
-                    },
-                    0
-                );
-        });
-    });
+			tl.to('.lid--upper', {
+				morphSVG: isPassword ? '.lid--lower' : '.lid--upper',
+				duration: TOGGLE_SPEED
+			})
+				.to(
+					'#eye-open path',
+					{
+						morphSVG: isPassword ? '#eye-closed path' : '#eye-open path',
+						duration: TOGGLE_SPEED
+					},
+					0
+				)
+				.to(
+					PROXY,
+					{
+						duration: ENCRYPT_SPEED,
+						onStart() {
+							input.type = isPassword ? 'text' : 'password';
+						},
+						onComplete() {
+							PROXY.innerHTML = '';
+							input.value = original;
+						},
+						scrambleText: {
+							chars,
+							text: isPassword
+								? original.charAt(original.length - 1) === ' '
+									? `${original.slice(0, -1)}${chars[Math.floor(Math.random() * chars.length)]}`
+									: original
+								: new Array(original.length).fill('•').join('')
+						},
+						onUpdate() {
+							if (isPassword)
+								input.value = `${PROXY.textContent}${new Array(
+									original.length - (PROXY.textContent ?? '').length
+								)
+									.fill('•')
+									.join('')}`;
+							else
+								input.value = `${PROXY.textContent}${original.slice((PROXY.textContent ?? '').length)}`;
+						}
+					},
+					0
+				);
+		});
+	});
 </script>
 
 <div class="relative form-group">
