@@ -104,6 +104,7 @@ app.on('ready', async () => {
         icon: path.join(__dirname, 'static', 'Fix.png')
     });
 
+    mainWindow.maximize();
     mainWindow.setMenuBarVisibility(false);
     
     mainWindow.loadFile('loading.html');
