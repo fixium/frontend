@@ -2,8 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { login } from '$lib/api/main-backend-requests/auth';
 	import PasswordFancy from '$lib/components/PasswordFancy.svelte';
-		import { onMount } from 'svelte';
-
+	import { onMount } from 'svelte';
 
 	let username = '';
 	let password = '';
@@ -45,10 +44,7 @@
 
 <div class="flex items-center justify-center min-h-screen">
 	<div class="w-full max-w-sm flex flex-col items-center">
-		<img src={logoSrc} 
-		alt="Logo" 
-		class="h-28 mb-10 drop-shadow-xl" 
-		/>
+		<img src={logoSrc} alt="Logo" class="h-28 mb-10 drop-shadow-xl" />
 
 		<form class="w-full flex flex-col gap-6" on:submit|preventDefault={handleLogin}>
 			<!-- usuario -->

@@ -3,76 +3,76 @@
 @tailwind utilities;
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', Arial, sans-serif;
-  background-color: white;
+	margin: 0;
+	padding: 0;
+	font-family: 'Poppins', Arial, sans-serif;
+	background-color: white;
 }
 
 .dark body {
-  background-color: #343434;
+	background-color: #343434;
 }
 
 :root {
-  --cursor-size: 28px;
-  --bg: #FAF7EE;
+	--cursor-size: 28px;
+	--bg: #faf7ee;
 }
 
 .page-wrap {
-  background: var(--bg);
-  min-height: 100vh;
+	background: var(--bg);
+	min-height: 100vh;
 }
 
 #cursor {
-  position: fixed;
-  top: calc(var(--cursor-size) * -0.5);
-  left: calc(var(--cursor-size) * -0.5);
-  pointer-events: none;
-  mix-blend-mode: difference;
-  filter: url(#goo);
+	position: fixed;
+	top: calc(var(--cursor-size) * -0.5);
+	left: calc(var(--cursor-size) * -0.5);
+	pointer-events: none;
+	mix-blend-mode: difference;
+	filter: url(#goo);
 }
 
 .cursor-circle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--cursor-size);
-  height: var(--cursor-size);
-  border-radius: var(--cursor-size);
-  background: var(--bg);
-  transform-origin: center center;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: var(--cursor-size);
+	height: var(--cursor-size);
+	border-radius: var(--cursor-size);
+	background: var(--bg);
+	transform-origin: center center;
 }
 
 /* Scrollbar claro */
 body::-webkit-scrollbar {
-  width: 10px;
-  background: #f3f3f3;
+	width: 10px;
+	background: #f3f3f3;
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #bdbdbd;
-  border-radius: 8px;
+	background: #bdbdbd;
+	border-radius: 8px;
 }
 
 /* Scrollbar oscuro */
 .dark body::-webkit-scrollbar {
-  background: #2e2e35;
+	background: #2e2e35;
 }
 
 .dark body::-webkit-scrollbar-thumb {
-  background: #3a3a3a;
-  border-radius: 8px;
+	background: #3a3a3a;
+	border-radius: 8px;
 }
 
 /* Firefox */
 body {
-  scrollbar-color: #bdbdbd #f3f3f3;
+	scrollbar-color: #bdbdbd #f3f3f3;
 }
 
 .dark body {
-  scrollbar-color: #5a5a5a #2b2b2b;
+	scrollbar-color: #5a5a5a #2b2b2b;
 }
 
 .goo {
-  display: none;
+	display: none;
 }

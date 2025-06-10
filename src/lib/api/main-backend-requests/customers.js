@@ -35,16 +35,16 @@ export async function getCustomer(customerId) {
 }
 
 export async function getCustomers() {
-    const res = await fetch(`${API_URL}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-    });
+	const res = await fetch(`${API_URL}`, {
+		method: 'GET',
+		headers: { 'Content-Type': 'application/json' },
+		credentials: 'include'
+	});
 
-    if (!res.ok) {
-        const errorBody = await res.json();
-        throw new Error(buildErrorMessage(errorBody, 'Error al obtener clientes'));
-    }
+	if (!res.ok) {
+		const errorBody = await res.json();
+		throw new Error(buildErrorMessage(errorBody, 'Error al obtener clientes'));
+	}
 
-    return await res.json(); // Devuelve el array de clientes
+	return await res.json(); // Devuelve el array de clientes
 }

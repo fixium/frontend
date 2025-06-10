@@ -81,7 +81,7 @@
 					icon: 'fa-solid fa-building',
 					href: '/admin/workshop',
 					roles: ['ROLE_ADMIN']
-				},
+				}
 				// {
 				// 	name: 'Clientes',
 				// 	icon: 'user',
@@ -118,7 +118,7 @@
 					roles: ['ROLE_TECHNICIAN', 'ROLE_ADMIN']
 				}
 			]
-		},
+		}
 		// {
 		//     section: 'Colaboración',
 		//     items: [
@@ -159,8 +159,6 @@
 				<span class="hidden group-hover:block text-xl font-semibold">Fixium</span>
 			</a>
 		</div>
-
-		
 
 		<!-- Navegación -->
 		<nav class="flex-1 overflow-y-auto py-4">

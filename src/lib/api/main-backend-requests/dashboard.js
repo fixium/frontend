@@ -1,26 +1,26 @@
-import { API_BASE_URL } from "$lib/utils/apiConfig";
-import { buildErrorMessage } from "$lib/utils/errorUtils";
+import { API_BASE_URL } from '$lib/utils/apiConfig';
+import { buildErrorMessage } from '$lib/utils/errorUtils';
 
 const API_URL = `${API_BASE_URL}/dashboard`;
 
 export async function getDashboardData() {
-    try {
-        const response = await fetch(API_URL, {
-            method: 'GET',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
+	try {
+		const response = await fetch(API_URL, {
+			method: 'GET',
+			credentials: 'include',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		});
 
-        if (!response.ok) {
-            throw new Error(await buildErrorMessage(response));
-        }
+		if (!response.ok) {
+			throw new Error(await buildErrorMessage(response));
+		}
 
-        return response;
-    } catch (error) {
-        throw error;
-    }
+		return response;
+	} catch (error) {
+		throw error;
+	}
 }
 
 export async function getTicketsCountByStatus() {
@@ -35,12 +35,12 @@ export async function getTicketsCountByStatus() {
 }
 
 export async function getUsersCountByRole() {
-    const res = await fetch(`${API_URL}/count-users-by-role`, {
-        credentials: 'include'
-    });
-    if (!res.ok) {
-        const errorBody = await res.json().catch(() => ({}));
-        throw new Error(buildErrorMessage(errorBody, 'Error al obtener conteo de usuarios por rol'));
-    }
-    return await res.json(); // [{ role: 'ADMIN', count: 2 }, ...]
+	const res = await fetch(`${API_URL}/count-users-by-role`, {
+		credentials: 'include'
+	});
+	if (!res.ok) {
+		const errorBody = await res.json().catch(() => ({}));
+		throw new Error(buildErrorMessage(errorBody, 'Error al obtener conteo de usuarios por rol'));
+	}
+	return await res.json(); // [{ role: 'ADMIN', count: 2 }, ...]
 }

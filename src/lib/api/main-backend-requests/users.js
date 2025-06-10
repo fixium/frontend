@@ -61,36 +61,36 @@ export async function deleteUser(userId) {
 }
 
 export async function fetchUsers(customFetch = fetch) {
-    const response = await customFetch(API_URL, {
-        credentials: 'include'
-    });
-    if (!response.ok) {
-        const errorBody = await response.json().catch(() => ({}));
-        throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuarios'));
-    }
-    return await response.json();
+	const response = await customFetch(API_URL, {
+		credentials: 'include'
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => ({}));
+		throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuarios'));
+	}
+	return await response.json();
 }
 
 export async function fetchTechnicians() {
-    const response = await fetch(`${API_URL}/technicians`, {
-        credentials: 'include'
-    });
-    if (!response.ok) {
-        const errorBody = await response.json().catch(() => ({}));
-        throw new Error(buildErrorMessage(errorBody, 'Error al obtener técnicos'));
-    }
-    return await response.json();
+	const response = await fetch(`${API_URL}/technicians`, {
+		credentials: 'include'
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => ({}));
+		throw new Error(buildErrorMessage(errorBody, 'Error al obtener técnicos'));
+	}
+	return await response.json();
 }
 
 export async function fetchUserById(userId, customFetch = fetch) {
-    const response = await customFetch(`${API_URL}/${userId}`, {
-        credentials: 'include'
-    });
-    if (!response.ok) {
-        const errorBody = await response.json().catch(() => ({}));
-        throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuario'));
-    }
-    return await response.json();
+	const response = await customFetch(`${API_URL}/${userId}`, {
+		credentials: 'include'
+	});
+	if (!response.ok) {
+		const errorBody = await response.json().catch(() => ({}));
+		throw new Error(buildErrorMessage(errorBody, 'Error al obtener usuario'));
+	}
+	return await response.json();
 }
 
 export async function changePassword(passwordRequest) {
